@@ -1,0 +1,24 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <title>Django Tailwind</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		{% tailwind_css %}	
+		{% comment %} <script src="{% static 'htmx.js' %}"></script> {% endcomment %}
+		{% load static %}
+		<script src="{% static 'htmx.min.js' %}" defer></script>
+		{% comment %} <script src="https://unpkg.com/htmx.org@1.1.0"></script> {% endcomment %}
+		{% comment %} <script>
+		  document.body.addEventListener('htmx:configRequest', (event) => {
+			event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+		  })
+		</script> {% endcomment %}
+	</head>
+
+	<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+		{% block content %}{% endblock content %}
+	</body>
+</html>

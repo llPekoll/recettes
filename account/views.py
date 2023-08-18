@@ -1,11 +1,10 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, redirect
-from django_htmx.http import retarget
+from django.shortcuts import redirect, render
+from django_htmx.http import HttpResponseClientRefresh, retarget
 from django_htmx.middleware import HtmxDetails
-from django.contrib.auth import authenticate, login
 
-from .forms import UserRegistrationForm, LoginForm
+from .forms import LoginForm, UserRegistrationForm
 
 
 class HtmxHttpRequest(HttpRequest):
@@ -26,25 +25,24 @@ def register(request):
         return retarget(resp, "#form-register")
 
     form = UserRegistrationForm()
-    return render(request, "form_register.html", {"form": form})
+    return render(request, "auth_core.html", {"form": form, "login": False})
 
 
 def login_view(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = LoginForm(request, request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('home')
+                return redirect("home")
             else:
-                form.add_error(None, 'Invalid username or password.')
+                form.add_error(None, "Invalid username or password.")
     else:
         form = LoginForm()
-    return render(request, 'form_login.html', {'form': form})
-
+    return render(request, "auth_core.html", {"form": form, "login": True})
 
 
 def check_username(request):

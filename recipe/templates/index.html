@@ -7,8 +7,40 @@
    {% tailwind_css %}
 
 </head> 
-   <body>
-      <h1 class="text-red-100 font-semibold text-7xl">
-      m des man
-      </h1>
+   <body class="w-screen h-screen" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+      <nav class="bg-white shadow-lg">
+         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+               <div class="flex">
+                  <a href="/" class="flex-shrink-0 flex items-center">
+                     {% comment %} <img class="block lg:hidden h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Logo"> {% endcomment %}
+                     {% comment %} <img class="hidden lg:block h-8 w-auto" src="{% static 'img/logo.svg' %}" alt="Logo"> {% endcomment %}
+                  </a>
+               </div>
+               <div class="flex items-center">
+                  {% if user.is_authenticated %}
+                     <a href="{% url 'account' %}" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">My Account</a>
+                     <a href="{% url 'logout' %}" hx-target="body" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">logout</a>
+                  {% else %}
+                     <a href="{% url 'login' %}" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Sign in</a>
+                     <a href="{% url 'register' %}" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Register</a>
+                  {% endif %}
+               </div>
+            </div>
+         </div>
+      </nav>
+
+      <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+         <h1 class="text-red-100 font-semibold text-7xl">
+            Welcome to Elisa's place!
+         </h1>
+      </div>
+
    </body>
+
+<style>
+   body{
+      background-image: linear-gradient(to right bottom, #603b00, #6d4508, #7a4f12, #88591b, #966324);
+   }
+</style>
+</html>

@@ -1,3 +1,10 @@
+{% comment %} 
+this is the register form
+  https://codepen.io/shayanea/pen/eVMMgO
+{% endcomment %}
+{% extends 'auth_base.html' %}
+
+{% block content %}
 <form 
     id="register-form" 
     hx-post="{% url 'register' %}"
@@ -55,8 +62,4 @@ class="font-black">{{ form.email.label }} <span class="text-red-500">*</span></l
 {{jose}}
 {% endfor%} {% endcomment %}
 
-{% comment %} <style>
-    .helptext {
-        color: #bd512f !Important;
-}
-</style> {% endcomment %}
+{% endblock %}

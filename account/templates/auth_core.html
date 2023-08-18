@@ -6,42 +6,60 @@
 <div class="form-structor shadow-lg">
 	<div class="signup">
 		<h2 class="form-title" id="signup"><span>or</span>Sign up</h2>
-        
+        <form 
+            id="register-form" 
+            hx-post="{% url 'register' %}"
+        >
 		<div class="form-holder">
 			<input 
                 type="text" 
                 class="input" 
-                placeholder={{ form.username.label }} 
-                name={{form.username.label|lower}}
+                placeholder="{{ registerform.username.label }}"
+                name="{{registerform.username.label|lower}}"
              />
 			<input 
                 type="email" 
                 class="input" 
-                placeholder={{ form.email.label }} 
-                name={{form.email.label|lower}}
+                placeholder="{{ registerform.email.label }}" 
+                name="{{ registerform.email.label|lower }}"
             />
 			<input 
                 type="password" 
                 class="input" 
-                placeholder={{ form.password1.label }}
-                name={{form.password1.label|lower}} 
+                placeholder="{{ registerform.password1.label }}"
+                name="{{ registerform.password1.label|lower}}" 
              />
 			<input 
                 type="password" 
                 class="input" 
-                placeholder={{ form.password2.label }}
-                name={{form.password2.label|lower}} 
+                placeholder="{{ registerform.password2.label }}"
+                name="{{registerform.password2.label|lower}}" 
              />
 		</div>
 		<button class="submit-btn">Sign up</button>
-        
+    </form>
     </div>
 	<div class="login slide-up">
 		<div class="center">
 			<h2 class="form-title" id="login"><span>or</span>Log in</h2>
 			<div class="form-holder">
-				<input type="email" class="input" placeholder="Email" />
-				<input type="password" class="input" placeholder="Password" />
+                <form 
+                    id="login-form" 
+                    hx-post="{% url 'login' %}"
+                >
+                <input 
+                type="text" 
+                class="input" 
+                placeholder="{{ logform.username.label }}" 
+                name="{{ logform.username.label|lower }}"
+            />
+			<input 
+                type="password" 
+                class="input" 
+                placeholder="{{ logform.password.label }}"
+                name="{{ logform.password.label|lower}}" 
+             />
+            </form>
 			</div>
 			<button class="submit-btn">Log in</button>
 		</div>
@@ -59,7 +77,7 @@
 
 
 {% comment %} <a href="{% url 'password_reset' %}">Forgot password?</a> {% endcomment %}
-<a href="{% url 'home' %}" class="fixed bottom-5 left-50vh underline text-blue-600 font-bold">-Home-</a>
+<a href="{% url 'home' %}" class="fixed bottom-5 left-50vh underline text-blue-600 font-bold">- Home -</a>
 <script>
 let displayPAssInfo = false;
 const loginBtn = document.getElementById('login');

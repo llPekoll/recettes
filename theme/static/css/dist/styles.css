@@ -5015,6 +5015,10 @@ select {
   height: 2rem;
 }
 
+.h-20 {
+  height: 5rem;
+}
+
 .w-0 {
   width: 0px;
 }
@@ -5041,6 +5045,14 @@ select {
 
 .w-auto {
   width: auto;
+}
+
+.w-40 {
+  width: 10rem;
+}
+
+.w-60 {
+  width: 15rem;
 }
 
 .max-w-7xl {
@@ -11853,6 +11865,11 @@ select {
 .text-blue-700 {
   --tw-text-opacity: 1;
   color: rgb(29 78 216 / var(--tw-text-opacity));
+}
+
+.text-gray-100 {
+  --tw-text-opacity: 1;
+  color: rgb(243 244 246 / var(--tw-text-opacity));
 }
 
 .underline {

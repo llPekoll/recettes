@@ -24,8 +24,13 @@ def register(request):
         resp = render(request, "form.html", {"form": form})
         return retarget(resp, "#form-register")
 
-    form = UserRegistrationForm()
-    return render(request, "auth_core.html", {"form": form, "login": False})
+    registerform = UserRegistrationForm()
+    logform = LoginForm()
+    return render(
+        request,
+        "auth_core.html",
+        {"logform": logform, "registerform": registerform, "login": False},
+    )
 
 
 def login_view(request):
@@ -40,9 +45,13 @@ def login_view(request):
                 return redirect("home")
             else:
                 form.add_error(None, "Invalid username or password.")
-    else:
-        form = LoginForm()
-    return render(request, "auth_core.html", {"form": form, "login": True})
+    registerform = UserRegistrationForm()
+    logform = LoginForm()
+    return render(
+        request,
+        "auth_core.html",
+        {"logform": logform, "registerform": registerform, "login": True},
+    )
 
 
 def check_username(request):

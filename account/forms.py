@@ -1,10 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib.auth.models import User
+from account.models import User
 
 
 class UserRegistrationForm(UserCreationForm):
-
     email = forms.EmailField(
         help_text="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
     )

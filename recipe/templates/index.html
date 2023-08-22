@@ -12,16 +12,21 @@
             <div class="flex justify-between h-16">
                <div class="flex">
                   <a href="/" class="flex-shrink-0 flex items-center">
-                     <img class="block lg:hidden w-60 w-auto" src="{% static 'logo.svg' %}" alt="Logo">
-                     <img class="hidden lg:block w-60 w-auto" src="{% static 'logo.svg' %}" alt="Logo">
+                     <img class="block lg:hidden w-60" src="{% static 'logo.svg' %}" alt="Logo">
+                     <img class="hidden lg:block w-60" src="{% static 'logo.svg' %}" alt="Logo">
                   </a>
                </div>
                <div class="flex items-center">
-                  <a href="{% url 'account' %}" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Recipes</a>
-                  <a href="{% url 'account' %}" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Author</a>
+                  <a href="{% url 'profile' %}" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Recipes</a>
+                  <a href="{% url 'profile' %}" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Author</a>
                   {% if user.is_authenticated %}
-                     <a href="{% url 'account' %}" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">My Account</a>
-                     <a href="{% url 'logout' %}" hx-target="body" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">logout</a>
+                  <div class="dropdown">
+                     <button class="profile-icon" onclick="toggleDropdown()">Profile</button>
+                     <div class="dropdown-content" id="dropdown">
+                        <a href="{% url 'account' %}" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">My Profile</a>
+                        <a href="{% url 'logout' %}" hx-target="body" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">logout</a>
+                     </div>
+                   </div>
                   {% else %}
                      <a href="{% url 'login' %}" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Sign in</a>
                      <a href="{% url 'register' %}" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Register</a>
@@ -30,7 +35,6 @@
             </div>
          </div>
       </nav>
-
       <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
          <h1 class=" text-center text-red-100 font-semibold text-2xl">
             Welcome to Elisa's corner!
@@ -43,5 +47,61 @@
    body{
       background-image: linear-gradient(to right bottom, #603b00, #6d4508, #7a4f12, #88591b, #966324);
    }
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .profile-icon {
+    background-image: url('path/to/profile-icon.png');
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    top: 50px;
+    right: 0;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+  }
+
+  .dropdown-content a {
+    color: black;
+    padding: 8px 0;
+    text-decoration: none;
+    display: block;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+
+  .show {
+    display: block;
+  }
 </style>
+<script>
+   function toggleDropdown() {
+     var dropdown = document.getElementById("dropdown");
+     dropdown.classList.toggle("show");
+   }
+ 
+   window.onclick = function(event) {
+     if (!event.target.matches('.profile-icon')) {
+       var dropdown = document.getElementById("dropdown");
+       if (dropdown.classList.contains('show')) {
+         dropdown.classList.remove('show');
+       }
+     }
+   }
+ </script>
 </html>

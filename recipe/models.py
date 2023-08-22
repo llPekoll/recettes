@@ -7,6 +7,28 @@ class Category(Enum):
     RECIPE = "recipe"
     HEALTH = "health"
     COSMETIC = "cosmetic"
+    GARDEN = "garden"
+    HOME = "home"
+    FERMENTAION = "fermentaion"
+    JUICE = "juice"
+
+
+class Region(Enum):
+    NORTH_AMERICA = "North America"
+    SOUTH_AMERICA = "South America"
+    EUROPE = "Europe"
+    EASTERN_EUROPE = "Eastern Europe"
+    WESTERN_EUROPE = "Western Europe"
+    ASIA = "Asia"
+    EAST_ASIA = "East Asia"
+    SOUTH_ASIA = "South Asia"
+    SOUTHEAST_ASIA = "Southeast Asia"
+    AFRICA = "Africa"
+    NORTH_AFRICA = "North Africa"
+    SUB_SAHARAN_AFRICA = "Sub-Saharan Africa"
+    OCEANIA = "Oceania"
+    AUSTRALIA = "Australia"
+    NEW_ZEALAND = "New Zealand"
 
 
 class Recipe(models.Model):
@@ -22,6 +44,12 @@ class Recipe(models.Model):
         max_length=20,
         choices=[(category.value, category.name) for category in Category],
         default=Category.RECIPE.value,
+    )
+    recipe_origin = models.CharField(
+        max_length=20,
+        choices=[(region.value, region.name) for region in Region],
+        blank=True,
+        null=True,
     )
     likes = models.ManyToManyField(
         "account.User", through="Like", related_name="liked_recipes"
@@ -40,6 +68,18 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class RecipeStep(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="steps")
+    step_number = models.PositiveIntegerField()
+    description = models.TextField()
+
+    class Meta:
+        ordering = ["step_number"]
+
+    def __str__(self):
+        return f"{self.recipe.title} - Step {self.step_number}"
 
 
 class Ingredient(models.Model):

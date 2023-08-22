@@ -1,18 +1,20 @@
-from django.contrib.auth.models import (
-    AbstractBaseUser,
-    AbstractUser,
-    BaseUserManager,
-    Group,
-    Permission,
-    PermissionsMixin,
-)
+from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
+from elisasrecipe import settings
 
 
 class User(AbstractUser):
     favorite_recipes = models.ManyToManyField(
         "recipe.Recipe", related_name="favorited_by"
     )
+    # Socials
+    youtube_channel = models.URLField(blank=True)
+    twitter_handle = models.URLField(blank=True)
+    instagram_handle = models.URLField(blank=True)
+    facebook_handle = models.URLField(blank=True)
+    website = models.URLField(blank=True)
+    # profile_picture = models.ImageField(
+    bio = models.TextField(blank=True)
 
     groups = models.ManyToManyField(
         Group,
@@ -30,9 +32,12 @@ class User(AbstractUser):
         related_name="myapp_user_permissions",  # specify a custom related name
         related_query_name="user",
     )
-    # TODO: add profile image, bio, etc.
 
     def __str__(self):
         return self.username
 
-    # pass
+
+class PasswordResetToken(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    token = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)

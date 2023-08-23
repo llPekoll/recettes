@@ -7,28 +7,28 @@
    {% tailwind_css %}
 </head> 
    <body class="w-screen h-screen" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-      <nav >
+        <nav >
          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                <div class="flex">
                   <a href="/" class="flex-shrink-0 flex items-center" data-test="logo">
                      <img class="block lg:hidden w-60" src="{% static 'logo.svg' %}" alt="Logo">
                      <img class="hidden lg:block w-60" src="{% static 'logo.svg' %}" alt="Logo">
-                  </a>
+                    </a>
                </div>
                <div class="flex items-center">
                   <a href="{% url 'profile' %}" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Recipes</a>
                   <a href="{% url 'profile' %}" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Author</a>
                   {% if user.is_authenticated %}
                   <div class="dropdown">
-                     <button class="profile-icon" onclick="toggleDropdown()">Profile</button>
+                     <button class="profile-icon" onclick="toggleDropdown()" data-test="profile">Profile</button>
                      <div class="dropdown-content" id="dropdown">
                         <a href="{% url 'account' %}" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">My Profile</a>
-                        <a href="{% url 'logout' %}" hx-target="body" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">logout</a>
+                        <a href="{% url 'logout' %}" hx-target="body" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" data-test="logout">logout</a>
                      </div>
                    </div>
                   {% else %}
-                     <a href="{% url 'login' %}" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Sign in</a>
+                     <a href="{% url 'login' %}" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" data-test="login">Sign in</a>
                      <a href="{% url 'register' %}" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Register</a>
                   {% endif %}
                </div>

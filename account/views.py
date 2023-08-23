@@ -26,16 +26,16 @@ def index(request: HtmxHttpRequest) -> HttpResponse:
 
 def register(request):
     if request.htmx:
-        registerform = UserRegistrationForm(request.POST)
-        if registerform.is_valid():
-            registerform.save()
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
             return HttpResponseClientRedirect("/")
         else:
-            print(registerform.errors)
+            print(form.errors)
         return render(
             request,
             "components/register.html",
-            {"registerform": registerform},
+            {"form": form},
         )
     form = UserRegistrationForm()
     return render(

@@ -39,13 +39,13 @@
                             >
                             <div id="form-holder">
                                 {% if step == "login" %}
-                                    {% include 'include_login.html' %}
+                                    {% include 'components/login.html' %}
                                 {% elif step == "register" %}
                                     {% include 'components/register.html' %}
                                 {% elif step == "forgot_password" %}
-                                    {% include 'include_pass_forgot.html' %}
+                                    {% include 'components/pass_forgot.html' %}
                                 {% elif step == "set_new_pass" %}
-                                    {% include 'include_new_pass.html' %}
+                                    {% include 'components/new_pass.html' %}
                                 {% endif %}
                             </div>
                             <div class="relative w-full text-center mx-auto">

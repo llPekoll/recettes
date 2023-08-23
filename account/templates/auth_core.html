@@ -41,7 +41,7 @@
                                 {% if step == "login" %}
                                     {% include 'include_login.html' %}
                                 {% elif step == "register" %}
-                                    {% include 'include_register.html' %}
+                                    {% include 'components/register.html' %}
                                 {% elif step == "forgot_password" %}
                                     {% include 'include_pass_forgot.html' %}
                                 {% elif step == "set_new_pass" %}
@@ -49,7 +49,11 @@
                                 {% endif %}
                             </div>
                             <div class="relative w-full text-center mx-auto">
-                                <button type="submit" class="bg-blue-500 text-white rounded-md px-2 py-1 ">Submit</button>
+                                <button 
+                                    type="submit" 
+                                    data-test="submit"
+                                    class="bg-blue-500 text-white rounded-md px-2 py-1 "
+                                >Submit</button>
                             </div>
                         </form>
 					</div>

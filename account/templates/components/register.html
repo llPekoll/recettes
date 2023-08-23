@@ -13,6 +13,7 @@
 		id="{{ form.username.name }}" 
 		name="{{ form.username.name }}" 
 		type="text" 
+		data-test="username"
 		class="peer placeholder-transparent h-10 w-full border-b-2 border-t-0 border-x-0 focus:border-gray-300 border-gray-300 text-gray-900 focus:borer-b-2 focus:ring-0" 
 		placeholder="{{ form.username.label }}" 
 		hx-post="/register/check_username"
@@ -26,6 +27,7 @@
 		<div id="validation-email" class="absolute right-10"></div>
 		<input 
 			id="{{ form.email.name }}" 
+			data-test="email"
 			name="{{ form.email.name }}" 
 			type="text" 
 			class="peer placeholder-transparent h-10 w-full border-b-2 border-t-0 border-x-0 focus:border-gray-300 border-gray-300 text-gray-900 focus:borer-b-2 focus:ring-0" 
@@ -41,6 +43,7 @@
 	<input  
 		id="{{ form.password1.name }}" 
 		name="{{ form.password1.name }}" 
+		data-test="password1"
 		type="password" 
 		class="peer placeholder-transparent h-10 w-full border-b-2 border-t-0 border-x-0 focus:border-gray-300 border-gray-300 text-gray-900 focus:borer-b-2 focus:ring-0" 
 		placeholder="{{ form.password1.label }}" 
@@ -51,6 +54,7 @@
 	<input  
 		id="{{ form.password2.name }}" 
 		name="{{ form.password2.name }}" 
+		data-test="password2"
 		type="password" 
 		class="peer placeholder-transparent h-10 w-full border-b-2 border-t-0 border-x-0 focus:border-gray-300 border-gray-300 text-gray-900 focus:borer-b-2 focus:ring-0" 
 		placeholder="{{ form.password2.label }}" 

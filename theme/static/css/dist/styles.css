@@ -6106,6 +6106,10 @@ select {
   border-width: 2px;
 }
 
+.\!border {
+  border-width: 1px !important;
+}
+
 .border-x {
   border-left-width: 1px;
   border-right-width: 1px;
@@ -12672,6 +12676,14 @@ select {
 
 .\[a-zA-Z\:\\\\-\] {
   a-z-a--z: \\-;
+}
+
+.\[pos\:pos\] {
+  pos: pos;
+}
+
+.\[tool\:pytest\] {
+  tool: pytest;
 }
 
 .hover\:prose-lg:hover {

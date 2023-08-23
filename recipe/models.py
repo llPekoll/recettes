@@ -33,6 +33,7 @@ class Region(Enum):
 
 class Recipe(models.Model):
     title = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True)
     description = models.TextField()
     instructions = models.TextField()
     author = models.ForeignKey(
@@ -60,11 +61,12 @@ class Recipe(models.Model):
     quantity = models.DecimalField(
         max_digits=6, decimal_places=2, null=True, blank=True
     )  # number of persons or number of usage
-    youtube_link = models.CharField(max_length=255, null=True, blank=True)
+    youtube_link = models.URLField(max_length=255, null=True, blank=True)
     # image = models.ImageField(upload_to='images/', null=True, blank=True)
     is_published = models.BooleanField(default=False)
     is_private = models.BooleanField(default=False)
     is_featured = models.BooleanField(default=False)
+    url_link = models.URLField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -74,6 +76,7 @@ class RecipeStep(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="steps")
     step_number = models.PositiveIntegerField()
     description = models.TextField()
+    youtube_link = models.URLField(max_length=255, null=True, blank=True)
 
     class Meta:
         ordering = ["step_number"]

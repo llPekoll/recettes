@@ -34,7 +34,7 @@ def register(request):
             print(registerform.errors)
         return render(
             request,
-            "include_register.html",
+            "components/register.html",
             {"registerform": registerform},
         )
     form = UserRegistrationForm()
@@ -88,19 +88,10 @@ def check_email(request):
 def send_password_reset_email(request):
     if request.htmx:
         email = request.POST["email"]
-        # User = get_user_model()
         try:
-            print("!")
             from .models import User
 
-            print("2")
-
-            print(request.POST)
-            print(email)
-            print("5")
             user = User.objects.get(email=email)
-            print("4")
-            # user = User.objects.get(pk=user.pk)
 
         except User.DoesNotExist:
             rest = render(request, "responses/email_not_found.html")
@@ -109,9 +100,6 @@ def send_password_reset_email(request):
         token = token_generator.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
 
-        print("user")
-        print(user)
-        print(isinstance(user, User))
         PasswordResetToken.objects.create(user=user, token=token)
 
         current_site = get_current_site(request)
@@ -134,8 +122,6 @@ def send_password_reset_email(request):
         resp = requests.post(
             "https://api.mailwind.io/v1/send", headers=headers, json=payload
         )
-        print(resp.status_code)
-        print(resp.json())
         return render(
             request, "responses/email_sent.html", {"intro": intro, "link": link}
         )
@@ -147,31 +133,18 @@ class PasswordResetConfirmViewCustom(PasswordResetConfirmView):
     template_name = "password_reset/reset_password_confirm.html"
 
     def get(self, request, *args, **kwargs):
-        token = kwargs["token"]
-        uid = kwargs["uidb64"]
-        try:
-            uid = force_str(urlsafe_base64_decode(uid))
-            User = get_user_model()
-            user = User.objects.get(pk=uid)
-            token_obj = PasswordResetToken.objects.get(user=user, token=token)
-            if default_token_generator.check_token(user, token):
-                return super().get(request, *args, **kwargs)
-            else:
-                return render(request, "password_reset/reset_password_invalid.html")
-        except (
-            TypeError,
-            ValueError,
-            OverflowError,
-            User.DoesNotExist,
-            PasswordResetToken.DoesNotExist,
-        ) as e:
-            return render(request, "password_reset/reset_password_invalid.html")
+        from .forms import ResetForm
+
+        form = ResetForm()
+        return render(
+            request, "password_reset/reset_password_invalid.html", {"form": form}
+        )
 
     def post(self, request, *args, **kwargs):
         token = kwargs["token"]
         uid = kwargs["uidb64"]
         try:
-            uid = force_text(urlsafe_base64_decode(uid))
+            uid = force_str(urlsafe_base64_decode(uid))
             user = User.objects.get(pk=uid)
             token_obj = PasswordResetToken.objects.get(user=user, token=token)
             if default_token_generator.check_token(user, token):
@@ -186,3 +159,19 @@ class PasswordResetConfirmViewCustom(PasswordResetConfirmView):
             PasswordResetToken.DoesNotExist,
         ) as e:
             return render(request, "password_reset/reset_password_invalid.html")
+
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import User
+
+
+@csrf_exempt
+def delete_users(request):
+    if request.method == "DELETE":
+        prefix = "pw_test_"
+        users = User.objects.filter(username__startswith=prefix)
+        count, _ = users.delete()
+        return JsonResponse({"message": f"{count} users deleted."})
+    else:
+        return JsonResponse({"message": "Invalid request method."}, status=405)

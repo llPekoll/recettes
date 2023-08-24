@@ -1,3 +1,4 @@
+import time
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordResetConfirmView
@@ -28,7 +29,8 @@ def register(request):
     if request.htmx:
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            login(request, user)
             return HttpResponseClientRedirect("/")
         else:
             print(form.errors)

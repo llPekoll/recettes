@@ -22,9 +22,9 @@
                   {% if user.is_authenticated %}
                   <div class="dropdown">
                      <button class="profile-icon" onclick="toggleDropdown()" data-test="profile">Profile</button>
-                     <div class="dropdown-content" id="dropdown">
-                        <a href="{% url 'account' %}" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">My Profile</a>
-                        <a href="{% url 'logout' %}" hx-target="body" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" data-test="logout">logout</a>
+                     <div class="dropdown-content rounded-lg shadow-sm" id="dropdown">
+                        <a href="{% url 'account' %}" class="text-gray-100 hover:text-gray-100 hover:bg-amber-800 px-3 hover:px-2 rounded-md text-sm font-medium">My Profile</a>
+                        <a href="{% url 'logout' %}" hx-target="body" class="text-gray-100 hover:text-gray-100 hover:bg-amber-800 px-3 hover:px-2 rounded-md text-sm font-medium" data-test="logout">logout</a>
                      </div>
                    </div>
                   {% else %}
@@ -79,10 +79,6 @@
     padding: 8px 0;
     text-decoration: none;
     display: block;
-  }
-
-  .dropdown-content a:hover {
-    background-color: #f1f1f1;
   }
 
   .show {

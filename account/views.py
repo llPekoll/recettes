@@ -46,7 +46,7 @@ def register(request):
 
 
 def login_view(request):
-    if request.method == "POST":
+    if request.htmx:
         form = LoginForm(request, request.POST)
         if form.is_valid():
             username = form.cleaned_data.get("username")
@@ -55,8 +55,14 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 return redirect("home")
-            else:
-                form.add_error(None, "Invalid username or password.")
+            return HttpResponse("user not found")
+        else:
+            print(form.errors)
+        return render(
+            request,
+            "components/login.html",
+            {"form": form},
+        )
     form = LoginForm()
     return render(
         request,

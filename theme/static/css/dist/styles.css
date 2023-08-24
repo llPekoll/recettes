@@ -14078,6 +14078,31 @@ select {
   border-width: 0px;
 }
 
+.hover\:bg-slate-500:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(100 116 139 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-orange-500:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 115 22 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-amber-800:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(146 64 14 / var(--tw-bg-opacity));
+}
+
+.hover\:py-2:hover {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.hover\:px-2:hover {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
 .hover\:font-bold:hover {
   font-weight: 700;
 }
@@ -14090,6 +14115,11 @@ select {
 .hover\:text-gray-900:hover {
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
+}
+
+.hover\:text-gray-100:hover {
+  --tw-text-opacity: 1;
+  color: rgb(243 244 246 / var(--tw-text-opacity));
 }
 
 .hover\:underline:hover {

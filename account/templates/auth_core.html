@@ -35,7 +35,7 @@
                             {% elif step == "set_new_pass" %}
                                 hx-post="{% url 'set_new_pass' %}"
                             {% endif %}
-                            hx-swap="#form-holder"
+                            hx-target="#form-holder"
                             >
                             <div id="form-holder">
                                 {% if step == "login" %}
@@ -52,7 +52,7 @@
                                 <button 
                                     type="submit" 
                                     data-test="submit"
-                                    class="bg-blue-500 text-white rounded-md px-2 py-1 "
+                                    class="bg-blue-500 text-white rounded-md px-10 py-1 mt-5"
                                 >Submit</button>
                             </div>
                         </form>

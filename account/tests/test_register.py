@@ -1,4 +1,3 @@
-import pytest
 from playwright.sync_api import Page, expect
 
 from faker import Faker
@@ -37,11 +36,8 @@ def delete_users(page: Page):
 
 def create_user(page: Page, password_Type="valid"):
     page.goto("http://127.0.0.1:8000/register/")
-    page.locator('[data-test="username"]').click()
     page.locator('[data-test="username"]').fill(random_username)
-    page.locator('[data-test="username"]').press("Tab")
     page.locator('[data-test="email"]').fill(random_email)
-    page.locator('[data-test="email"]').press("Tab")
     page.locator('[data-test="password1"]').click()
     if password_Type == "valid":
         page.locator('[data-test="password1"]').fill(random_password)
@@ -49,7 +45,6 @@ def create_user(page: Page, password_Type="valid"):
         page.locator('[data-test="password1"]').fill(random_password)
     elif password_Type == "too_short":
         page.locator('[data-test="password1"]').fill("233")
-    page.locator('[data-test="password1"]').press("Tab")
     if password_Type == "valid":
         page.locator('[data-test="password2"]').fill(random_password)
     elif password_Type == "missmatch":
@@ -70,7 +65,6 @@ def test_register_wrong_username(page: Page):
     create_user(page)
     page.goto("http://127.0.0.1:8000/register/")
     page.wait_for_timeout(1000)
-    page.locator('[data-test="username"]').click()
     page.locator('[data-test="username"]').fill(random_username)
     page.locator('[data-test="password2"]').click()
     already_taken = page.locator('[data-test="already-taken"]')
@@ -82,7 +76,6 @@ def test_register_wrong_email(page: Page):
     create_user(page)
     page.goto("http://127.0.0.1:8000/register/")
     page.wait_for_timeout(1000)
-    page.locator('[data-test="email"]').click()
     page.locator('[data-test="email"]').fill(random_email)
     page.locator('[data-test="password2"]').click()
     already_taken = page.locator('[data-test="already-taken"]')

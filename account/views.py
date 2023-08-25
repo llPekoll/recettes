@@ -134,7 +134,7 @@ def send_password_reset_email(request):
             request, "responses/email_sent.html", {"intro": intro, "link": link}
         )
     else:
-        return render(request, "auth_core.html", {"step": "forgot_password"})
+        return render(request, "auth_core.html", {"step": "reset-password"})
 
 
 class PasswordResetConfirmViewCustom(PasswordResetConfirmView):

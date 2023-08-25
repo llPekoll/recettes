@@ -18,7 +18,7 @@
 		data-test="username"
 		class="peer placeholder-transparent h-10 w-full border-b-2 border-t-0 border-x-0 focus:border-gray-300 border-gray-300 text-gray-900 focus:borer-b-2 focus:ring-0" 
 		placeholder="{{ form.username.label }}" 
-		hx-post="/register/check_username"
+		hx-post="/check/username"
 		hx-trigger="blur"
 		hx-target="#validation-username"   
 		hx-include="value"
@@ -35,7 +35,7 @@
 			type="text" 
 			class="peer placeholder-transparent h-10 w-full border-b-2 border-t-0 border-x-0 focus:border-gray-300 border-gray-300 text-gray-900 focus:borer-b-2 focus:ring-0" 
 			placeholder="{{ form.email.label }}" 
-			hx-post="/register/check_email"
+			hx-post="/check/email"
 			hx-trigger="blur"
 			hx-target="#validation-email"   
 			hx-include="value"
@@ -75,8 +75,3 @@
 	</li>
 	{% endfor %}
 </ul>
-<script>
-	document.body.addEventListener('configRequest.htmx', (event) => {
-		event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
-	})
-</script>

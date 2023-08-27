@@ -2,8 +2,11 @@ from django.contrib.auth import views as auth_views
 from django.urls import path
 
 from . import views
-from .views import delete_users
-from .views import PasswordResetConfirmViewCustom, send_password_reset_email
+from .views import (
+    CustomPasswordResetConfirmView,
+    delete_users,
+    send_password_reset_email,
+)
 
 urlpatterns = [
     path("register/", views.register, name="register"),
@@ -13,11 +16,16 @@ urlpatterns = [
     path("check/email", views.check_email, name="validation email"),
     path("login/", views.login_view, name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
-    path("reset-password/", send_password_reset_email, name="reset-password"),
+    path("reset-password/", send_password_reset_email, name="password-reset"),
     path(
         "password-reset/<uidb64>/<token>/",
-        PasswordResetConfirmViewCustom.as_view(),
-        name="password_reset_confirm",
+        CustomPasswordResetConfirmView.as_view(),
+        name="password-reset-confirm",
+    ),
+    path(
+        "password-change-success/",
+        views.password_change_success,
+        name="password-change-success",
     ),
     # for test
     path("users/delete/", delete_users, name="delete_users"),

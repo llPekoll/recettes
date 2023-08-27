@@ -1,20 +1,23 @@
-import time
+import requests
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordResetConfirmView
 from django.contrib.sites.shortcuts import get_current_site
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.decorators.csrf import csrf_exempt
 from django_htmx.http import HttpResponseClientRedirect, retarget
 from django_htmx.middleware import HtmxDetails
-import requests
-from django.template.loader import render_to_string
 
-from .forms import LoginForm, UserRegistrationForm
-from .models import PasswordResetToken
+from elisasrecipe import settings
+
+from .forms import LoginForm, ResetForm, UserRegistrationForm
+from .models import PasswordResetToken, User
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.urls import reverse_lazy
 
 
 class HtmxHttpRequest(HttpRequest):
@@ -117,6 +120,7 @@ def send_password_reset_email(request):
         )
         api_key = "sw-bxvZ6y19Z3CVsb88NPPajtF0j58x1YxkVBee02tWJxKExYOYg1MTI6XIJau5a"
         link = f"{current_site}/password-reset/{uid}/{token}/\n\n"
+        print(f"{link=}")
         content = render_to_string(
             "emails/password_forgot.html", {"intro": intro, "link": link}
         )
@@ -137,41 +141,14 @@ def send_password_reset_email(request):
         return render(request, "auth_core.html", {"step": "reset-password"})
 
 
-class PasswordResetConfirmViewCustom(PasswordResetConfirmView):
-    template_name = "password_reset/reset_password_confirm.html"
-
-    def get(self, request, *args, **kwargs):
-        from .forms import ResetForm
-
-        form = ResetForm()
-        return render(
-            request, "password_reset/reset_password_invalid.html", {"form": form}
-        )
-
-    def post(self, request, *args, **kwargs):
-        token = kwargs["token"]
-        uid = kwargs["uidb64"]
-        try:
-            uid = force_str(urlsafe_base64_decode(uid))
-            user = User.objects.get(pk=uid)
-            token_obj = PasswordResetToken.objects.get(user=user, token=token)
-            if default_token_generator.check_token(user, token):
-                return super().post(request, *args, **kwargs)
-            else:
-                return render(request, "password_reset/reset_password_invalid.html")
-        except (
-            TypeError,
-            ValueError,
-            OverflowError,
-            User.DoesNotExist,
-            PasswordResetToken.DoesNotExist,
-        ) as e:
-            return render(request, "password_reset/reset_password_invalid.html")
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = "components/change_password.html"
+    post_reset_login = True
+    success_url = reverse_lazy("password-change-success")
 
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .models import User
+def password_change_success(request):
+    return render(request, "responses/password_change_success.html")
 
 
 @csrf_exempt
@@ -183,3 +160,12 @@ def delete_users(request):
         return JsonResponse({"message": f"{count} users deleted."})
     else:
         return JsonResponse({"message": "Invalid request method."}, status=405)
+
+
+def get_user_reset_token(request, user_email):
+    if settings.DEBUG:
+        user = User.objects.get(email=user_email)
+        token = PasswordResetToken.objects.get(user=user)
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        return JsonResponse({"token": token.token, "uid": uid})
+    return HttpResponse("Endpoint Not for production", status=404)

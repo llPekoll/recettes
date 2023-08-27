@@ -1,10 +1,7 @@
 from playwright.sync_api import Page, expect
-from account.tests.test_register import (
-    create_user,
-    delete_users,
-    random_username,
-    random_password,
-)
+
+from account.tests.test_register import (create_user, delete_users,
+                                         random_password, random_username)
 
 
 def test_login_valid(page: Page):

@@ -1,11 +1,12 @@
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
+
 from elisasrecipe import settings
 
 
 class User(AbstractUser):
     favorite_recipes = models.ManyToManyField(
-        "recipe.Recipe", related_name="favorited_by"
+        "recipe.Recipe", related_name="favorited_by", blank=True, null=True
     )
     # Socials
     youtube_channel = models.URLField(blank=True)

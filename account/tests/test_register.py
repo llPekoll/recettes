@@ -1,6 +1,5 @@
-from playwright.sync_api import Page, expect
-
 from faker import Faker
+from playwright.sync_api import Page, expect
 
 
 def generate_random_username():

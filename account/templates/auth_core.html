@@ -17,8 +17,6 @@
                             Register
                         {% elif step == "reset-password" %}
                             Password forgot
-                        {% elif step == "set_new_pass" %}
-                            Set new password
                             {% endif %}
                         </h1>
                     </div>
@@ -31,9 +29,7 @@
                             {% elif step == "register" %}
                                 hx-post="{% url 'register' %}"                                
                             {% elif step == "reset-password" %}
-                                hx-post="{% url 'reset-password' %}"
-                            {% elif step == "set_new_pass" %}
-                                hx-post="{% url 'set_new_pass' %}"
+                                hx-post="{% url 'password-reset' %}"
                             {% endif %}
                             hx-target="#form-holder"
                             hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
@@ -45,8 +41,6 @@
                                     {% include 'components/register.html' %}
                                 {% elif step == "reset-password" %}
                                     {% include 'components/reset_password.html' %}
-                                {% elif step == "set_new_pass" %}
-                                    {% include 'components/new_pass.html' %}
                                 {% endif %}
                             </div>
                             <div class="relative w-full text-center mx-auto">

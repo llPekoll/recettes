@@ -1,5 +1,5 @@
 {% load static tailwind_tags %}
-
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,14 +30,31 @@
                   {% else %}
                      <a href="{% url 'login' %}" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" data-test="login">Sign in</a>
                      <a href="{% url 'register' %}" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Register</a>
-                  {% endif %}
-               </div>
+                     {% endif %}
+
+                    <a href="#" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" data-test="fr">fr</a>
+                    <a href="#" class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" data-test="fr">en</a>
+                </div>
             </div>
-         </div>
-      </nav>
-      <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-         <h1 class=" text-center text-red-100 font-semibold text-2xl">
-            Welcome to Elisa's corner!
+        </div>
+    </nav>
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <h1 class=" text-center text-red-100 font-semibold text-2xl">
+            {% translate "Welcome to Elisa's corner!" %}
+            <p>
+                {% get_current_language as LANGUAGE_CODE %}
+                {% get_available_languages as LANGUAGES %}
+                {% get_language_info_list for LANGUAGES as languages %}
+                {% for language in languages %}
+                    <a 
+                        href="/{{language.code}}/" 
+                        class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium" 
+                        data-test="fr"
+                    >
+                        {{ language.name_local }}
+                    </a>
+                {% endfor %}
+            </p>
          </h1>
       </div>
 

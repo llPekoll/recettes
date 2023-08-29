@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 
 from elisasrecipe import settings
+from storages.backends.s3boto3 import S3Boto3Storage
 
 
 class User(AbstractUser):
@@ -14,9 +15,13 @@ class User(AbstractUser):
     instagram_handle = models.URLField(blank=True)
     facebook_handle = models.URLField(blank=True)
     website = models.URLField(blank=True)
-    # profile_picture = models.ImageField(
     bio = models.TextField(blank=True)
-
+    profile_picture = models.ImageField(
+        upload_to="profile_pictures",
+        storage=S3Boto3Storage(),
+        blank=True,
+        null=True,
+    )
     groups = models.ManyToManyField(
         Group,
         verbose_name="groups",

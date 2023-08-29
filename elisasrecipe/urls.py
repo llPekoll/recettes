@@ -16,10 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("recipe.urls")),
-    path("", include("account.urls")),
+    path("", include("django_backblaze_b2.urls")),
     path("__reload__/", include("django_browser_reload.urls")),
 ]
+
+urlpatterns += i18n_patterns(
+    path("", include("recipe.urls")),
+    path("", include("account.urls")),
+)

@@ -1,8 +1,9 @@
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
+from storages.backends.s3boto3 import S3Boto3Storage
+from elisasrecipe.settings import BASE_PROFILE_PICTURE
 
 from elisasrecipe import settings
-from storages.backends.s3boto3 import S3Boto3Storage
 
 
 class User(AbstractUser):
@@ -10,7 +11,7 @@ class User(AbstractUser):
         "recipe.Recipe", related_name="favorited_by", blank=True, null=True
     )
     # Socials
-    youtube_channel = models.URLField(blank=True)
+    youtube_handle = models.URLField(blank=True)
     twitter_handle = models.URLField(blank=True)
     instagram_handle = models.URLField(blank=True)
     facebook_handle = models.URLField(blank=True)
@@ -19,6 +20,7 @@ class User(AbstractUser):
     profile_picture = models.ImageField(
         upload_to="profile_pictures",
         storage=S3Boto3Storage(),
+        default=BASE_PROFILE_PICTURE,
         blank=True,
         null=True,
     )

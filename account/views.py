@@ -6,6 +6,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
+from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.decorators.csrf import csrf_exempt
@@ -14,10 +15,8 @@ from django_htmx.middleware import HtmxDetails
 
 from elisasrecipe import settings
 
-from .forms import LoginForm, ResetForm, UserRegistrationForm
+from .forms import LoginForm, ProfileForm, ResetForm, UserRegistrationForm
 from .models import PasswordResetToken, User
-from django.contrib.auth.views import PasswordResetConfirmView
-from django.urls import reverse_lazy
 
 
 class HtmxHttpRequest(HttpRequest):
@@ -55,8 +54,16 @@ def login_view(request):
         form = LoginForm(request, request.POST)
         if form.is_valid():
             username = form.cleaned_data.get("username")
+            email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password")
-            user = authenticate(request, username=username, password=password)
+            try:
+                user = authenticate(request, username=username, password=password)
+            except User.DoesNotExist:
+                print("user not found")
+            try:
+                user = authenticate(request, email=email, password=password)
+            except User.DoesNotExist:
+                print("user not found")
             if user is not None:
                 login(request, user)
                 return redirect("home")
@@ -148,7 +155,7 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
 
 
 def password_change_success(request):
-    return render(request, "responses/password_change_success.html")
+    return render(request, "components/password_change_success.html")
 
 
 @csrf_exempt
@@ -169,3 +176,19 @@ def get_user_reset_token(request, user_email):
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         return JsonResponse({"token": token.token, "uid": uid})
     return HttpResponse("Endpoint Not for production", status=404)
+
+
+def profile(request):
+    user = request.user
+    print(user)
+    if request.method == "POST":
+        form = ProfileForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+    else:
+        form = ProfileForm(instance=user)
+    return render(
+        request,
+        "profile.html",
+        {"form": form, "user": user},
+    )

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+  <form method="post" enctype="multipart/form-data">
+    <div class=" text-center text-white">
+      <p class="text-3xl capitalize">New Recipe</p>
+      <p class="text-sm -pt-2">creation of a new recipe</p>
+    </div>
+    {% csrf_token %}
+    {% translate "recipe-name" %}
+    <input type="text" name={{ form.title.name }} data-test="new-recipe" class="rounded-lg" required placeholder="{{ form.title.label }}" />
+    <div>
+      {% translate "recipe-category" %}
+      <select name="{{ form.category.name }}"
+              id="{{ form.category.id_for_label }}"
+              class="bg-gray-50 capitalize border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/3 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        {% for value in form.category %}
+          <option value="{{ value.choice_label }}"
+                  class="capitalize"
+                  {% if value == form.category.value %}selected{% endif %}>{{ value.data.value }}</option>
+        {% endfor %}
+      </select>
+      {% translate "recipe-description" %}
+      <textarea type="textarea" name={{ form.description.name }} data-test="new-recipe" class="rounded-lg w-full" required placeholder="{{ form.description.label }}">
+      </textarea>
+      {% translate "recipe-image" %}
+      {% translate "recipe-duration" %}
+      <input type="number" name={{ form.duration.name }} data-test="new-recipe" class="rounded-lg" required placeholder="{{ form.duration.label }}" />
+    </div>
+    {% comment %} {{ form.as_p }} {% endcomment %}
+    <button type="submit">Create Recipe</button>
+  </form>
+{% endblock %}

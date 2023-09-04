@@ -1,0 +1,37 @@
+{% load my_filters %}
+<form class="form-{{ label | lower | replace_space_with_dash }}">
+    <div class="text-white">
+        <p class="inline">
+            {{ label }}:
+            <div class="inline">
+                {% if not value %}
+                    <span class="{{ empty_css_class }} hover:font-bold normal-case italic text-orange-900 hover:text-red-900">Click to add a {{ label }}</span>
+                {% else %}
+                    {{ value }}.
+                {% endif %}
+            </div>
+            <div class="{{ css_class }} inline">
+                <input hx-post="/add/{{ label|lower|replace_space_with_dash }}"
+                       hx-trigger="blur"
+                       hx-target="#form-{{ label }}"
+                       hx-include="value"
+                       type="text"
+                       class="{{ input_css_class }} hidden text-slate-700"
+                       value="{{ value }}">
+            </div>
+        </p>
+    </div>
+</form>
+<script>
+    const {{ empty_css_class }}  = document.querySelector('.{{ empty_css_class }}');
+    const {{ input_css_class }} = document.querySelector('.{{ input_css_class }}');
+    {{ empty_css_class }}.addEventListener('click', () => {
+        {{ empty_css_class }}.classList.add('hidden');
+        {{ input_css_class }}.classList.remove('hidden');
+    });
+    {{ input_css_class }}.addEventListener('blur', () => {
+        {{ empty_css_class }}.classList.remove('hidden');
+        {{ input_css_class }}.classList.add('hidden');
+    });
+</script>
+<script>console.log("jose")</script>

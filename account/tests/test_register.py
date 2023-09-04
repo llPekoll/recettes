@@ -28,13 +28,13 @@ random_password = generate_random_password()
 
 
 def delete_users(page: Page):
-    url = f"http://127.0.0.1:8000/users/delete/"
+    url = f"http://127.0.0.1:3000/users/delete/"
     page.route(url, lambda route: route.continue_(method="DELETE"))
     page.goto(url)
 
 
 def create_user(page: Page, password_Type="valid"):
-    page.goto("http://127.0.0.1:8000/register/")
+    page.goto("http://127.0.0.1:3000/register/")
     page.locator('[data-test="username"]').fill(random_username)
     page.locator('[data-test="email"]').fill(random_email)
     page.locator('[data-test="password1"]').click()
@@ -62,7 +62,7 @@ def test_register_valid(page: Page, password_Type="valid"):
 
 def test_register_wrong_username(page: Page):
     create_user(page)
-    page.goto("http://127.0.0.1:8000/register/")
+    page.goto("http://127.0.0.1:3000/register/")
     page.wait_for_timeout(1000)
     page.locator('[data-test="username"]').fill(random_username)
     page.locator('[data-test="password2"]').click()
@@ -73,7 +73,7 @@ def test_register_wrong_username(page: Page):
 
 def test_register_wrong_email(page: Page):
     create_user(page)
-    page.goto("http://127.0.0.1:8000/register/")
+    page.goto("http://127.0.0.1:3000/register/")
     page.wait_for_timeout(1000)
     page.locator('[data-test="email"]').fill(random_email)
     page.locator('[data-test="password2"]').click()

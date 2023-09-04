@@ -1,6 +1,7 @@
 from enum import Enum
 
 from django.db import models
+from storages.backends.s3boto3 import S3Boto3Storage
 
 
 class Category(Enum):
@@ -35,6 +36,7 @@ class Recipe(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
     description = models.TextField()
+    durations = models.IntegerField(default=10)
     instructions = models.TextField()
     author = models.ForeignKey(
         "account.User", on_delete=models.CASCADE, related_name="recipes"
@@ -67,22 +69,15 @@ class Recipe(models.Model):
     is_private = models.BooleanField(default=False)
     is_featured = models.BooleanField(default=False)
     url_link = models.URLField(max_length=255, null=True, blank=True)
+    image = models.ImageField(
+        upload_to="profile_pictures",
+        storage=S3Boto3Storage(),
+        blank=True,
+        null=True,
+    )
 
     def __str__(self):
         return self.title
-
-
-class RecipeStep(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="steps")
-    step_number = models.PositiveIntegerField()
-    description = models.TextField()
-    youtube_link = models.URLField(max_length=255, null=True, blank=True)
-
-    class Meta:
-        ordering = ["step_number"]
-
-    def __str__(self):
-        return f"{self.recipe.title} - Step {self.step_number}"
 
 
 class Ingredient(models.Model):

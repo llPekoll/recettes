@@ -161,28 +161,9 @@ LOCALE_PATHS = (os.path.join(BASE_DIR, "locale/"),)
 
 AWS_STORAGE_BUCKET_NAME = "Elisa-s-Corner"
 AWS_S3_REGION_NAME = "eu-central-003"
-# AWS_S3_ENDPOINT = f"{AWS_S3_REGION_NAME}.backblazeb2.com"
 AWS_S3_ENDPOINT_URL = f"https://s3.{AWS_S3_REGION_NAME}.backblazeb2.com"
 AWS_ACCESS_KEY_ID = "00314725e97d32a0000000001"
 AWS_SECRET_ACCESS_KEY = "K00343CN/VirUBDdM3AGZ3quA0TBwDE"
-
-# AWS_S3_OBJECT_PARAMETERS = {
-#     "CacheControl": "max-age=86400",
-# }
-
-# AWS_LOCATION = "static"
-# # STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-# # STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.{AWS_S3_ENDPOINT}/"
-
-
-# CACHES = {
-#     # add a cache via db table or memcached that can be accessed from multiple threads
-#     "django-backblaze-b2": {
-#         "BACKEND": "django.core.cache.backends.db.DatabaseCache",
-#         "LOCATION": "django_backblaze_b2_cache_table",
-#     }
-# }
-
 
 STORAGES = {
     "default": {
@@ -193,3 +174,8 @@ STORAGES = {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
+
+
+BASE_PROFILE_PICTURE = (
+    "https://f003.backblazeb2.com/file/Elisa-s-Corner/defaults/profile-default.png"
+)

@@ -54,3 +54,23 @@ class ResetForm(forms.Form):
         widget=forms.PasswordInput,
         help_text="Enter the same password as before, for verification.",
     )
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = (
+            "email",
+            "first_name",
+            "last_name",
+            "profile_picture",
+            "youtube_handle",
+            "twitter_handle",
+            "instagram_handle",
+            "facebook_handle",
+            "website",
+            "favorite_recipes",
+        )
+        widgets = {
+            "favorite_recipes": forms.CheckboxSelectMultiple(),
+        }

@@ -8,9 +8,10 @@
           href="{% static '/favicon.svg' %}" />
     {% tailwind_css %}
   </head>
-  <body class="w-screen h-screen"
+  <body class="w-screen h-screen bg-orange-100"
         hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    {% include 'navbar.html' %}
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 pt-40">
       <h1 class=" text-center text-red-100 font-semibold text-2xl">
         {% translate "Welcome to Elisa's corner!" %}
         <p>
@@ -26,61 +27,4 @@
       </h1>
     </div>
   </body>
-  <style>
-   body{
-      background-image: linear-gradient(to right bottom, #603b00, #6d4508, #7a4f12, #88591b, #966324);
-   }
-  .dropdown {
-    position: relative;
-    display: inline-block;
-  }
-
-  .profile-icon {
-    background-image: url('path/to/profile-icon.png');
-    background-size: cover;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-  }
-
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    z-index: 1;
-    top: 50px;
-    right: 0;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 12px 16px;
-  }
-
-  .dropdown-content a {
-    color: black;
-    padding: 8px 0;
-    text-decoration: none;
-    display: block;
-  }
-
-  .show {
-    display: block;
-  }
-  </style>
-  <script>
-   function toggleDropdown() {
-     var dropdown = document.getElementById("dropdown");
-     dropdown.classList.toggle("show");
-   }
- 
-   window.onclick = function(event) {
-     if (!event.target.matches('.profile-icon')) {
-       var dropdown = document.getElementById("dropdown");
-       if (dropdown.classList.contains('show')) {
-         dropdown.classList.remove('show');
-       }
-     }
-   }
-  </script>
 </html>

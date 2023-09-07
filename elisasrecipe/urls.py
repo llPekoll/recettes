@@ -21,12 +21,12 @@ from .views import index
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", index, name="home"),
     path("", include("django_backblaze_b2.urls")),
     path("__reload__/", include("django_browser_reload.urls")),
 ]
 
 urlpatterns += i18n_patterns(
+    path("", index, name="home"),
     path("", include("recipe.urls")),
     path("", include("account.urls")),
 )

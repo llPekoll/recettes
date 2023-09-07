@@ -1,0 +1,129 @@
+{% load static %}
+<nav class="nav bg-orange-200 shadow fixed w-full">
+    <a href="{% url 'home' %}">
+        <img src="{% static 'logo3.svg' %}"
+             alt=" Logo"
+             class="w-24 ml-10 pt-1.5 float-left" />
+    </a>
+    <input class="menu-btn" type="checkbox" id="menu-btn" />
+    <label class="menu-icon" for="menu-btn">
+        <span class="navicon"></span>
+    </label>
+    <ul class="menu overflow-hidden">
+        <li>
+            <a href="#"
+               class="group text-orange-600 transition duration-300 md:hover:bg-transparent hover:bg-orange-800">
+                recette
+                <span class="sm:block max-w-0 group-hover:max-w-full transition-all duration-200 h-0.5 bg-orange-600"></span>
+            </a>
+        </li>
+        {% comment %} login {% endcomment %}
+        <li class="hidden md:block">
+            <a href="#" class="bg-red-600 text-white ">login</a>
+        </li>
+        <li class="md:hidden block">
+            <a href="#"
+               class="group text-orange-600 transition duration-300 md:hover:bg-transparent hover:bg-orange-800">
+                login
+                <span class="sm:block max-w-0 group-hover:max-w-full transition-all duration-200 h-0.5 bg-orange-600"></span>
+            </a>
+        </li>
+        <li class="hidden md:block">
+            <a href="#" class="bg-red-600 text-white ">register</a>
+        </li>
+        <li class="md:hidden block">
+            <a href="#"
+               class="group text-orange-600 transition duration-300 md:hover:bg-transparent hover:bg-orange-800">
+                register
+                <span class="sm:block max-w-0 group-hover:max-w-full transition-all duration-200 h-0.5 bg-orange-600"></span>
+            </a>
+        </li>
+    </ul>
+</nav>
+<style>
+
+/* nav */
+
+.nav li a {
+display: block;
+padding: 20px 20px;
+}
+
+/* menu */
+.nav .menu {
+clear: both;
+max-height: 0;
+transition: max-height .2s ease-out;
+}
+/* menu icon */
+.nav .menu-icon {
+cursor: pointer;
+display: inline-block;
+float: right;
+padding: 28px 20px;
+position: relative;
+user-select: none;
+}
+.nav .menu-icon .navicon {
+background: #333;
+display: block;
+height: 2px;
+position: relative;
+transition: background .2s ease-out;
+width: 18px;
+}
+.nav .menu-icon .navicon:before,
+.nav .menu-icon .navicon:after {
+background: #333;
+content: '';
+display: block;
+height: 100%;
+position: absolute;
+transition: all .2s ease-out;
+width: 100%;
+}
+.nav .menu-icon .navicon:before {
+top: 5px;
+}
+.nav .menu-icon .navicon:after {
+top: -5px;
+}
+/* menu btn */
+.nav .menu-btn {
+display: none;
+}
+.nav .menu-btn:checked ~ .menu {
+max-height: 240px;
+}
+.nav .menu-btn:checked ~ .menu-icon .navicon {
+background: transparent;
+}
+.nav .menu-btn:checked ~ .menu-icon .navicon:before {
+transform: rotate(-45deg);
+}
+.nav .menu-btn:checked ~ .menu-icon .navicon:after {
+transform: rotate(45deg);
+}
+.nav .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:before,
+.nav .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:after {
+top: 0;
+}
+/* 48em = 768px */
+@media (min-width: 48em) {
+.nav li {
+float: left;
+}
+.nav li a {
+padding: 20px 30px;
+}
+.nav .menu {
+clear: none;
+float: right;
+max-height: none;
+}
+.nav .menu-icon {
+display: none;
+}
+}
+
+</style>

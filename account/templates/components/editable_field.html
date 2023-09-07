@@ -1,5 +1,5 @@
 {% load my_filters %}
-<form class="form-{{ label | lower | replace_space_with_dash }}">
+<form class="form-{{ label | clean_label_for_url }}">
     <div class="text-white">
         <p class="inline">
             {{ label }}:
@@ -11,9 +11,9 @@
                 {% endif %}
             </div>
             <div class="{{ css_class }} inline">
-                <input hx-post="/add/{{ label|lower|replace_space_with_dash }}"
+                <input hx-post="/add/{{ label | clean_label_for_url }}"
                        hx-trigger="blur"
-                       hx-target="#form-{{ label }}"
+                       hx-target="#form-{{ label| clean_label_for_url }}"
                        hx-include="value"
                        type="text"
                        class="{{ input_css_class }} hidden text-slate-700"
@@ -34,4 +34,3 @@
         {{ input_css_class }}.classList.add('hidden');
     });
 </script>
-<script>console.log("jose")</script>

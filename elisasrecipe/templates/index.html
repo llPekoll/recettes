@@ -12,19 +12,8 @@
         hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {% include 'navbar.html' %}
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 pt-40">
-      <h1 class=" text-center text-red-100 font-semibold text-2xl">
-        {% translate "Welcome to Elisa's corner!" %}
-        <p>
-          {% get_current_language as LANGUAGE_CODE %}
-          {% get_available_languages as LANGUAGES %}
-          {% get_language_info_list for LANGUAGES as languages %}
-          {% for language in languages %}
-            <a href="/{{ language.code }}/"
-               class="text-gray-100 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-               data-test="fr">{{ language.name_local }}</a>
-          {% endfor %}
-        </p>
-      </h1>
+      <h1 class=" text-center text-red-900 font-semibold text-2xl">{% translate "Welcome to Elisa's corner!" %}</h1>
+      <h2 class=" text-center text-red-400 font-light text-xl">{% translate "intro-to-elisa" %}</h2>
     </div>
   </body>
 </html>

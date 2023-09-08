@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-28 20:45+0000\n"
+"POT-Creation-Date: 2023-09-08 11:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,27 +18,67 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: elisasrecipe/settings.py:143
+#: elisasrecipe/settings.py:145
 msgid "English"
 msgstr ""
 
-#: elisasrecipe/settings.py:144 recipe/views.py:14
+#: elisasrecipe/settings.py:146
 msgid "French"
 msgstr "Francais"
 
-#: recipe/templates/index.html:43
+#: elisasrecipe/templates/index.html:15
 msgid "Welcome to Elisa's corner!"
 msgstr "Bienvenue sur Elisa's Corner!"
 
-#: recipe/views.py:12
-#, fuzzy
-#| msgid "Hello"
-msgid "hello"
-msgstr "bonjour"
+#: elisasrecipe/templates/index.html:16
+msgid "intro-to-elisa"
+msgstr ""
+"bienvenue dans le site d'Elisa l'endoir ou on conserve toute nos bonne "
+"vielle recette"
 
-#: recipe/views.py:15
+#: elisasrecipe/templates/navbar.html:21
+msgid "recipes"
+msgstr "recettes"
+
+#: elisasrecipe/templates/navbar.html:27 elisasrecipe/templates/navbar.html:32
+msgid "login"
+msgstr "Se logger"
+
+#: elisasrecipe/templates/navbar.html:37 elisasrecipe/templates/navbar.html:42
+msgid "register"
+msgstr "s'enregister"
+
+#: elisasrecipe/templates/profile_menu.html:17
+msgid "profile"
+msgstr "Mon profile"
+
+#: elisasrecipe/templates/profile_menu.html:24
+msgid "logout"
+msgstr "se deconnecter"
+
+#: elisasrecipe/views.py:10
 msgid "Mamadou"
 msgstr "sako"
+
+#: recipe/templates/new_recipe.html:10
+msgid "recipe-name"
+msgstr "Nom de la recette"
+
+#: recipe/templates/new_recipe.html:13
+msgid "recipe-category"
+msgstr "Categorie"
+
+#: recipe/templates/new_recipe.html:23
+msgid "recipe-description"
+msgstr "Description"
+
+#: recipe/templates/new_recipe.html:26
+msgid "recipe-image"
+msgstr "Image"
+
+#: recipe/templates/new_recipe.html:27
+msgid "recipe-duration"
+msgstr ""
 
 #: venv/lib/python3.11/site-packages/_pytest/config/argparsing.py:474
 #, python-format
@@ -1531,6 +1571,19 @@ msgstr ""
 #: venv/lib/python3.11/site-packages/django/views/templates/default_urlconf.html:248
 msgid "Connect, get help, or contribute"
 msgstr ""
+
+#: venv/lib/python3.11/site-packages/django_backblaze_b2/_decorators.py:22
+msgid "Unauthorized"
+msgstr ""
+
+#: venv/lib/python3.11/site-packages/django_backblaze_b2/views.py:53
+msgid "Could not find file"
+msgstr ""
+
+#, fuzzy
+#~| msgid "Hello"
+#~ msgid "hello"
+#~ msgstr "bonjour"
 
 #~ msgid "Home"
 #~ msgstr "Maison"

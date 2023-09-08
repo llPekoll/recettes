@@ -1,47 +1,57 @@
 {% load static %}
+{% load i18n %}
 <nav class="nav bg-orange-200 shadow fixed w-full">
     <a href="{% url 'home' %}">
         <img src="{% static 'logo3.svg' %}"
              alt=" Logo"
              class="w-24 ml-10 pt-1.5 float-left" />
     </a>
+    <li class="md:hidden block float-right">{% include 'lang_selector.html' %}</li>
+    {% if  user.is_authenticated %}
+        <li class="md:hidden block float-right">{% include "profile_menu.html" %}</li>
+    {% endif %}
     <input class="menu-btn" type="checkbox" id="menu-btn" />
     <label class="menu-icon" for="menu-btn">
         <span class="navicon"></span>
     </label>
-    <ul class="menu overflow-hidden">
+    <ul class="menu overflow-hidden md:overflow-visible">
         <li>
-            <a href="#"
+            <a href="recipes/"
                class="group text-orange-600 transition duration-300 md:hover:bg-transparent hover:bg-orange-800">
-                recette
+                {% translate "recipes" %}
                 <span class="sm:block max-w-0 group-hover:max-w-full transition-all duration-200 h-0.5 bg-orange-600"></span>
             </a>
         </li>
-        {% comment %} login {% endcomment %}
-        <li class="hidden md:block">
-            <a href="#" class="bg-red-600 text-white ">login</a>
+        {% if not user.is_authenticated %}
+            <li class="hidden md:block">
+                <a href="/login" class="bg-red-600 text-white ">{% translate "login" %}</a>
+            </li>
+            <li class="md:hidden block">
+                <a href="/login"
+                   class="group text-orange-600 transition duration-300 md:hover:bg-transparent hover:bg-orange-800">
+                    {% translate "login" %}
+                    <span class="sm:block max-w-0 group-hover:max-w-full transition-all duration-200 h-0.5 bg-orange-600"></span>
+                </a>
+            </li>
+            <li class="hidden md:block">
+                <a href="/register" class="bg-red-600 text-white ">{% translate "register" %}</a>
+            </li>
+            <li class="md:hidden block">
+                <a href="/register"
+                   class="group text-orange-600 transition duration-300 md:hover:bg-transparent hover:bg-orange-800">
+                    {% translate "register" %}
+                    <span class="sm:block max-w-0 group-hover:max-w-full transition-all duration-200 h-0.5 bg-orange-600"></span>
+                </a>
+            </li>
         </li>
-        <li class="md:hidden block">
-            <a href="#"
-               class="group text-orange-600 transition duration-300 md:hover:bg-transparent hover:bg-orange-800">
-                login
-                <span class="sm:block max-w-0 group-hover:max-w-full transition-all duration-200 h-0.5 bg-orange-600"></span>
-            </a>
-        </li>
-        <li class="hidden md:block">
-            <a href="#" class="bg-red-600 text-white ">register</a>
-        </li>
-        <li class="md:hidden block">
-            <a href="#"
-               class="group text-orange-600 transition duration-300 md:hover:bg-transparent hover:bg-orange-800">
-                register
-                <span class="sm:block max-w-0 group-hover:max-w-full transition-all duration-200 h-0.5 bg-orange-600"></span>
-            </a>
-        </li>
-    </ul>
+    {% endif %}
+    <li class="hidden md:block">{% include 'lang_selector.html' %}</li>
+    {% if  user.is_authenticated %}
+        <li class="hidden md:block">{% include "profile_menu.html" %}</li>
+    {% endif %}
+</ul>
 </nav>
 <style>
-
 /* nav */
 
 .nav li a {

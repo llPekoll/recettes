@@ -3,6 +3,8 @@
 # Learn more about .gitignore:
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
+*.mo
+
 # Node artifact files
 node_modules/
 # dist/
@@ -47,7 +49,6 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-
 
 db.sqlite3
 __pycache__/

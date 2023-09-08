@@ -3,7 +3,13 @@
 <details class="dropdown">
   <summary role="button">
     {% get_current_language as LANGUAGE_CODE %}
-    <b>{{ request.LANGUAGE_CODE|language_name }}</b>
+    <div class="bg-orange-400 px-2 py-1 rounded-full border-2 border-white border-solid -mt-2">
+      {% if LANGUAGE_CODE == "en" %}
+        🇬🇧
+      {% else %}
+        🇫🇷
+      {% endif %}
+    </div>
   </summary>
   <ul>
     {% get_available_languages as LANGUAGES %}

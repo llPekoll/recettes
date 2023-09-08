@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-08 11:45+0000\n"
+"POT-Creation-Date: 2023-09-08 14:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,26 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: account/templates/auth_core.html:13 account/templates/auth_core.html:73
+msgid "log-page-title"
+msgstr "Bienvenue!"
+
+#: account/templates/auth_core.html:15 account/templates/auth_core.html:70
+msgid "register-page-title"
+msgstr "Bienvenue parmis nous!"
+
+#: account/templates/auth_core.html:17
+msgid "password-forgot-title"
+msgstr "Oubli du mot de passe?"
+
+#: account/templates/auth_core.html:41
+msgid "submit"
+msgstr "Soumettre"
+
+#: account/templates/auth_core.html:79
+msgid "home-page"
+msgstr "Home Page"
 
 #: elisasrecipe/settings.py:145
 msgid "English"
@@ -1580,10 +1600,5 @@ msgstr ""
 msgid "Could not find file"
 msgstr ""
 
-#, fuzzy
-#~| msgid "Hello"
-#~ msgid "hello"
-#~ msgstr "bonjour"
-
-#~ msgid "Home"
-#~ msgstr "Maison"
+#~ msgid "log-page"
+#~ msgstr "Bienvenue!"

@@ -12,6 +12,7 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.decorators.csrf import csrf_exempt
 from django_htmx.http import HttpResponseClientRedirect, retarget
 from django_htmx.middleware import HtmxDetails
+from django.urls import reverse
 
 from elisasrecipe import settings
 
@@ -54,27 +55,27 @@ def login_view(request):
         form = LoginForm(request, request.POST)
         if form.is_valid():
             username = form.cleaned_data.get("username")
-            email = form.cleaned_data.get("email")
             password = form.cleaned_data.get("password")
             try:
-                user = authenticate(request, username=username, password=password)
+                user = User.objects.get(username=username)
             except User.DoesNotExist:
-                print("user not found")
-            try:
-                user = authenticate(request, email=email, password=password)
+                user = User.objects.get(email=username)
             except User.DoesNotExist:
-                print("user not found")
+                # TODO refrsh page with error message
+                return HttpResponse("user not found")
+
+            user = authenticate(request, username=user.username, password=password)
+
             if user is not None:
                 login(request, user)
-                return redirect("home")
-            return HttpResponse("user not found")
-        else:
-            print(form.errors)
-        return render(
-            request,
-            "components/login.html",
-            {"form": form},
-        )
+                return HttpResponseClientRedirect(reverse("home"))
+            else:
+                print(form.errors)
+            return render(
+                request,
+                "components/login.html",
+                {"form": form},
+            )
     form = LoginForm()
     return render(
         request,

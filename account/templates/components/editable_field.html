@@ -1,36 +1,78 @@
 {% load my_filters %}
-<form class="form-{{ label | clean_label_for_url }}">
-    <div class="text-white">
-        <p class="inline">
+<div id="{{ label | clean_label_for_url }}">
+    <div class=" flex">
+        <p class="inline mt-2">
             {{ label }}:
-            <div class="inline">
+            <div class=" mt-2 ml-2 ">
                 {% if not value %}
-                    <span class="{{ empty_css_class }} hover:font-bold normal-case italic text-orange-900 hover:text-red-900">Click to add a {{ label }}</span>
+                    <span class="{{ empty_css_class }} hover:font-bold normal-case italic text-orange-900 hover:text-red-900">Click to add a {{ label }}.</span>
                 {% else %}
-                    {{ value }}.
+                    <span class="{{ empty_css_class }} group hover:font-bold ">{{ value }}
+                        <span class="">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="18"
+                                 height="18"
+                                 viewBox="0 0 24 24"
+                                 class="hidden group-hover:inline">
+                                <path fill="currentColor" d="m19.3 8.925l-4.25-4.2l1.4-1.4q.575-.575 1.413-.575t1.412.575l1.4 1.4q.575.575.6 1.388t-.55 1.387L19.3 8.925ZM17.85 10.4L7.25 21H3v-4.25l10.6-10.6l4.25 4.25Z" />
+                            </svg>
+                        </span>
+                    </span>
                 {% endif %}
             </div>
-            <div class="{{ css_class }} inline">
-                <input hx-post="/add/{{ label | clean_label_for_url }}"
-                       hx-trigger="blur"
-                       hx-target="#form-{{ label| clean_label_for_url }}"
-                       hx-include="value"
+            {{ css_class }}
+            <div id="{{ input_css_class }}">
+                <input name="{{ label | clean_label_for_url }}"
                        type="text"
-                       class="{{ input_css_class }} hidden text-slate-700"
-                       value="{{ value }}">
+                       hx-trigger="blur"
+                       hx-get="/edit-bio/{{ label | clean_label_for_url }}"
+                       hx-include="[name='{{ label | clean_label_for_url }}']"
+                       hx-target="#{{ label | clean_label_for_url }}"
+                       onkeydown="if (event.keyCode === 13) { this.blur(); return false;}"
+                       class="{{ input_css_class }}  hidden outline-0 rounded-lg bg-orange-200 text-orange-700 border-0 focus:ring-0">
             </div>
         </p>
     </div>
-</form>
+</div>
 <script>
-    const {{ empty_css_class }}  = document.querySelector('.{{ empty_css_class }}');
-    const {{ input_css_class }} = document.querySelector('.{{ input_css_class }}');
-    {{ empty_css_class }}.addEventListener('click', () => {
-        {{ empty_css_class }}.classList.add('hidden');
-        {{ input_css_class }}.classList.remove('hidden');
-    });
-    {{ input_css_class }}.addEventListener('blur', () => {
-        {{ empty_css_class }}.classList.remove('hidden');
-        {{ input_css_class }}.classList.add('hidden');
-    });
+    {% comment %} empty value to set {% endcomment %}
+    if (typeof {{ empty_css_class }} !== 'undefined') {
+        console.log('empty_css_class is defined');
+        {{ empty_css_class }}  = document.querySelector('.{{ empty_css_class }}');
+        console.log({{ empty_css_class }});
+        {{ empty_css_class }}.addEventListener('click', () => {
+            {{ empty_css_class }}.classList.add('hidden');
+            {{ input_css_class }}.classList.remove('hidden');
+            {{ input_css_class }}.focus();
+        });
+         
+    } else {
+        console.log('empty_css_class is not defined');
+        let {{ empty_css_class }}  = document.querySelector('.{{ empty_css_class }}');
+        console.log({{ empty_css_class }});
+        {{ empty_css_class }}.addEventListener('click', () => {
+            {{ empty_css_class }}.classList.add('hidden');
+            {{ input_css_class }}.classList.remove('hidden');
+            {{ input_css_class }}.classList.add('inline');
+            {{ input_css_class }}.focus();
+        });
+         
+    }
+    {% comment %} input tag {% endcomment %}
+    if (typeof {{ input_css_class }} !== 'undefined') {
+        {{ input_css_class }}  = document.querySelector('.{{ input_css_class }}');
+        {{ input_css_class }}.addEventListener('blur', () => {
+            {{ empty_css_class }}.classList.add('hidden');
+            {{ input_css_class }}.classList.remove('hidden');
+        });
+         
+    } else {
+        let {{ input_css_class }}  = document.querySelector('.{{ input_css_class }}');
+        {{ input_css_class }}.addEventListener('blur', () => {
+            {{ empty_css_class }}.classList.add('hidden');
+            {{ input_css_class }}.classList.remove('hidden');
+        });
+         
+    }
 </script>
+<style></style>

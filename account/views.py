@@ -6,13 +6,16 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.decorators.csrf import csrf_exempt
-from django_htmx.http import HttpResponseClientRedirect, retarget
+from django_htmx.http import (
+    HttpResponseClientRedirect,
+    HttpResponseClientRefresh,
+    retarget,
+)
 from django_htmx.middleware import HtmxDetails
-from django.urls import reverse
 
 from elisasrecipe import settings
 
@@ -192,4 +195,101 @@ def profile(request):
         request,
         "profile.html",
         {"form": form, "user": user},
+    )
+
+
+def edit_bio(request, field):
+    print(request.body)
+    if request.htmx:
+        print(1)
+        print(2)
+        user = request.user
+        print(user.email)
+        print("sako")
+        if field == "first-name":
+            if request.GET.get("first-name"):
+                user.first_name = request.GET.get("first-name")
+            args = {
+                "label": "First Name",
+                "value": user.first_name,
+                "empty_css_class": "first_name_empty",
+                "input_css_class": "first_name_input",
+            }
+        elif field == "last-name":
+            if request.GET.get("last-name"):
+                user.last_name = request.GET.get("last-name")
+            args = {
+                "label": "Last Name",
+                "value": user.last_name,
+                "empty_css_class": "last_name_empty",
+                "input_css_class": "last_name_input",
+            }
+        elif field == "bio":
+            if request.GET.get("bio"):
+                user.bio = request.GET.get("bio")
+            args = {
+                "label": "Bio",
+                "value": user.bio,
+                "empty_css_class": "bio_empty",
+                "input_css_class": "bio_input",
+            }
+        elif field == "website":
+            if request.GET.get("website"):
+                user.website = request.GET.get("website")
+            args = {
+                "label": "Website",
+                "value": user.website,
+                "empty_css_class": "website_empty",
+                "input_css_class": "website_input",
+            }
+        elif field == "youtube":
+            if request.GET.get("youtube"):
+                user.youtube_handle = request.GET.get("youtube")
+            args = {
+                "label": "Youtube",
+                "value": user.youtube_handle,
+                "empty_css_class": "youtube_empty",
+                "input_css_class": "youtube_input",
+            }
+        elif field == "twitter":
+            if request.GET.get("twitter"):
+                user.twitter_handle = request.GET.get("twitter")
+            args = {
+                "label": "Twitter",
+                "value": user.twitter_handle,
+                "empty_css_class": "twitter_empty",
+                "input_css_class": "twitter_input",
+            }
+        elif field == "twitter":
+            if request.GET.get("twitter"):
+                user.twitter_handle = request.GET.get("twitter")
+            args = {
+                "label": "Twitter",
+                "value": user.twitter_handle,
+                "empty_css_class": "twitter_empty",
+                "input_css_class": "twitter_input",
+            }
+        elif field == "instagram":
+            if request.GET.get("instagram"):
+                user.instagram_handle = request.GET.get("instagram")
+            args = {
+                "label": "Instagram",
+                "value": user.instagram_handle,
+                "empty_css_class": "instagram_empty",
+                "input_css_class": "instagram_input",
+            }
+        elif field == "facebook":
+            if request.GET.get("facebook"):
+                user.facebook_handle = request.GET.get("facebook")
+            args = {
+                "label": "Facebook",
+                "value": user.facebook_handle,
+                "empty_css_class": "facebook_empty",
+                "input_css_class": "facebook_input",
+            }
+        user.save()
+    return render(
+        request,
+        "components/editable_field.html",
+        args,
     )

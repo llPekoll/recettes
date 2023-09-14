@@ -3,57 +3,56 @@
     <div class="flex">
         {% include "components/profile_navbar.html" %}
         <div class="bg-white pl-10 pt-20 w-full">
-            <div class="flex">
+            <div class="flex mt-24">
                 <div class="w-5/6 ">
-                    <a href="{% url 'profile' %}" class="float-right mt-10 ">
-                        <button class="text-white flex bg-orange-400 rounded-lg px-10 py-2 shadow">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 width="16"
-                                 height="16"
-                                 viewBox="0 0 24 24">
-                                <path fill="currentColor" d="m19.3 8.925l-4.25-4.2l1.4-1.4q.575-.575 1.413-.575t1.412.575l1.4 1.4q.575.575.6 1.388t-.55 1.387L19.3 8.925ZM4 21q-.425 0-.713-.288T3 20v-2.825q0-.2.075-.388t.225-.337l10.3-10.3l4.25 4.25l-10.3 10.3q-.15.15-.337.225T6.825 21H4Z" />
-                            </svg>
-                            <span>Edit profile</span>
-                        </button>
-                    </a>
-                    <img class="image-profile rounded-full shadow-lg"
-                         src="{{ user.profile_picture.url }}"
-                         alt="Profile Picture" />
-                    <div class="bg-orange-400 rounded-lg ml-10 -mt-24 text-white   shadow ">
-                        <div class="ml-44 py-10 ">
-                            <p>
-                                <span class="font-thin capitalize italic">Username:</span>
-                                <span class="font-bold capitalize ">{{ user.username }}</span>
-                            </p>
-                            <p>
-                                <span class="font-thin capitalize italic">email:</span>
-                                <span class="font-bold  ">{{ user.email }}</span>
-                            </p>
-                            {% include "components/editable_field.html" with label="First Name" value=user.first_name empty_css_class="first_name_empty" input_css_class="first_name_input" %}
-                            {% include "components/editable_field.html" with label="Last Name" value=user.last_name empty_css_class="last_name_empty" input_css_class="last_name_input" %}
-                            {% include "components/editable_field.html" with label="Bio" value=user.bio empty_css_class="bio_empty" input_css_class="bio_input" %}
+                    <div class="flex justify-end py-2 text-slate-700">Votre profile de presentation</div>
+                    <div class="bg-orange-400 rounded-lg ml-10  text-white   shadow ">
+                        <div class="absolute">
+                            {% if user.profile_picture %}
+                                <img class="relative w-40 h-40 border-solid border-orange-800 border-4 rounded-full -mt-20"
+                                     src="{{ user.profile_picture.url }}"
+                                     alt="Profile Picture" />
+                            {% else %}
+                                {% load static %}
+                                <img src="{% static 'abstract-user.svg' %}"
+                                     alt="Profile Picture"
+                                     class="relative w-40 h-40 border-solid border-orange-800 border-4 rounded-full -mt-20 " />
+                            {% endif %}
                         </div>
-                        <div class="mt-10 ml-10">
-                            <h1 class="text-3xl text-bold underline">Socials</h1>
-                            <p>youtube Link: {{ user.youtube_handle }}.</p>
-                            <p>facebook Link: {{ user.facebook_handle }}.</p>
-                            <p>twitter Link: {{ user.twitter_handle }}.</p>
-                            <p>instagram Link: {{ user.instagram_handle }}.</p>
-                            <p>website Link: {{ user.website }}.</p>
+                        <div class="ml-44 py-10 ">
+                            information de base
+                            <div class="ml-5 text-white">
+                                <p>
+                                    <span class="font-thin capitalize italic">Username:</span>
+                                    <span class="font-bold capitalize ">{{ user.username }}</span>
+                                </p>
+                                <p>
+                                    <span class="font-thin capitalize italic">email:</span>
+                                    <span class="font-bold  ">{{ user.email }}</span>
+                                </p>
+                                {% include "components/editable_field.html" with label="First Name" value=user.first_name empty_css_class="first_name_empty" input_css_class="first_name_input" %}
+                                {% include "components/editable_field.html" with label="Last Name" value=user.last_name empty_css_class="last_name_empty" input_css_class="last_name_input" %}
+                                {% include "components/editable_field.html" with label="Bio" value=user.bio empty_css_class="bio_empty" input_css_class="bio_input" %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-10 ml-10">
+                        <h1 class="text-3xl text-bold underline text-orange-800">Socials</h1>
+                        <div class="ml-5 text-orange-700">
+                            {% include "components/editable_field.html" with label="Youtube" value=user.youtube_handle empty_css_class="youtube_empty" input_css_class="youtube_input" %}
+                            {% include "components/editable_field.html" with label="Facebook" value=user.facebook_handle empty_css_class="facebook_empty" input_css_class="facebook_input" %}
+                            {% include "components/editable_field.html" with label="Twitter" value=user.twitter_handle empty_css_class="twitter_empty" input_css_class="twitter_input" %}
+                            {% include "components/editable_field.html" with label="Instagram" value=user.instagram_handle empty_css_class="instagram_empty" input_css_class="instagram_input" %}
+                            {% include "components/editable_field.html" with label="Website" value=user.website_handle empty_css_class="website_empty" input_css_class="website_input" %}
                         </div>
                     </div>
                 </div>
-                <div class="w-5/6">
-                    <button class="float-right text-white flex bg-orange-400 rounded-lg px-10 py-2 shadow">
-                        <a href="{% url 'recipe:new_recipe' %}">Create receipe</a>
-                    </button>
-                </div>
+            </div>
+            <div class="w-5/6">
+                <button class="float-right text-white flex bg-orange-400 rounded-lg px-10 py-2 shadow">
+                    <a href="{% url 'recipe:new-recipe' %}">Create receipe</a>
+                </button>
             </div>
         </div>
-        <style>
-        .image-profile{
-            width: 200px;
-            height: 200px;
-        }
-        </style>
+        <style></style>
     {% endblock %}

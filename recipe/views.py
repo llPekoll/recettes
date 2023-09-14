@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
-from .models import Recipe
+from django.shortcuts import redirect, render
+
 from .forms import RecipeForm
+from .models import Recipe
 
 
 def new_recipe(request):

@@ -10,5 +10,10 @@ def clean_label_for_url(value):
 
 
 @register.filter
+def name_for_form(value):
+    return f"form{value.replace(' ' , '').lower()}"
+
+
+@register.filter
 def language_name(code):
     return get_language_info(code)["name"]

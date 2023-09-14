@@ -1,9 +1,9 @@
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 from storages.backends.s3boto3 import S3Boto3Storage
-from elisasrecipe.settings import BASE_PROFILE_PICTURE
 
 from elisasrecipe import settings
+from elisasrecipe.settings import BASE_PROFILE_PICTURE
 
 
 class User(AbstractUser):

@@ -1,5 +1,6 @@
 from django import forms
-from .models import Recipe, Category, Region, Ingredient, RecipeIngredient
+
+from .models import Category, Ingredient, Recipe, RecipeIngredient, Region
 
 
 class IngredientForm(forms.Form):

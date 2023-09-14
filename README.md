@@ -14,3 +14,7 @@
 ```
 ./manage.py test
 ```
+
+
+## Coll Stuff ##
+https://codepen.io/nailaahmad/pen/MyZXVE

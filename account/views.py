@@ -293,3 +293,27 @@ def edit_bio(request, field):
         "components/editable_field.html",
         args,
     )
+
+
+def authors(request):
+    users = User.objects.all()
+    print(users)
+    return render(
+        request,
+        "authors.html",
+        {"authors": users},
+    )
+
+
+def search_authors(request):
+    if request.htmx:
+        print(request.GET)
+        query = request.GET.get("query")
+        print(query)
+        users = User.objects.filter(username__icontains=query)
+        return render(
+            request,
+            "components/authors_search_results.html",
+            {"authors": users},
+        )
+    return HttpResponse("Endpoint Not for production", status=404)

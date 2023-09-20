@@ -1,17 +1,19 @@
 from enum import Enum
 
 from django.db import models
+from django_quill.fields import QuillField
 from storages.backends.s3boto3 import S3Boto3Storage
 
 
 class Category(Enum):
-    RECIPE = "recipe"
-    HEALTH = "health"
-    COSMETIC = "cosmetic"
-    GARDEN = "garden"
-    HOME = "home"
-    FERMENTAION = "fermentaion"
-    JUICE = "juice"
+    RECIPE = "Recipe"
+    HEALTH = "Health"
+    COSMETIC = "Cosmetic"
+    GARDEN = "Garden"
+    HOME = "Home"
+    FERMENTAION = "Fermentaion"
+    ANIMAL = "Animal"
+    JUICE = "Juice"
 
 
 class Region(Enum):
@@ -32,12 +34,36 @@ class Region(Enum):
     NEW_ZEALAND = "New Zealand"
 
 
+class TimeScale(Enum):
+    MINUTE = "Minute"
+    HOUR = "Hour"
+    DAY = "Day"
+    WEEK = "Week"
+    MONTH = "Month"
+    YEAR = "Year"
+
+
+class UnitOfMeasure(Enum):
+    GRAMME = "Gramme"
+    KILOGRAME = "Kilograme"
+    SPOON = "Spoon"
+    LITER = "Liter"
+    ATINYBIT = "A tiny bit"
+    PIECE = "Piece"
+
+
 class Recipe(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
     description = models.TextField()
-    durations = models.IntegerField(default=10)
-    instructions = models.TextField()
+    duration = models.IntegerField(default=10)
+    duration_scale = models.CharField(
+        max_length=20,
+        choices=[(TimeScale.value, TimeScale.name) for TimeScale in TimeScale],
+        default=TimeScale.MINUTE.value,
+    )
+
+    instructions = QuillField()
     author = models.ForeignKey(
         "account.User", on_delete=models.CASCADE, related_name="recipes"
     )
@@ -63,8 +89,12 @@ class Recipe(models.Model):
     quantity = models.DecimalField(
         max_digits=6, decimal_places=2, null=True, blank=True
     )  # number of persons or number of usage
-    youtube_link = models.URLField(max_length=255, null=True, blank=True)
-    # image = models.ImageField(upload_to='images/', null=True, blank=True)
+    youtube = models.URLField(max_length=255, null=True, blank=True)
+    twitter = models.URLField(max_length=255, blank=True, null=True)
+    instagram = models.URLField(max_length=255, blank=True, null=True)
+    facebook = models.URLField(max_length=255, blank=True, null=True)
+    tiktok = models.URLField(max_length=255, blank=True, null=True)
+    website = models.URLField(max_length=255, blank=True, null=True)
     is_published = models.BooleanField(default=False)
     is_private = models.BooleanField(default=False)
     is_featured = models.BooleanField(default=False)
@@ -83,6 +113,7 @@ class Recipe(models.Model):
 class Ingredient(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
+    image_base64_or_svg = models.TextField(blank=True)
     recipes = models.ManyToManyField(Recipe, through="RecipeIngredient")
 
     def __str__(self):
@@ -90,13 +121,18 @@ class Ingredient(models.Model):
 
 
 class RecipeIngredient(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, null=True, blank=True)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.DecimalField(max_digits=6, decimal_places=2)
-    unit = models.CharField(max_length=50)
+    unit = models.CharField(
+        max_length=20,
+        choices=[(uom.value, uom.name) for uom in UnitOfMeasure],
+        blank=True,
+        null=True,
+    )
 
     def __str__(self):
-        return f"{self.quantity} {self.unit} {self.ingredient.name} for {self.recipe.title}"
+        return f"{self.quantity} {self.unit} {self.ingredient.name}"
 
 
 class Like(models.Model):

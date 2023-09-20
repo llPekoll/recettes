@@ -12,6 +12,8 @@ urlpatterns = [
     # Basic auth
     path("register/", views.register, name="register"),
     path("profile/", views.profile, name="profile"),
+    path("authors/", views.authors, name="authors"),
+    path("search_authors/authors/", views.search_authors, name="authors"),
     path("account/", views.profile, name="account"),
     path("login/", views.login_view, name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),

@@ -8,13 +8,14 @@ from elisasrecipe.settings import BASE_PROFILE_PICTURE
 
 class User(AbstractUser):
     favorite_recipes = models.ManyToManyField(
-        "recipe.Recipe", related_name="favorited_by", blank=True, null=True
+        "recipe.Recipe", related_name="favorited_by"
     )
     # Socials
     youtube_handle = models.URLField(blank=True)
     twitter_handle = models.URLField(blank=True)
     instagram_handle = models.URLField(blank=True)
     facebook_handle = models.URLField(blank=True)
+    tiktok_handle = models.URLField(blank=True)
     website = models.URLField(blank=True)
     bio = models.TextField(blank=True)
     profile_picture = models.ImageField(

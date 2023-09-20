@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "account",
     "django_htmx",
     "storages",
+    "django_quill",
 ]
 
 TAILWIND_APP_NAME = "theme"
@@ -180,3 +181,39 @@ STORAGES = {
 BASE_PROFILE_PICTURE = (
     "https://f003.backblazeb2.com/file/Elisa-s-Corner/defaults/profile-default.png"
 )
+
+
+QUILL_CONFIGS = {
+    "default": {
+        "theme": "snow",
+        "modules": {
+            "syntax": True,
+            "toolbar": [
+                [
+                    {"font": []},
+                    {"header": []},
+                    {"align": []},
+                    "bold",
+                    "italic",
+                    "underline",
+                    "strike",
+                    "blockquote",
+                    {"color": []},
+                    {"background": []},
+                ],
+                [
+                    {"list": "ordered"},
+                    {"list": "bullet"},
+                    "code-block",
+                    "link",
+                    "image",
+                ],
+                ["clean"],
+            ],
+            "imageResize": {
+                "displaySize": True,
+            },
+            "imageDrop": True,
+        },
+    }
+}

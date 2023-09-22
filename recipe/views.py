@@ -1,6 +1,17 @@
 from django.shortcuts import redirect, render
-
+from datetime import datetime
 from .forms import RecipeForm, RecipeIngredientForm
+from .models import Recipe, RecipeIngredient
+
+
+def got_to_new_recipe(request):
+    date = f"{datetime.now()}"[:-10]
+    Recipe.objects.create(
+        author=request.user,
+        is_draft=True,
+        title=f"New draft {date}",
+    )
+    return redirect("new-recipe")
 
 
 def new_recipe(request):
@@ -17,9 +28,24 @@ def new_recipe(request):
             recipe.save()
             print(recipe.id)
             return redirect("recipe:detail", recipe_id=recipe.id)
-    else:
-        form = RecipeForm()
-    return render(request, "new_recipe.html", {"form": form})
+
+    form = RecipeForm()
+    ingredient_names = [ingredient.name for ingredient in Ingredient.objects.all()]
+    recipe_draft = Recipe.objects.filter(author=request.user, is_draft=True).last()
+    ings = [
+        ingredient
+        for ingredient in RecipeIngredient.objects.filter(recipe=recipe_draft)
+    ]
+    return render(
+        request,
+        "new_recipe.html",
+        {
+            "form": form,
+            "ingredient_names": ingredient_names,
+            "recipe_draft": recipe_draft.id,
+            "ings": ings,
+        },
+    )
 
 
 def add_ingredient(request):
@@ -37,7 +63,23 @@ def add_ingredient(request):
             res = form.save()
             print(res.pk)
             print(res.ingredient)
-        return "jose"
+        ings = [
+            ingredient
+            for ingredient in RecipeIngredient.objects.filter(
+                recipe=request.POST.get("recipe")
+            )
+        ]
+        return render(
+            request,
+            "ingredient_list.html",
+            {
+                "ings": ings,
+            },
+        )
+    return "jose"
+
+
+def delete_ingredient(request, pk):
     return "jose"
 
 

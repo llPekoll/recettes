@@ -210,10 +210,6 @@ QUILL_CONFIGS = {
                 ],
                 ["clean"],
             ],
-            "imageResize": {
-                "displaySize": True,
-            },
-            "imageDrop": True,
         },
     }
 }

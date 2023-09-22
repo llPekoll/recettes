@@ -18,29 +18,27 @@ class RecipeIngredientForm(forms.ModelForm):
     unit = forms.ChoiceField(
         choices=[(uom.value, uom.name) for uom in UnitOfMeasure],
     )
-    ingredient = forms.ModelChoiceField(
-        queryset=Ingredient.objects.all(), required=False
-    )
     ingredient_name = forms.CharField(
         max_length=100,
         required=True,
     )
+    recipe = forms.ModelForm
 
     class Meta:
         model = RecipeIngredient
-        fields = ["quantity"]
+        fields = ["quantity", "recipe"]
 
     def save(self, commit=True):
-        print("save")
         recipe_ingredient = super().save(commit=False)
         obj, created = Ingredient.objects.get_or_create(
             name=self.cleaned_data["ingredient_name"]
         )
+        recipe = Recipe.objects.get(id=self.cleaned_data["recipe"].id)
+        recipe_ingredient.unit = self.cleaned_data["unit"]
         recipe_ingredient.ingredient = obj
+        recipe_ingredient.recipe = recipe
         if commit:
-            print("sav2e")
             recipe_ingredient.save()
-            print("sav2e")
         return recipe_ingredient
 
 

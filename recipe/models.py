@@ -1,5 +1,5 @@
+from django.utils.text import slugify
 from enum import Enum
-
 from django.db import models
 from django_quill.fields import QuillField
 from storages.backends.s3boto3 import S3Boto3Storage
@@ -55,7 +55,10 @@ class UnitOfMeasure(Enum):
 class Recipe(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
-    description = models.TextField()
+    author = models.ForeignKey(
+        "account.User", on_delete=models.CASCADE, related_name="recipes"
+    )
+    description = models.TextField(blank=True, null=True)
     duration = models.IntegerField(default=10)
     duration_scale = models.CharField(
         max_length=20,
@@ -64,9 +67,6 @@ class Recipe(models.Model):
     )
 
     instructions = QuillField()
-    author = models.ForeignKey(
-        "account.User", on_delete=models.CASCADE, related_name="recipes"
-    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     category = models.CharField(
@@ -98,6 +98,7 @@ class Recipe(models.Model):
     is_published = models.BooleanField(default=False)
     is_private = models.BooleanField(default=False)
     is_featured = models.BooleanField(default=False)
+    is_draft = models.BooleanField(default=True)
     url_link = models.URLField(max_length=255, null=True, blank=True)
     image = models.ImageField(
         upload_to="profile_pictures",
@@ -108,6 +109,16 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        original_slug = self.slug
+        count = 1
+        while Recipe.objects.filter(slug=self.slug).exists():
+            self.slug = f"{original_slug}-{count}"
+            count += 1
+        super().save(*args, **kwargs)
 
 
 class Ingredient(models.Model):
@@ -121,7 +132,7 @@ class Ingredient(models.Model):
 
 
 class RecipeIngredient(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, null=True, blank=True)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, default=1)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.DecimalField(max_digits=6, decimal_places=2)
     unit = models.CharField(

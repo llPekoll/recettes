@@ -2,6 +2,7 @@
 {% block content %}
     {% include "navbar.html" %}
     SEARCH:
+    {% include 'searchbar.html' %}
     <div class="flex pt-56">
         {% for recipe in recipes %}
             <a href="{% url 'recipe-detail' pk=recipe.pk %}">

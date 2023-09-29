@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+    {% include "navbar.html" %}
+    SEARCH:
+    <div class="flex pt-56">
+        {% for recipe in recipes %}
+            <a href="{% url 'recipe-detail' pk=recipe.pk %}">
+                <div class="bg-orange-50 h-64 w-44 rounded-lg mx-4 p-4 hover:scale-105 transition hover:shadow-lg">
+                    <h1>{{ recipe.title }}</h1>
+                    <h2>{{ recipe.description }}</h2>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

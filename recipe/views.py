@@ -1,33 +1,30 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
+from django.urls import reverse
 from datetime import datetime
 from .forms import RecipeForm, RecipeIngredientForm
-from .models import Recipe, RecipeIngredient
+from .models import Recipe, RecipeIngredient, Ingredient
+from account.models import User
 
 
-def got_to_new_recipe(request):
+def go_to_new_recipe(request):
     date = f"{datetime.now()}"[:-10]
     Recipe.objects.create(
         author=request.user,
         is_draft=True,
         title=f"New draft {date}",
     )
-    return redirect("new-recipe")
+    return redirect("recipe-creation")
 
 
-def new_recipe(request):
+def recipe_creation(request):
     if request.method == "POST":
-        print(request.POST)
-        print("ok")
-        form = RecipeForm(request.POST, instance=request.user)
-        print(form.is_valid)
-        print(form.errors)
+        recipe = Recipe.objects.get(
+            author=request.user, is_draft=True, id=request.POST.get("recipe_id")
+        )
+        form = RecipeForm(request.POST, request.FILES, instance=recipe)
         if form.is_valid():
-            print("test passed")
-            recipe = form.save(commit=False)
-            # make slug
-            recipe.save()
-            print(recipe.id)
-            return redirect("recipe:detail", recipe_id=recipe.id)
+            recipe = form.save()
+        return redirect(reverse("recipe-detail", args=[recipe.id]))
 
     form = RecipeForm()
     ingredient_names = [ingredient.name for ingredient in Ingredient.objects.all()]
@@ -49,24 +46,16 @@ def new_recipe(request):
 
 
 def add_ingredient(request):
-    print("willamse")
     if request.htmx:
-        print("sako")
-        print(request.POST)
-        ingredient = request.POST.get("ingredient")
-        print("form")
-        print("for2")
         form = RecipeIngredientForm(request.POST)
         print(form.errors)
         if form.is_valid():
-            print(form.base_fields)
             res = form.save()
-            print(res.pk)
-            print(res.ingredient)
+        print(request.POST.get("recipe_id"))
         ings = [
             ingredient
             for ingredient in RecipeIngredient.objects.filter(
-                recipe=request.POST.get("recipe")
+                recipe=request.POST.get("recipe_id")
             )
         ]
         return render(
@@ -76,27 +65,50 @@ def add_ingredient(request):
                 "ings": ings,
             },
         )
-    return "jose"
 
 
 def delete_ingredient(request, pk):
-    return "jose"
+    ingredient = get_object_or_404(RecipeIngredient, pk=pk)
+    ingredient.delete()
+    ings = [
+        ingredient
+        for ingredient in RecipeIngredient.objects.filter(recipe=ingredient.recipe)
+    ]
+
+    return render(
+        request,
+        "ingredient_list.html",
+        {
+            "ings": ings,
+        },
+    )
 
 
-# from rest_framework import viewsets
-# from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from .models import Ingredient, Recipe
-
-# from .serializers import RecipeSerializer, IngredientSerializer
-
-
-# class RecipeViewSet(viewsets.ModelViewSet):
-#     queryset = Recipe.objects.all()
-#     serializer_class = RecipeSerializer
-#     permission_classes = [IsAuthenticatedOrReadOnly]
+def recipe_detail(request, pk):
+    recipe = get_object_or_404(Recipe, pk=pk)
+    is_author = recipe.author == request.user
+    return render(
+        request,
+        "detail_recipe.html",
+        {"recipe": recipe, "is_author": is_author},
+    )
 
 
-# class IngredientViewSet(viewsets.ModelViewSet):
-#     queryset = Ingredient.objects.all()
-#     serializer_class = IngredientSerializer
-#     permission_classes = [IsAuthenticatedOrReadOnly]
+def recipes(request):
+    return render(
+        request,
+        "recipes.html",
+        {
+            "recipes": Recipe.objects.filter(is_draft=True, is_private=False),
+        },
+    )
+
+
+def authors(request):
+    return render(
+        request,
+        "authors.html",
+        {
+            "authors": User.objects.all(),
+        },
+    )

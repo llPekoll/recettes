@@ -19,8 +19,9 @@ from django_htmx.middleware import HtmxDetails
 
 from elisasrecipe import settings
 
-from .forms import LoginForm, ProfileForm, ResetForm, UserRegistrationForm
+from .forms import LoginForm, ProfileForm, UserRegistrationForm
 from .models import PasswordResetToken, User
+from recipe.models import Recipe
 
 
 class HtmxHttpRequest(HttpRequest):
@@ -28,7 +29,10 @@ class HtmxHttpRequest(HttpRequest):
 
 
 def index(request: HtmxHttpRequest) -> HttpResponse:
-    return render(request, "index.html")
+    return render(
+        request,
+        "index.html",
+    )
 
 
 def register(request):
@@ -317,3 +321,25 @@ def search_authors(request):
             {"authors": users},
         )
     return HttpResponse("Endpoint Not for production", status=404)
+
+
+def user_recipes(request):
+    recipes = Recipe.objects.filter(author=request.user)
+    return render(
+        request,
+        "recipe_user_list.html",
+        {
+            "recipes": recipes,
+        },
+    )
+
+
+def user_favorites(request):
+    recipes = User.favorite_recipes
+    return render(
+        request,
+        "recipe_user_list.html",
+        {
+            "recipes": recipes,
+        },
+    )

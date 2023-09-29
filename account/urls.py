@@ -6,6 +6,8 @@ from .views import (
     CustomPasswordResetConfirmView,
     delete_users,
     send_password_reset_email,
+    user_recipes,
+    user_favorites,
 )
 
 urlpatterns = [
@@ -13,7 +15,6 @@ urlpatterns = [
     path("register/", views.register, name="register"),
     path("profile/", views.profile, name="profile"),
     path("authors/", views.authors, name="authors"),
-    path("search_authors/authors/", views.search_authors, name="authors"),
     path("account/", views.profile, name="account"),
     path("login/", views.login_view, name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
@@ -33,6 +34,9 @@ urlpatterns = [
     # HTMX
     path("check/username", views.check_username, name="validation username"),
     path("check/email", views.check_email, name="validation email"),
+    # profile menu
+    path("user/recipes", user_recipes, name="my-recipes"),
+    path("user/favorites", user_favorites, name="my-favorites"),
     # Profile page
     path("edit-bio/<str:field>", views.edit_bio, name="edit-bio"),
     # path("edit/last-name", views.check_email, name="edit-last-name"),
@@ -41,5 +45,5 @@ urlpatterns = [
     # path("edit/instagram", views.check_email, name="edit-instagram"),
     # path("edit/twitter", views.check_email, name="edit-twitter"),
     # path("edit/youtube", views.check_email, name="edit-youtube"),
-    # path("edit/profile-picture", views.check_email, name="edit-profile-picture"),
+    # path("edit/profile-picture", view s.check_email, name="edit-profile-picture"),
 ]

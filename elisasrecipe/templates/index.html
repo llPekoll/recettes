@@ -2,18 +2,29 @@
 {% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <link rel="shortcut icon"
-          type="image/svg+xml"
-          href="{% static '/favicon.svg' %}" />
-    {% tailwind_css %}
-  </head>
-  <body class="w-screen h-screen bg-orange-100"
-        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-    {% include 'navbar.html' %}
-    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 pt-40">
-      <h1 class=" text-center text-red-900 font-semibold text-2xl">{% translate "Welcome to Elisa's corner!" %}</h1>
-      <h2 class=" text-center text-red-400 font-light text-xl">{% translate "intro-to-elisa" %}</h2>
-    </div>
-  </body>
+    <head>
+        <link rel="shortcut icon"
+              type="image/svg+xml"
+              href="{% static '/favicon.svg' %}" />
+        {% tailwind_css %}
+    </head>
+    <body class="w-screen h-screen bg-orange-100"
+          hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+        {% include "navbar.html" %}
+        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 pt-40">
+            <h1 class=" text-center text-red-900 font-semibold text-2xl">{% translate "Welcome to Elisa's corner!" %}</h1>
+            <h2 class=" text-center text-red-400 font-light text-xl">{% translate "intro-to-elisa" %}</h2>
+            Recipes:
+            <div class="flex pt-10">
+                {% for recipe in recipes %}
+                    <a href={% url 'recipe-detail' pk=recipe.id %}>
+                        <div class="bg-orange-50 h-64 w-44 rounded-lg mx-4 p-4 hover:scale-105 transition hover:shadow-lg">
+                            <h1>{{ recipe.title }}</h1>
+                            <h2>{{ recipe.description }}</h2>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </body>
 </html>

@@ -6,7 +6,7 @@
   {% include 'navbar.html' %}
   <form method="post" class="bg-orange-50 pt-20 h-screen mx-80">
     {% csrf_token %}
-    <input type="hidden" name="recipe" value="{{ recipe_draft }}" />
+    <input type="hidden" name="recipe_id" value="{{ recipe_draft }}" />
     <div class="flex items-end ml-20">
       <img src="{% static 'notes.svg' %}"
            alt="Profile Picture"
@@ -32,7 +32,7 @@
                 id="{{ form.category.id_for_label }}"
                 class="ml-3 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5 ">
           {% for value in form.category %}
-            <option value="{{ value.choice_label }}"
+            <option value="{{ value.data.value }}"
                     class="capitalize"
                     {% if value == form.category.value %}selected{% endif %}>{{ value.data.value }}</option>
           {% endfor %}
@@ -46,10 +46,7 @@
           Image:
           {% include 'help_circle.html' with help_text="this is going to be the background image of the recipe" %}
         </label>
-        <input type="file"
-               name="{{ form.image.name }}"
-               accept="image/*"
-               class="ml-3">
+        <input type="file" name="image" accept="image/*" class="ml-3">
         <label for={{ form.recipe_origin.name }} class="flex mt-5 ">
           Origin:
           {% include 'help_circle.html' with help_text="Just in case if you know where the recipe come from it's always nice to have a bit of background but if you don't that's fine  just dont add anything" %}
@@ -59,7 +56,7 @@
                 class="ml-3 bg-orange-200 capitalize text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5 ">
           <option value="" {% if not form.recipe_origin.value %}selected{% endif %}></option>
           {% for value in form.recipe_origin %}
-            <option value="{{ value.choice_label }}"
+            <option value="{{ value.data.value }}"
                     class="capitalize"
                     {% if value == form.recipe_origin.value %}selected{% endif %}>{{ value.data.value }}</option>
           {% endfor %}
@@ -70,11 +67,9 @@
         </label>
         <div class="flex">
           <input type="number" name={{ form.duration.name }} data-test="new-recipe" class="ml-3 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block  p-2.5" min=0 />
-          <select name="duration_scale"
-                  id="{{ form.duration_scale.id_for_label }}"
-                  class="ml-3 bg-orange-200 capitalize text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5 ">
+          <select name={{ form.duration_scale.name }} id="{{ form.duration_scale.id_for_label }}" class="ml-3 bg-orange-200 capitalize text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5 ">
             {% for value in form.duration_scale %}
-              <option value="{{ value.choice_label }}"
+              <option value="{{ value.data.value }}"
                       class="capitalize"
                       {% if value == form.duration_scale.value %}selected{% endif %}>{{ value.data.value }}s</option>
             {% endfor %}

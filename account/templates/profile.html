@@ -37,22 +37,59 @@
                         </div>
                     </div>
                     <div class="mt-10 ml-10">
-                        <h1 class="text-3xl text-bold underline text-orange-800">Socials</h1>
-                        <div class="ml-5 text-orange-700">
-                            {% include "components/editable_field.html" with label="Youtube" value=user.youtube_handle empty_css_class="youtube_empty" input_css_class="youtube_input" %}
-                            {% include "components/editable_field.html" with label="Facebook" value=user.facebook_handle empty_css_class="facebook_empty" input_css_class="facebook_input" %}
-                            {% include "components/editable_field.html" with label="Twitter" value=user.twitter_handle empty_css_class="twitter_empty" input_css_class="twitter_input" %}
-                            {% include "components/editable_field.html" with label="Instagram" value=user.instagram_handle empty_css_class="instagram_empty" input_css_class="instagram_input" %}
-                            {% include "components/editable_field.html" with label="Website" value=user.website_handle empty_css_class="website_empty" input_css_class="website_input" %}
+                        <button class=" after:float-right after:pl-4 after:font-bold accordion bg-orange-400 hover:bg-orange-500 rounded-lg text-white cursor-pointer w-full text-3xl px-3 py-4 text-left">
+                            Socials
+                        </button>
+                        <div class="panel">
+                            <p>
+                                {% include "components/editable_field.html" with label="Youtube" value=user.youtube_handle empty_css_class="youtube_empty" input_css_class="youtube_input" %}
+                                {% include "components/editable_field.html" with label="Facebook" value=user.facebook_handle empty_css_class="facebook_empty" input_css_class="facebook_input" %}
+                                {% include "components/editable_field.html" with label="Twitter" value=user.twitter_handle empty_css_class="twitter_empty" input_css_class="twitter_input" %}
+                                {% include "components/editable_field.html" with label="Instagram" value=user.instagram_handle empty_css_class="instagram_empty" input_css_class="instagram_input" %}
+                                {% include "components/editable_field.html" with label="Website" value=user.website_handle empty_css_class="website_empty" input_css_class="website_input" %}
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="w-5/6">
+            <div class="w-5/6 pt-10">
                 <button class="float-right text-white flex bg-orange-400 rounded-lg px-10 py-2 shadow">
                     <a href="{% url 'new-recipe' %}">Create recipe</a>
                 </button>
             </div>
         </div>
-        <style></style>
-    {% endblock %}
+    </div>
+    <style>
+            .accordion:after {
+                content:'\002B';
+            }
+            
+            .active:after {
+                content: "\2212";
+            }
+            
+            .panel {
+              padding: 0 18px;
+              background-color: white;
+              max-height: 0;
+              overflow: hidden;
+              transition: max-height 0.2s ease-out;
+            }
+    </style>
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+        
+        for (i = 0; i < acc.length; i++) {
+          acc[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+              panel.style.maxHeight = null;
+            } else {
+              panel.style.maxHeight = panel.scrollHeight + "px";
+            } 
+          });
+        }
+    </script>
+{% endblock content %}

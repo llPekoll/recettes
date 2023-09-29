@@ -2,6 +2,8 @@ from django import forms
 from django.forms.models import inlineformset_factory
 from django.utils.text import slugify
 from django_quill.forms import QuillFormField
+from storages.backends.s3boto3 import S3Boto3Storage
+from django.core.files.storage import default_storage
 
 from .models import (
     Category,
@@ -15,25 +17,22 @@ from .models import (
 
 
 class RecipeIngredientForm(forms.ModelForm):
-    unit = forms.ChoiceField(
-        choices=[(uom.value, uom.name) for uom in UnitOfMeasure],
-    )
     ingredient_name = forms.CharField(
         max_length=100,
         required=True,
     )
-    recipe = forms.ModelForm
+    recipe_id = forms.IntegerField(widget=forms.HiddenInput())
 
     class Meta:
         model = RecipeIngredient
-        fields = ["quantity", "recipe"]
+        fields = ["quantity", "unit"]
 
     def save(self, commit=True):
         recipe_ingredient = super().save(commit=False)
         obj, created = Ingredient.objects.get_or_create(
             name=self.cleaned_data["ingredient_name"]
         )
-        recipe = Recipe.objects.get(id=self.cleaned_data["recipe"].id)
+        recipe = Recipe.objects.get(id=self.cleaned_data["recipe_id"])
         recipe_ingredient.unit = self.cleaned_data["unit"]
         recipe_ingredient.ingredient = obj
         recipe_ingredient.recipe = recipe
@@ -44,7 +43,8 @@ class RecipeIngredientForm(forms.ModelForm):
 
 class RecipeForm(forms.ModelForm):
     category = forms.ChoiceField(
-        choices=[(category.value, category.name) for category in Category]
+        choices=[(category.value, category.name) for category in Category],
+        required=False,
     )
     recipe_origin = forms.ChoiceField(
         choices=[(region.value, region.name) for region in Region], required=False
@@ -55,9 +55,10 @@ class RecipeForm(forms.ModelForm):
     )
     # keep this one in order to have the select in for html form
     unit = forms.ChoiceField(
-        choices=[(uom.value, uom.name) for uom in UnitOfMeasure],
+        choices=[(uom.value, uom.name) for uom in UnitOfMeasure], required=False
     )
-    instructions = QuillFormField()
+    instructions = QuillFormField(required=False)
+    recipe_id = forms.IntegerField(widget=forms.HiddenInput())
 
     class Meta:
         model = Recipe
@@ -65,11 +66,13 @@ class RecipeForm(forms.ModelForm):
             "title",
             "description",
             "duration",
+            "duration_scale",
             "instructions",
             "category",
             "recipe_origin",
             "quantity",
             "youtube",
+            "image",
             "is_published",
             "is_private",
         ]
@@ -94,16 +97,26 @@ class RecipeForm(forms.ModelForm):
             },
         }
 
-    def clean_title(self):
-        # Generate a slug if one is not provided
-        title = self.cleaned_data["title"]
-        slug = self.cleaned_data.get("slug")
-        if not slug:
-            slug = slugify(title)
-        return title
-
     def save(self, commit=True):
         recipe = super().save(commit=False)
+        recipe.category = self.cleaned_data["category"]
+        recipe.duration_scale = self.cleaned_data["duration_scale"]
+        recipe.recipe_origin = self.cleaned_data["recipe_origin"]
+        recipe.image = self.cleaned_data["image"]
+
+        slug = slugify(recipe.title)
+        original_slug = slug
+        count = 1
+        while Recipe.objects.filter(slug=slug).exists():
+            slug = f"{original_slug}-{count}"
+            count += 1
+        recipe.slug = slug
         if commit:
             recipe.save()
+            storage = S3Boto3Storage()
+            with default_storage.open(recipe.image.name, "rb") as f:
+                storage.save(recipe.image.name, f)
+                print("recipe.image.name")
+                print(recipe.image.name)
+                print(storage)
         return recipe

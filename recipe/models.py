@@ -66,7 +66,7 @@ class Recipe(models.Model):
         default=TimeScale.MINUTE.value,
     )
 
-    instructions = QuillField()
+    instructions = QuillField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     category = models.CharField(

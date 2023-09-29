@@ -40,7 +40,7 @@
                         <button class=" after:float-right after:pl-4 after:font-bold accordion bg-orange-400 hover:bg-orange-500 rounded-lg text-white cursor-pointer w-full text-3xl px-3 py-4 text-left">
                             Socials
                         </button>
-                        <div class="panel">
+                        <div class="panel overflow-hidden py-3">
                             <p>
                                 {% include "components/editable_field.html" with label="Youtube" value=user.youtube_handle empty_css_class="youtube_empty" input_css_class="youtube_input" %}
                                 {% include "components/editable_field.html" with label="Facebook" value=user.facebook_handle empty_css_class="facebook_empty" input_css_class="facebook_input" %}
@@ -69,10 +69,7 @@
             }
             
             .panel {
-              padding: 0 18px;
-              background-color: white;
               max-height: 0;
-              overflow: hidden;
               transition: max-height 0.2s ease-out;
             }
     </style>

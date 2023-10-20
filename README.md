@@ -21,3 +21,16 @@ https://codepen.io/nailaahmad/pen/MyZXVE
 
 autocomplete
 https://codepen.io/mrcodebox33/pen/OJaGrra
+
+
+## TODO ##
+ - [x]install minio
+ - [ ] Edit profile pricture
+ - [ ] Add recipie picture
+ - [ ] Bio -> text area
+ - [ ] Blog
+ - [ ] Install gunicorn
+ - [ ] Align CSS header
+ - [ ] make search better
+ - [ ] add advertising for make cash
+ - [ ] add crypto reward [BAT,Polygon,NFTL]

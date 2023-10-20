@@ -1,0 +1,35 @@
+<form>
+    <div class="flex items-center space-x-6">
+        <div class="shrink-0">
+            <img id="profile-pic"
+                 {% if img %} src="{{ img }}" {% else %} {% load static %} src="{% static 'abstract-user.svg' %}" {% endif %}
+                 alt="Profile Picture"
+                 class="relative w-40 h-40 border-solid border-orange-800 border-4 rounded-full -mt-20 " />
+        </div>
+        <label class="block">
+            <span class="sr-only">Choose profile photo</span>
+            <input type="file"
+                   onchange="loadFile(event)"
+                   class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100 " />
+        </label>
+        <button id="save-image"
+                class="bg-orange-600 text-white py-2 px-10 hidden rounded-lg">Save image</button>
+    </div>
+</form>
+<script>
+    let image_changed = false;
+    let save_image = document.getElementById('save-image');
+    let loadFile = function(event) {
+
+        let input = event.target;
+        let file = input.files[0];
+        let type = file.type;
+        let output = document.getElementById('profile-pic');
+    
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function() {
+            URL.revokeObjectURL(output.src) // free memory
+            }
+        save_image.classList.remove('hidden');
+    };
+</script>

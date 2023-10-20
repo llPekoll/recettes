@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static tailwind_tags %}
+{% load i18n %}
+{% block content %}
+    {% include "navbar.html" %}
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 pt-40">
+        <h1 class=" text-center text-red-900 font-semibold text-2xl">{% translate "Welcome to Elisa's corner!" %}</h1>
+        <h2 class=" text-center text-red-400 font-light text-xl">{% translate "intro-to-elisa" %}</h2>
+        {% if user.is_authenticated %}
+            <div class="text-right pt-4">
+                <div class="">{% include "btn_new_recipe.html" %}</div>
+            </div>
+        {% endif %}
+        {% include "searchbar.html" %}
+        Recipes:
+        <div class="flex pt-10">
+            {% for recipe in recipes %}
+                <a href={% url 'recipe-detail' pk=recipe.id %}>
+                    <div class="bg-orange-100 h-64 w-44 rounded-lg mx-4 p-4 hover:scale-105 transition hover:shadow-lg">
+                        <h1>{{ recipe.title }}</h1>
+                        <h2>{{ recipe.description }}</h2>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,15 @@
+{% load my_filters %}
+{% for comment in comments %}
+    <div class="mb-4">
+        <p class="font-bold inline first-letter:uppercase first-letter:text-xl">
+            {{ comment.author.username }}
+            <span class="text-gray-500 text-xs inline">{{ comment.created_at | format_date }}</span>
+        </p>
+        <p>{{ comment.text }}</p>
+        {% if comment.edited %}edited on: {{ comment.edited_at }}{% endif %}
+        {% comment %} TODO if edited show date of edit and write edit {% endcomment %}
+        {% comment %} <p class="text-gray-600">{{ comment.created_date }}</p> {% endcomment %}
+    </div>
+{% empty %}
+    <p>No comments yet.</p>
+{% endfor %}

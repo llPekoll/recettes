@@ -1,0 +1,148 @@
+<div>
+  List of ingredient:
+  {% comment %} {% csrf_token %} {% endcomment %}
+  <div class="flex items-center mb-4">
+    <input type="number"
+           name="quantity"
+           placeholder="quatity"
+           class="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent">
+    <select name="unit"
+            value="{{ form.unit.name }}"
+            id="{{ form.unit.id_for_label }}"
+            class="ml-3 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5 ">
+      {% for value in form.unit %}
+        <option value="{{ value.data.value }}"
+                class="capitalize"
+                {% if value == form.category.value %}selected{% endif %}>{{ value.data.value }}</option>
+      {% endfor %}
+    </select>
+    <div class="search-input w-full">
+      <div class="flex">
+        <input type="text"
+               id="input-search"
+               autocomplete="off"
+               placeholder="Ingredient name"
+               class="px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent">
+        <div class="icon text-orange-700 -ml-10 mt-2 mr-4">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               width="24"
+               height="24"
+               viewBox="0 0 256 256">
+            <path fill="currentColor" d="M232.49 215.51L185 168a92.12 92.12 0 1 0-17 17l47.53 47.54a12 12 0 0 0 17-17ZM44 112a68 68 0 1 1 68 68a68.07 68.07 0 0 1-68-68Z" />
+          </svg>
+        </div>
+      </div>
+      <div class="autocom-box absolute bg-red-50 w-40 mt-2"></div>
+    </div>
+    <button hx-post="{% url 'add-ingredient' %}"
+            hx-target="#ingredient-list"
+            hx-swap="outerHTML"
+            class="ml-3 px-2.5 pb-0.5  bg-orange-600 text-white  hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-600 focus:ring-opacity-50 text-3xl rounded-full">
+      +
+    </button>
+  </div>
+</div>
+<div class="pt-20">{% include "ingredient_list.html" %}</div>
+<script>
+let suggestions = {{ ingredient_names|safe }};
+const searchWrapper = document.querySelector(".search-input");
+const inputBox = document.getElementById("input-search");
+const suggBox = document.querySelector(".autocom-box");
+// if user press any key and release
+
+inputBox.onkeyup = (e)=>{
+    let userData = e.target.value; //user enetered data
+    let emptyArray = [];
+    if(userData){
+        emptyArray = suggestions.filter((data)=>{
+            //filtering array value and user characters to lowercase and return only those words which are start with user enetered chars
+            return data.toLocaleLowerCase().startsWith(userData.toLocaleLowerCase());
+        });
+        emptyArray = emptyArray.map((data)=>{
+            // passing return data inside li tag
+            return data = `<li>${data}</li>`;
+        });
+        searchWrapper.classList.add("active"); //show autocomplete box
+        showSuggestions(emptyArray);
+        let allList = suggBox.querySelectorAll("li");
+        for (let i = 0; i < allList.length; i++) {
+            //adding onclick attribute in all li tag
+            allList[i].setAttribute("onclick", "select(this)");
+        }
+    }else{
+        searchWrapper.classList.remove("active"); //hide autocomplete box
+    }
+}
+function select(element){
+    let selectData = element.textContent;
+    inputBox.value = selectData;
+    searchWrapper.classList.remove("active");
+}
+
+function showSuggestions(list){
+    let listData;
+    if(!list.length){
+        userValue = inputBox.value;
+        listData = `<li>${userValue}</li>`;
+    }else{
+      listData = list.join('');
+    }
+    suggBox.innerHTML = listData;
+}
+
+
+
+// You Create new javascript file, File Name  suggestions., and Paste the Code
+
+</script>
+<style>
+::selection{
+  color: #fff;
+  background: #ff654a;
+}
+
+.wrapper{
+  max-width: 450px;
+  margin: 150px auto;
+}
+
+.wrapper .search-input{
+  background: #fff;
+  width: 100%;
+  border-radius: 5px;
+  position: relative;
+  box-shadow: 0px 1px 5px 3px rgba(0,0,0,0.12);
+}
+
+.search-input .autocom-box{
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.search-input.active .autocom-box{
+  padding: 10px 8px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.autocom-box li{
+  list-style: none;
+  padding: 8px 12px;
+  display: none;
+  width: 100%;
+  cursor: default;
+  border-radius: 3px;
+}
+
+.search-input.active .autocom-box li{
+  display: block;
+}
+.autocom-box li:hover{
+  background: #efefef;
+}
+
+
+</style>

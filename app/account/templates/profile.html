@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="flex">
+    <div class="flex ">
         {% include "components/profile_navbar.html" %}
         <div class="bg-white pl-10 pt-20 w-full">
             <div class="flex mt-24">
@@ -8,7 +8,7 @@
                     <div class="flex justify-end py-2 text-slate-700">Votre profile de presentation</div>
                     <div class="bg-orange-400 rounded-lg ml-10  text-white   shadow ">
                         <div class="absolute">
-                            {% include "components/editable_image.html" with details="profile" img=user.profile_picture %}
+                            {% include "components/editable_image.html" with details="profile" img=user.profile_picture.image.url %}
                         </div>
                         <div class="ml-44 py-10 ">
                             <div class="ml-5 text-white">
@@ -42,8 +42,10 @@
                     </div>
                 </div>
             </div>
-            <div class="w-5/6 pt-10">
-                <div class="float-right">{% include "btn_new_recipe.html" %}</div>
+            <div class="w-4/5 py-10 ml-10">
+                {% comment %} <div class="float-left">{% include "btn_new_recipe.html" %}</div> {% endcomment %}
+                <div class="float-left">{% include "btn.html" with url="new-article" text_to_display="Create Article" %}</div>
+                <div class="float-right">{% include "btn.html" with url="new-recipe" text_to_display="Create recipe" %}</div>
             </div>
         </div>
     </div>

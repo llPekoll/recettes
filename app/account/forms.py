@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django_quill.forms import QuillFormField
 
-from account.models import User
+from account.models import User, ProfileImage
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -87,3 +87,11 @@ class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = ["title", "content", "image"]
+
+
+class ImageForm(forms.ModelForm):
+    image = forms.ImageField()
+
+    class Meta:
+        model = ProfileImage
+        fields = ["image"]

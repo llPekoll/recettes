@@ -1,4 +1,5 @@
 import requests
+from datetime import datetime
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
@@ -33,6 +34,38 @@ def index(request: HtmxHttpRequest) -> HttpResponse:
     return render(
         request,
         "index.html",
+    )
+
+
+def go_to_new_article(request):
+    date = f"{datetime.now()}"[:-10]
+    Article.objects.create(
+        author=request.user,
+        is_draft=True,
+        title=f"New draft {date}",
+    )
+    return redirect("article-creation")
+
+
+def article_creation(request):
+    if request.method == "POST":
+        recipe = Article.objects.get(
+            author=request.user, is_draft=True, id=request.POST.get("article_id")
+        )
+        form = ArticleForm(request.POST, request.FILES, instance=recipe)
+        if form.is_valid():
+            recipe = form.save()
+        return redirect(reverse("article-detail", args=[recipe.id]))
+
+    form = ArticleForm()
+    article_draft = Article.objects.filter(author=request.user, is_draft=True).last()
+    return render(
+        request,
+        "new_article.html",
+        {
+            "form": form,
+            "article_draft": article_draft.id,
+        },
     )
 
 
@@ -196,7 +229,12 @@ def get_user_reset_token(request, user_email):
 
 def profile(request):
     user = request.user
+    print("user")
     print(user)
+    if user.profile_picture:
+        print(user.profile_picture.image)
+    else:
+        print("no image")
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
@@ -213,12 +251,17 @@ def profile(request):
 def edit_bio(request, field):
     print(request.body)
     if request.htmx:
-        print(1)
-        print(2)
         user = request.user
-        print(user.email)
-        print("sako")
         if field == "first-name":
+            if request.GET.get("first-name"):
+                user.first_name = request.GET.get("first-name")
+            args = {
+                "label": "First Name",
+                "value": user.first_name,
+                "empty_css_class": "first_name_empty",
+                "input_css_class": "first_name_input",
+            }
+        elif field == "image":
             if request.GET.get("first-name"):
                 user.first_name = request.GET.get("first-name")
             args = {
@@ -362,3 +405,25 @@ def user_blog(request):
         "user_blog.html",
         {"articles": articles, "onwer": True, "form": form},
     )
+
+
+def edit_image(request):
+    from .forms import ImageForm
+
+    print(1)
+
+    if request.htmx:
+        print(request.FILES)
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            img = form.save()
+            print("img")
+            print(img)
+            user = request.user
+            user.profile_picture = img
+            user.save()
+        return """    
+                <p>image saved</p>
+            """
+    print(7)
+    return HttpResponse("Endpoint for htmx")

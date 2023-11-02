@@ -22,3 +22,13 @@ def language_name(code):
 @register.filter
 def format_date(date):
     return date.strftime("%d. %b %Y %I:%M%p")
+
+
+@register.filter
+def clean_number(number):
+    return number.normalize()
+
+
+@register.filter
+def mino_to_localhost(value):
+    return value.replace("minio", "localhost").lower()

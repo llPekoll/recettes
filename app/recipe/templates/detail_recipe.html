@@ -21,20 +21,20 @@
                 <h1 class="text-3xl font-bold mb-2 md:mb-0 first-letter:text-7xl">{{ recipe.title }}</h1>
                 <div class="md:-ml-12 mt-20 text-gray-600">Duration:{{ recipe.duration }} {{ recipe.duration_scale }}.</div>
             </div>
-            <div class="flex">
-                Rate:
-                <div class="scale-50 ">
-                    <meter value="{{ given_rate.rate_average }}" min="0" max="5" class="">50% satisfied costumers – 2.5 of 5.0 stars</meter>
+            {% if number_of_rate_given is not empty %}
+                <div class="flex">
+                    Rate:
+                    <div class="scale-50 ">
+                        <meter value="{{ given_rate.rate_average }}" min="0" max="5" class="">50% satisfied costumers – 2.5 of 5.0 stars</meter>
+                    </div>
                 </div>
+                {{ given_rate.rate_average }} from {{ given_rate.number_of_rate_given }}  given rate
             </div>
-            {{ given_rate.rate_average }} from {{ given_rate.number_of_rate_given }}  comment
-        </div>
+        {% endif %}
         <div class="flex flex-col md:flex-row md:items-center mb-8">
             {% if recipe.image %}
                 <div class="md:w-1/3">
-                    <img src="{{ recipe.image.url }}"
-                         alt="{{ recipe.title }}"
-                         class="w-full rounded-lg shadow-lg">
+                    <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="w-full rounded-lg shadow-lg">
                 </div>
             {% endif %}
             <div class="md:w-2/3 md:ml-4">
@@ -74,10 +74,12 @@
                 </form>
             </div>
         {% endif %}
-        <div class="py-4 " id="comments">
-            <p class="text-xl first-letter:uppercase font-thin first-letter:italic">Comments:</p>
-            {% include "comments.html" %}
-        </div>
+        {% if comment is not empty %}
+            <div class="py-4 " id="comments">
+                <p class="text-xl first-letter:uppercase font-thin first-letter:italic">Comments:</p>
+                {% include "comments.html" %}
+            </div>
+        {% endif %}
         {% if user.is_authenticated %}
             <form method="post"
                   class="mb-4"

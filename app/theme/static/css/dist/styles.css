@@ -1843,6 +1843,11 @@ select {
   margin-bottom: 2rem;
 }
 
+.my-10 {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
 .-ml-10 {
   margin-left: -2.5rem;
 }
@@ -1949,6 +1954,22 @@ select {
 
 .mt-5 {
   margin-top: 1.25rem;
+}
+
+.-ml-5 {
+  margin-left: -1.25rem;
+}
+
+.-mt-5 {
+  margin-top: -1.25rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.mt-3 {
+  margin-top: 0.75rem;
 }
 
 .box-border {
@@ -2109,6 +2130,10 @@ select {
   height: 100vh;
 }
 
+.h-full {
+  height: 100%;
+}
+
 .min-h-screen {
   min-height: 100vh;
 }
@@ -2163,6 +2188,14 @@ select {
 
 .w-full {
   width: 100%;
+}
+
+.w-4\/6 {
+  width: 66.666667%;
+}
+
+.w-4\/5 {
+  width: 80%;
 }
 
 .max-w-0 {
@@ -3536,6 +3569,11 @@ select {
   padding-bottom: 2rem;
 }
 
+.py-20 {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
 .pb-0 {
   padding-bottom: 0px;
 }
@@ -3622,6 +3660,10 @@ select {
 
 .pt-5 {
   padding-top: 1.25rem;
+}
+
+.pr-2 {
+  padding-right: 0.5rem;
 }
 
 .text-left {
@@ -3930,6 +3972,11 @@ select {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.text-gray-400 {
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
+}
+
 .underline {
   text-decoration-line: underline;
 }
@@ -3990,6 +4037,10 @@ select {
 
 .opacity-75 {
   opacity: 0.75;
+}
+
+.opacity-0 {
+  opacity: 0;
 }
 
 .bg-blend-normal {
@@ -5824,6 +5875,11 @@ select {
 .hover\:text-red-900:hover {
   --tw-text-opacity: 1;
   color: rgb(127 29 29 / var(--tw-text-opacity));
+}
+
+.hover\:text-red-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(185 28 28 / var(--tw-text-opacity));
 }
 
 .hover\:underline:hover {

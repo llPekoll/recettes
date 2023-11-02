@@ -2,9 +2,7 @@
 {% load i18n %}
 <nav class="nav bg-orange-200 fixed w-full">
     <a href="{% url 'home' %}">
-        <img src="{% static 'logo3.svg' %}"
-             alt=" Logo"
-             class="w-24 ml-10 pt-1.5 float-left" />
+        <img src="{% static 'logo3.svg' %}" alt=" Logo" class="w-24 ml-10 pt-1.5 float-left" />
     </a>
     <li class="md:hidden block float-right">{% include "lang_selector.html" %}</li>
     {% if user.is_authenticated %}

@@ -9,10 +9,14 @@ from .views import (
     user_favorites,
     user_recipes,
     user_blog,
+    go_to_new_article,
+    article_creation,
 )
 
 urlpatterns = [
     # Basic auth
+    path("new-article/", go_to_new_article, name="new-article"),
+    path("article_creation/", article_creation, name="article-creation"),
     path("register/", views.register, name="register"),
     path("profile/", views.profile, name="profile"),
     path("authors/", views.authors, name="authors"),
@@ -40,6 +44,7 @@ urlpatterns = [
     path("user/blog", user_blog, name="my-blog"),
     path("user/favorites", user_favorites, name="my-favorites"),
     # Profile page
+    path("edit-bio/image/", views.edit_image, name="edit-image"),
     path("edit-bio/<str:field>", views.edit_bio, name="edit-bio"),
     # path("edit/last-name", views.check_email, name="edit-last-name"),
     # path("edit/bio-name", views.check_email, name="edit-bio-name"),

@@ -8,15 +8,13 @@
                     <span class="{{ empty_css_class }} hover:font-bold normal-case italic text-orange-900 hover:text-red-900">Click to add a {{ label }}.</span>
                 {% else %}
                     <span class="{{ empty_css_class }} group hover:font-bold ">{{ value }}
-                        <span class="">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 width="18"
-                                 height="18"
-                                 viewBox="0 0 24 24"
-                                 class="hidden group-hover:inline">
-                                <path fill="currentColor" d="m19.3 8.925l-4.25-4.2l1.4-1.4q.575-.575 1.413-.575t1.412.575l1.4 1.4q.575.575.6 1.388t-.55 1.387L19.3 8.925ZM17.85 10.4L7.25 21H3v-4.25l10.6-10.6l4.25 4.25Z" />
-                            </svg>
-                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             width="18"
+                             height="18"
+                             viewBox="0 0 24 24"
+                             class="hidden group-hover:inline">
+                            <path fill="currentColor" d="m19.3 8.925l-4.25-4.2l1.4-1.4q.575-.575 1.413-.575t1.412.575l1.4 1.4q.575.575.6 1.388t-.55 1.387L19.3 8.925ZM17.85 10.4L7.25 21H3v-4.25l10.6-10.6l4.25 4.25Z" />
+                        </svg>
                     </span>
                 {% endif %}
             </div>
@@ -25,6 +23,7 @@
                 <input name="{{ label | clean_label_for_url }}"
                        type="text"
                        hx-trigger="blur"
+                       value="{{ value }}"
                        hx-get="/edit-bio/{{ label | clean_label_for_url }}"
                        hx-include="[name='{{ label | clean_label_for_url }}']"
                        hx-target="#{{ label | clean_label_for_url }}"
@@ -75,4 +74,3 @@
          
     }
 </script>
-<style></style>

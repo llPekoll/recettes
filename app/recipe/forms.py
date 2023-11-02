@@ -111,12 +111,12 @@ class RecipeForm(forms.ModelForm):
             slug = f"{original_slug}-{count}"
             count += 1
         recipe.slug = slug
-        if commit:
-            recipe.save()
-            storage = S3Boto3Storage()
-            with default_storage.open(recipe.image.name, "rb") as f:
-                storage.save(recipe.image.name, f)
-                print("recipe.image.name")
-                print(recipe.image.name)
-                print(storage)
+        # if commit:
+        #     recipe.save()
+        #     storage = S3Boto3Storage()
+        #     with default_storage.open(recipe.image.name, "rb") as f:
+        #         storage.save(recipe.image.name, f)
+        #         print("recipe.image.name")
+        #         print(recipe.image.name)
+        #         print(storage)
         return recipe

@@ -2,27 +2,31 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 from storages.backends.s3boto3 import S3Boto3Storage
 from django_quill.fields import QuillField
+from django.utils.text import slugify
 
 from elisasrecipe import settings
+
+
+class ProfileImage(models.Model):
+    image = models.ImageField(
+        upload_to="profile_pictures", storage=S3Boto3Storage(), null=True, blank=True
+    )
+
+
+class ArticleImage(models.Model):
+    image = models.ImageField(
+        upload_to="article_pictures", storage=S3Boto3Storage(), null=True, blank=True
+    )
 
 
 class User(AbstractUser):
     favorite_recipes = models.ManyToManyField(
         "recipe.Recipe", related_name="favorited_by"
     )
-    # Socials
-    youtube_handle = models.URLField(blank=True)
-    twitter_handle = models.URLField(blank=True)
-    instagram_handle = models.URLField(blank=True)
-    facebook_handle = models.URLField(blank=True)
-    tiktok_handle = models.URLField(blank=True)
-    website = models.URLField(blank=True)
     bio = models.TextField(blank=True)
-    profile_picture = models.ImageField(
-        upload_to="profile_pictures",
-        storage=S3Boto3Storage(),
-        blank=True,
-        null=True,
+    slug = models.SlugField(max_length=200, blank=True)
+    profile_picture = models.OneToOneField(
+        ProfileImage, on_delete=models.SET_NULL, null=True, blank=True
     )
     groups = models.ManyToManyField(
         Group,
@@ -40,30 +44,55 @@ class User(AbstractUser):
         related_name="myapp_user_permissions",  # specify a custom related name
         related_query_name="user",
     )
+    # Socials
+    youtube_handle = models.URLField(blank=True)
+    twitter_handle = models.URLField(blank=True)
+    instagram_handle = models.URLField(blank=True)
+    facebook_handle = models.URLField(blank=True)
+    tiktok_handle = models.URLField(blank=True)
+    website = models.URLField(blank=True)
 
     def __str__(self):
         return self.username
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.usernmae)
+        user = User.objects.filter(slug=self.slug).exclude(id=self.id)
+        if user.exists():
+            slug, nb = self.slug.split("-")
+            nb += 1
+            self.slug = f"{slug}-{int(nb)}"
+        super().save(*args, **kwargs)
+
 
 class Article(models.Model):
     title = models.CharField(max_length=200)
-    # ?? slug ??
+    slug = models.SlugField(unique=True, max_length=200, blank=True)
     content = QuillField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     edited = models.BooleanField(default=False)
     edtied_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    is_draft = models.BooleanField(default=True)
 
-    image = models.ImageField(
-        upload_to="blog_images",
-        storage=S3Boto3Storage(),
-        blank=True,
-        null=True,
+    image = models.OneToOneField(
+        ArticleImage, on_delete=models.SET_NULL, null=True, blank=True
     )
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        art = Article.objects.filter(slug=self.slug).exclude(id=self.id)
+        if art.exists():
+            slug, nb = art.slug.split("-")
+            nb += 1
+            self.slug = f"{slug}-{int(nb)}"
+        super().save(*args, **kwargs)
 
     # this one can be usefull for share btn
     # def get_absolute_url(self):

@@ -4,10 +4,11 @@ WORKDIR /usr/src/app
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-
+RUN apt update
+RUN apt install -y postgresql
 RUN pip install --upgrade pip
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
-RUN python mannage.py compilemessages
+# RUN python mannage.py compilemessages
 
 COPY . .

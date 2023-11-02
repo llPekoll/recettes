@@ -24,13 +24,13 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
 
 
 ## TODO ##
- - [x]install minio
- - [ ] Edit profile pricture
- - [ ] Add recipie picture
- - [ ] Bio -> text area
+ - [x] install minio
+ - [x] Edit profile pricture
+ - [x] Add recipie picture
  - [ ] Blog
  - [ ] Install gunicorn
  - [ ] Align CSS header
  - [ ] make search better
  - [ ] add advertising for make cash
  - [ ] add crypto reward [BAT,Polygon,NFTL]
+ - [ ] Bio -> text area

@@ -50,6 +50,7 @@ def recipe_creation(request):
 
 def add_ingredient(request):
     if request.htmx:
+        print(request.POST)
         form = RecipeIngredientForm(request.POST)
         print(form.errors)
         if form.is_valid():
@@ -94,16 +95,16 @@ def recipe_detail(request, pk):
     is_favorite = recipe in user.favorite_recipes.all()
     ingredients = RecipeIngredient.objects.filter(recipe=recipe)
     comments = Comment.objects.filter(recipe=recipe).order_by("-created_at")
-    print(comments[0].created_at)
     try:
         rate = Rate.objects.get(user=request.user, recipe=recipe).value
         rate_average = Rate.objects.filter(recipe=recipe).aggregate(Avg("value"))[
             "value__avg"
         ]
-        number_of_rate_given = Rate.objects.filter(recipe=recipe).count()
 
     except Rate.DoesNotExist:
         rate = 3
+        rate_average = 3
+    number_of_rate_given = Rate.objects.filter(recipe=recipe).count()
     return render(
         request,
         "detail_recipe.html",

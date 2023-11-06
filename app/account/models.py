@@ -1,8 +1,9 @@
 from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.db import models
-from storages.backends.s3boto3 import S3Boto3Storage
-from django_quill.fields import QuillField
 from django.utils.text import slugify
+from django_quill.fields import QuillField
+from storages.backends.s3boto3 import S3Boto3Storage
 
 from elisasrecipe import settings
 
@@ -21,7 +22,10 @@ class ArticleImage(models.Model):
 
 class User(AbstractUser):
     favorite_recipes = models.ManyToManyField(
-        "recipe.Recipe", related_name="favorited_by"
+        "recipe.Recipe", related_name="favorite_recipes"
+    )
+    favorite_articles = models.ManyToManyField(
+        "account.Article", related_name="favorite_articles"
     )
     bio = models.TextField(blank=True)
     slug = models.SlugField(max_length=200, blank=True)
@@ -51,6 +55,8 @@ class User(AbstractUser):
     facebook_handle = models.URLField(blank=True)
     tiktok_handle = models.URLField(blank=True)
     website = models.URLField(blank=True)
+    comments = GenericRelation("recipe.Comment")
+    tags = models.ManyToManyField("recipe.Tag", blank=True)
 
     def __str__(self):
         return self.username
@@ -80,6 +86,8 @@ class Article(models.Model):
     image = models.OneToOneField(
         ArticleImage, on_delete=models.SET_NULL, null=True, blank=True
     )
+    tags = models.ManyToManyField("recipe.Tag", blank=True)
+    comments = GenericRelation("recipe.Comment")
 
     def __str__(self):
         return self.title

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 
-from .models import PasswordResetToken, ProfileImage, ArticleImage, Article
+from .models import Article, ArticleImage, PasswordResetToken, ProfileImage
 
 User = get_user_model()
 

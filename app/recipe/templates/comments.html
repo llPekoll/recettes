@@ -1,11 +1,11 @@
 {% load my_filters %}
 {% for comment in comments %}
     <div class="mb-4">
-        <p class="font-bold inline first-letter:uppercase first-letter:text-xl">
+        <p class="font-bold inline capitalize text-xl">
             {{ comment.author.username }}
-            <span class="text-gray-500 text-xs inline">{{ comment.created_at | format_date }}</span>
+            <span class="text-gray-500 text-xs inline italic">{{ comment.created_at | format_date_short }}</span>
         </p>
-        <p>{{ comment.text }}</p>
+        <p class="pl-2">{{ comment.text }}</p>
         {% if comment.edited %}edited on: {{ comment.edited_at }}{% endif %}
         {% comment %} TODO if edited show date of edit and write edit {% endcomment %}
         {% comment %} <p class="text-gray-600">{{ comment.created_date }}</p> {% endcomment %}

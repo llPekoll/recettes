@@ -1,29 +1,26 @@
-import requests
 from datetime import datetime
+
+import requests
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordResetConfirmView
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpRequest, HttpResponse, JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.decorators.csrf import csrf_exempt
-from django_htmx.http import (
-    HttpResponseClientRedirect,
-    HttpResponseClientRefresh,
-    retarget,
-)
+from django_htmx.http import HttpResponseClientRedirect, retarget
 from django_htmx.middleware import HtmxDetails
+from recipe.models import Comment, Recipe
 
 from elisasrecipe import settings
-from recipe.models import Recipe
 
-from .forms import LoginForm, ProfileForm, UserRegistrationForm, ArticleForm
-from .models import PasswordResetToken, User, Article
+from .forms import ArticleForm, ImageForm, LoginForm, ProfileForm, UserRegistrationForm
+from .models import Article, PasswordResetToken, User
 
 
 class HtmxHttpRequest(HttpRequest):
@@ -49,13 +46,17 @@ def go_to_new_article(request):
 
 def article_creation(request):
     if request.method == "POST":
-        recipe = Article.objects.get(
-            author=request.user, is_draft=True, id=request.POST.get("article_id")
-        )
-        form = ArticleForm(request.POST, request.FILES, instance=recipe)
+        print(request.POST.get("article-id"))
+        try:
+            article = Article.objects.get(
+                author=request.user, is_draft=True, id=request.POST.get("article-id")
+            )
+        except Article.DoesNotExist:
+            print("manage this ")
+        form = ArticleForm(request.POST, request.FILES, instance=article)
         if form.is_valid():
             recipe = form.save()
-        return redirect(reverse("article-detail", args=[recipe.id]))
+        return redirect(reverse("article-detail", args=[article.id]))
 
     form = ArticleForm()
     article_draft = Article.objects.filter(author=request.user, is_draft=True).last()
@@ -65,6 +66,53 @@ def article_creation(request):
         {
             "form": form,
             "article_draft": article_draft.id,
+        },
+    )
+
+
+def article_favorite(request, pk):
+    user = request.user
+    article = get_object_or_404(Article, pk=pk)
+    if article in user.favorite_articles.all():
+        print("remove")
+        user.favorite_articles.remove(article)
+        is_favorite = False
+    else:
+        user.favorite_articles.add(article)
+        is_favorite = True
+        print("add")
+    return render(
+        request,
+        "is_favorite.html",
+        {"recipe": article, "is_favorite": is_favorite},
+    )
+
+
+def add_new_comment_article(request, pk):
+    if request.htmx:
+        recipe = get_object_or_404(Recipe, pk=pk)
+        Comment.objects.create(
+            author=request.user, content_object=recipe, text=request.POST.get("comment")
+        )
+    comments = recipe.comments.order_by("-created_at")
+    return render(request, "rate.html", {"comment": comments})
+
+
+def article_detail(request, pk):
+    user = request.user
+    article = get_object_or_404(Article, pk=pk)
+    is_favorite = article in user.favorite_articles.all()
+    is_author = article.author == user
+    print(article)
+    comments = article.comments.all().order_by("-created_at")
+    return render(
+        request,
+        "article_detail.html",
+        {
+            "article": article,
+            "is_author": is_author,
+            "is_favorite": is_favorite,
+            "comments": comments,
         },
     )
 
@@ -229,8 +277,6 @@ def get_user_reset_token(request, user_email):
 
 def profile(request):
     user = request.user
-    print("user")
-    print(user)
     if user.profile_picture:
         print(user.profile_picture.image)
     else:
@@ -249,7 +295,6 @@ def profile(request):
 
 
 def edit_bio(request, field):
-    print(request.body)
     if request.htmx:
         user = request.user
         if field == "first-name":
@@ -352,7 +397,6 @@ def edit_bio(request, field):
 
 def authors(request):
     users = User.objects.all()
-    print(users)
     return render(
         request,
         "authors.html",
@@ -362,9 +406,7 @@ def authors(request):
 
 def search_authors(request):
     if request.htmx:
-        print(request.GET)
         query = request.GET.get("query")
-        print(query)
         users = User.objects.filter(username__icontains=query)
         return render(
             request,
@@ -408,10 +450,6 @@ def user_blog(request):
 
 
 def edit_image(request):
-    from .forms import ImageForm
-
-    print(1)
-
     if request.htmx:
         print(request.FILES)
         form = ImageForm(request.POST, request.FILES)

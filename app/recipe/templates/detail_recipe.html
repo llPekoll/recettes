@@ -5,7 +5,9 @@
         <div class="container mx-auto px-4 py-8 pt-24">
             {% if is_author %}
                 <div class="w-full">
-                    <button class="bg-orange-500 text-white py-2 px-10 rounded-lg float-right">🖊️ edit the recipe</button>
+                    <a href={% url 'edit_recipe' pk=recipe.pk %}>
+                        <button class="bg-orange-500 text-white py-2 px-10 rounded-lg float-right">🖊️ edit the recipe</button>
+                    </a>
                 </div>
             {% elif user.is_authenticated and not is_author %}
                 <div class="w-full">
@@ -34,7 +36,9 @@
         <div class="flex flex-col md:flex-row md:items-center mb-8">
             {% if recipe.image %}
                 <div class="md:w-1/3">
-                    <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="w-full rounded-lg shadow-lg">
+                    <img src="{{ recipe.image.url }}"
+                         alt="{{ recipe.title }}"
+                         class="w-full rounded-lg shadow-lg">
                 </div>
             {% endif %}
             <div class="md:w-2/3 md:ml-4">
@@ -74,7 +78,7 @@
                 </form>
             </div>
         {% endif %}
-        {% if comment is not empty %}
+        {% if comments is not empty %}
             <div class="py-4 " id="comments">
                 <p class="text-xl first-letter:uppercase font-thin first-letter:italic">Comments:</p>
                 {% include "comments.html" %}

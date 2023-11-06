@@ -1,12 +1,14 @@
 from datetime import datetime
 
+from account.models import User
+from django.db.models import Avg, Q
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.db.models import Q, Avg
-from account.models import User
+from recipe.models import Recipe
 
 from .forms import RecipeForm, RecipeIngredientForm
-from .models import Ingredient, Recipe, RecipeIngredient, Rate, Comment
+from .models import Comment, Ingredient, Rate, Recipe, RecipeIngredient, Tag
 
 
 def go_to_new_recipe(request):
@@ -44,6 +46,7 @@ def recipe_creation(request):
             "ingredient_names": ingredient_names,
             "recipe_draft": recipe_draft.id,
             "ings": ings,
+            "create": True,
         },
     )
 
@@ -94,7 +97,8 @@ def recipe_detail(request, pk):
     is_author = recipe.author == user
     is_favorite = recipe in user.favorite_recipes.all()
     ingredients = RecipeIngredient.objects.filter(recipe=recipe)
-    comments = Comment.objects.filter(recipe=recipe).order_by("-created_at")
+
+    comments = recipe.comments.order_by("-created_at")
     try:
         rate = Rate.objects.get(user=request.user, recipe=recipe).value
         rate_average = Rate.objects.filter(recipe=recipe).aggregate(Avg("value"))[
@@ -170,18 +174,16 @@ def recipe_rating(request, pk):
             defaults={"value": request.POST.get("rate")},
         )
 
-    return render(request, "rate.html", {"rate": obj.value})
+    return render(request, "star_rate.html", {"rate": obj.value})
 
 
 def add_new_comment(request, pk):
     if request.htmx:
         recipe = get_object_or_404(Recipe, pk=pk)
         Comment.objects.create(
-            recipe=recipe,
-            author=request.user,
-            text=request.POST.get("comment"),
+            author=request.user, content_object=recipe, text=request.POST.get("comment")
         )
-    comments = Comment.objects.filter(recipe=recipe).order_by("-created_at")
+    comments = recipe.comments.order_by("-created_at")
     return render(request, "rate.html", {"comment": comments})
 
 
@@ -199,4 +201,34 @@ def search_recipes(request):
         return render(request, "recipe_list.html", {"recipes": recipes})
 
 
-# def edit_comment(request, pk):
+def add_tags(tags_in_string_format):
+    tag_names = tags_in_string_format.split(",")
+
+
+def add_recipe_tags(request, recipe_id):
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+    if request.method == "POST":
+        tag_names = request.POST.get("tags", "").split(",")
+        for tag_name in tag_names:
+            tag_name = tag_name.strip()
+            if tag_name:
+                tag, created = Tag.objects.get_or_create(name=tag_name)
+                recipe.tags.add(tag)
+                # better send the new content edited
+        return HttpResponse("Content edited", status=200)
+    # better send the new content edited
+    return HttpResponse("Just didn't worked", status=400)
+
+
+def edit_recipe(request, pk):
+    recipe = get_object_or_404(Recipe, pk=pk)
+    if request.method == "POST":
+        form = RecipeForm(request.POST, instance=recipe)
+        if form.is_valid():
+            form.save()
+            return redirect("recipe_detail", recipe_id=recipe.id)
+    else:
+        form = RecipeForm(instance=recipe)
+    return render(
+        request, "new_recipe.html", {"form": form, "recipe": recipe, "create": False}
+    )

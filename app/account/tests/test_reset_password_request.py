@@ -1,11 +1,10 @@
-from playwright.sync_api import Page, expect
-
 from account.tests.test_register import (
     create_user,
     delete_users,
     generate_random_email,
     random_email,
 )
+from playwright.sync_api import Page, expect
 
 new_email = generate_random_email()
 

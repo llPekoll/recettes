@@ -45,7 +45,7 @@
 </div>
 <div class="pt-20">{% include "ingredient_list.html" %}</div>
 <script>
-let suggestions = {{ ingredient_names|safe }};
+let suggestions = {% if ingredient_names %} {{ ingredient_names|safe }}; {% else %} [];{% endif %}
 const searchWrapper = document.querySelector(".search-input");
 const inputBox = document.getElementById("input-search");
 const suggBox = document.querySelector(".autocom-box");

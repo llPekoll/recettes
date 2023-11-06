@@ -1848,6 +1848,11 @@ select {
   margin-bottom: 2.5rem;
 }
 
+.my-20 {
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+}
+
 .-ml-10 {
   margin-left: -2.5rem;
 }
@@ -2132,6 +2137,10 @@ select {
 
 .h-full {
   height: 100%;
+}
+
+.h-44 {
+  height: 11rem;
 }
 
 .min-h-screen {
@@ -3664,6 +3673,22 @@ select {
 
 .pr-2 {
   padding-right: 0.5rem;
+}
+
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
+
+.pt-8 {
+  padding-top: 2rem;
+}
+
+.pb-1 {
+  padding-bottom: 0.25rem;
+}
+
+.pl-2 {
+  padding-left: 0.5rem;
 }
 
 .text-left {
@@ -5765,6 +5790,10 @@ select {
 
 .first-letter\:uppercase::first-letter {
   text-transform: uppercase;
+}
+
+.first-letter\:capitalize::first-letter {
+  text-transform: capitalize;
 }
 
 .first-letter\:italic::first-letter {

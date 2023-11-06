@@ -1,8 +1,7 @@
+from account.models import ProfileImage, User
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django_quill.forms import QuillFormField
-
-from account.models import User, ProfileImage
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -78,6 +77,7 @@ class ProfileForm(forms.ModelForm):
 
 
 from django import forms
+
 from .models import Article
 
 

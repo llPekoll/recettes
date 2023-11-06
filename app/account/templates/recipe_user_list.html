@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="flex">
+    <div class="flex bg-white">
         {% include "components/profile_navbar.html" %}
-        {% for recipe in recipes.all %}
-            <div class="bg-orange-50 h-64 w-44 rounded-lg mx-4 p-4 hover:scale-105 transition hover:shadow-lg">
-                <h1>{{ recipe.title }}</h1>
-                <h2>{{ recipe.description }}</h2>
+        <div class="w-full">
+            <div class="pt-20 text-center font-semibold text-3xl underline">My Recipes</div>
+            <div class="my-20 ml-10">
+                {% for recipe in recipes.all %}
+                    {% include "components/recipe_card.html" with title=recipe.title description=recipe.description image=recipe.image %}
+                {% endfor %}
             </div>
-        {% endfor %}
+        </div>
     </div>
 {% endblock %}

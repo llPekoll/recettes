@@ -1,11 +1,12 @@
 from enum import Enum
 
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.models import ContentType
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.text import slugify
 from django_quill.fields import QuillField
 from storages.backends.s3boto3 import S3Boto3Storage
-from django.core.validators import MaxValueValidator, MinValueValidator
-from django.urls import reverse
 
 
 class Category(Enum):
@@ -106,6 +107,8 @@ class Recipe(models.Model):
         blank=True,
         null=True,
     )
+    tags = models.ManyToManyField("recipe.Tag", blank=True)
+    comments = GenericRelation("recipe.Comment")
 
     def __str__(self):
         return self.title
@@ -160,9 +163,9 @@ class Rate(models.Model):
 
 class Comment(models.Model):
     author = models.ForeignKey("account.User", on_delete=models.CASCADE)
-    recipe = models.ForeignKey(
-        Recipe, on_delete=models.CASCADE, related_name="comments"
-    )
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey("content_type", "object_id")
     text = models.TextField()
     parent_comment = models.ForeignKey(
         "self", on_delete=models.CASCADE, null=True, blank=True, related_name="replies"
@@ -172,7 +175,14 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.author.username} commented on {self.recipe.title}"
+        return f"{self.author.username} commented on {self.content_object}"
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
 
 
 class Fork(models.Model):

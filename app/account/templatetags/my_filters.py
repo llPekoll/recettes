@@ -25,6 +25,11 @@ def format_date(date):
 
 
 @register.filter
+def format_date_short(date):
+    return date.strftime("%d %b %y %I:%M")
+
+
+@register.filter
 def clean_number(number):
     return number.normalize()
 

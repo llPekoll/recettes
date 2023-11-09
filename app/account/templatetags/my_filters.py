@@ -31,7 +31,7 @@ def format_date_short(date):
 
 @register.filter
 def clean_number(number):
-    return number.normalize()
+    return number.normalize() if number else ""
 
 
 @register.filter

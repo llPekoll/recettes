@@ -43,7 +43,7 @@
     </button>
   </div>
 </div>
-<div class="pt-20">{% include "ingredient_list.html" %}</div>
+<div class="pt-20">{% include "components/ingredient_list.html" %}</div>
 <script>
 let suggestions = {% if ingredient_names %} {{ ingredient_names|safe }}; {% else %} [];{% endif %}
 const searchWrapper = document.querySelector(".search-input");

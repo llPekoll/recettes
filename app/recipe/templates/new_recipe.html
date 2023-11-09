@@ -2,6 +2,7 @@
 {% comment %} TODO: add  Youtube link, insta  {% endcomment %}
 {% load i18n %}
 {% load static %}
+{% load my_filters %}
 {% block content %}
   {% include 'navbar.html' %}
   <form method="post" class="bg-orange-50 pt-20 h-screen mx-80">
@@ -21,7 +22,7 @@
         Name<span class="text-red-600">*</span>:
         {% include 'components/help_circle.html' with help_text="Just the way you want to call it?" %}
       </label>
-      <input type="text" name={{ form.title.name }} data-test="new-recipe" class="rounded-lg ml-3 bg-orange-200 focus:ring-0 border-0 w-full" required placeholder="{{ form.title.label }}" value="{{ form.title.value }}" />
+      <input type="text" name={{ form.title.name }} data-test="new-recipe" class="rounded-lg ml-3 bg-orange-200 focus:ring-0 border-0 w-full" required placeholder="{{ form.title.label }}" value="{{ recipe.title }}" />
       <div>
         <label for={{ form.title.name }} class="flex mt-5">
           Category:
@@ -45,6 +46,11 @@
           Image:
           {% include 'components/help_circle.html' with help_text="this is going to be the background image of the recipe" %}
         </label>
+        {% if recipe.image.url %}
+          <img src="{{ recipe.image.url | mino_to_localhost }}"
+               alt="recipe image"
+               class="w-60 h-60 inline" />
+        {% endif %}
         <input type="file" name="image" accept="image/*" class="ml-3">
         <label for={{ form.recipe_origin.name }} class="flex mt-5 ">
           Origin:
@@ -57,7 +63,9 @@
           {% for value in form.recipe_origin %}
             <option value="{{ value.data.value }}"
                     class="capitalize"
-                    {% if value == form.recipe_origin.value %}selected{% endif %}>{{ value.data.value }}</option>
+                    {% if value.data.value == form.recipe_origin.value %}selected{% endif %}>
+              {{ value.data.value }}
+            </option>
           {% endfor %}
         </select>
         <label for={{ form.recipe_origin.name }} class="flex mt-5 ">
@@ -65,17 +73,19 @@
           {% include 'components/help_circle.html' with help_text="How much time is it going to take" %}
         </label>
         <div class="flex">
-          <input type="number" name={{ form.duration.name }} data-test="new-recipe" class="ml-3 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block  p-2.5" min=0 />
+          <input type="number" name={{ form.duration.name }} value={{ form.duration.value }} data-test="new-recipe" class="ml-3 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block  p-2.5" min=0 />
           <select name={{ form.duration_scale.name }} id="{{ form.duration_scale.id_for_label }}" class="ml-3 bg-orange-200 capitalize text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5 ">
             {% for value in form.duration_scale %}
               <option value="{{ value.data.value }}"
                       class="capitalize"
-                      {% if value == form.duration_scale.value %}selected{% endif %}>{{ value.data.value }}s</option>
+                      {% if value.data.value == form.duration_scale.value %}selected{% endif %}>
+                {{ value.data.value }}s
+              </option>
             {% endfor %}
           </select>
         </div>
       </div>
-      {% include 'ingredient_form.html' %}
+      {% include 'components/ingredient_form.html' %}
       {{ form.recipe_ingredients }}
       {{ form.instructions }}
       <div class="checkbox-wrapper-28 text-orange-500 mt-5">
@@ -86,7 +96,7 @@
         <svg>
           <use xlink:href="#checkmark-28" />
         </svg>
-        <label for="tmp-28">Publish project</label>
+        <label for="tmp-28">Publish recipe</label>
         <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
           <symbol id="checkmark-28" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-miterlimit="10" fill="none"  d="M22.9 3.7l-15.2 16.6-6.6-7.1"></path>
@@ -94,7 +104,6 @@
         </svg>
       </div>
     </div>
-    {% comment %} checkbox {% endcomment %}
     <button type="submit"
             class="bg-orange-800 text-white rounded-lg float-right mt-5 px-10 py-2 mr-28">Create Recipe</button>
   </form>

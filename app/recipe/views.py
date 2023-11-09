@@ -2,13 +2,14 @@ from datetime import datetime
 
 from account.models import User
 from django.db.models import Avg, Q
-from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from recipe.models import Recipe
 
 from .forms import RecipeForm, RecipeIngredientForm
-from .models import Comment, Ingredient, Rate, Recipe, RecipeIngredient, Tag
+from recipe.models import Ingredient, Recipe, RecipeIngredient
+from common.models import Comment, Rate, Tag
 
 
 def go_to_new_recipe(request):
@@ -222,6 +223,10 @@ def add_recipe_tags(request, recipe_id):
 
 def edit_recipe(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
+
+    print("recipe.recipe_ingredients")
+    print(recipe.ingredients.all())
+    ings = recipe.ingredients.all()
     if request.method == "POST":
         form = RecipeForm(request.POST, instance=recipe)
         if form.is_valid():
@@ -229,6 +234,9 @@ def edit_recipe(request, pk):
             return redirect("recipe_detail", recipe_id=recipe.id)
     else:
         form = RecipeForm(instance=recipe)
+    print(recipe.image.url)
     return render(
-        request, "new_recipe.html", {"form": form, "recipe": recipe, "create": False}
+        request,
+        "new_recipe.html",
+        {"form": form, "ings": ings, "recipe": recipe, "create": False},
     )

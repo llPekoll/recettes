@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     "django_htmx",
     "storages",
     "django_quill",
+    "common",
+    "article",
 ]
 
 TAILWIND_APP_NAME = "theme"

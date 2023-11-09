@@ -1,5 +1,8 @@
-from account.models import ProfileImage, User
 from django import forms
+
+from article.models import Article
+from account.models import User
+from common.models import Image
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django_quill.forms import QuillFormField
 
@@ -76,11 +79,6 @@ class ProfileForm(forms.ModelForm):
         }
 
 
-from django import forms
-
-from .models import Article
-
-
 class ArticleForm(forms.ModelForm):
     content = QuillFormField(required=False)
 
@@ -93,5 +91,5 @@ class ImageForm(forms.ModelForm):
     image = forms.ImageField()
 
     class Meta:
-        model = ProfileImage
+        model = Image
         fields = ["image"]

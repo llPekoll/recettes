@@ -1,12 +1,9 @@
 from enum import Enum
 
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
-from django.contrib.contenttypes.models import ContentType
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.text import slugify
 from django_quill.fields import QuillField
-from storages.backends.s3boto3 import S3Boto3Storage
 
 
 class Category(Enum):
@@ -101,14 +98,11 @@ class Recipe(models.Model):
     is_featured = models.BooleanField(default=False)
     is_draft = models.BooleanField(default=True)
     url_link = models.URLField(max_length=255, null=True, blank=True)
-    image = models.ImageField(
-        upload_to="profile_pictures",
-        storage=S3Boto3Storage(),
-        blank=True,
-        null=True,
+    image = models.OneToOneField(
+        "common.Image", on_delete=models.SET_NULL, null=True, blank=True
     )
-    tags = models.ManyToManyField("recipe.Tag", blank=True)
-    comments = GenericRelation("recipe.Comment")
+    tags = models.ManyToManyField("common.Tag", blank=True)
+    comments = GenericRelation("common.Comment")
 
     def __str__(self):
         return self.title
@@ -135,7 +129,9 @@ class Ingredient(models.Model):
 
 
 class RecipeIngredient(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, default=1)
+    recipe = models.ForeignKey(
+        Recipe, on_delete=models.CASCADE, default=1, related_name="ingredients"
+    )
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.DecimalField(max_digits=6, decimal_places=2)
     unit = models.CharField(
@@ -148,41 +144,9 @@ class RecipeIngredient(models.Model):
     def __str__(self):
         return f"{self.quantity} {self.unit} {self.ingredient.name}"
 
-
-class Rate(models.Model):
-    user = models.ForeignKey("account.User", on_delete=models.CASCADE)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    value = models.IntegerField(
-        validators=[MinValueValidator(0), MaxValueValidator(5)], default=3
-    )
-
-    def __str__(self):
-        return f"{self.user.username} rates {self.recipe.title}: {self.value}"
-
-
-class Comment(models.Model):
-    author = models.ForeignKey("account.User", on_delete=models.CASCADE)
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey("content_type", "object_id")
-    text = models.TextField()
-    parent_comment = models.ForeignKey(
-        "self", on_delete=models.CASCADE, null=True, blank=True, related_name="replies"
-    )
-    edited = models.BooleanField(default=False)
-    edtied_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.author.username} commented on {self.content_object}"
-
-
-class Tag(models.Model):
-    name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.name
+    @property
+    def name(self):
+        return self.ingredient.name
 
 
 class Fork(models.Model):

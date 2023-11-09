@@ -15,12 +15,14 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.decorators.csrf import csrf_exempt
 from django_htmx.http import HttpResponseClientRedirect, retarget
 from django_htmx.middleware import HtmxDetails
-from recipe.models import Comment, Recipe
+from recipe.models import Recipe
+from common.models import Comment
 
 from elisasrecipe import settings
 
 from .forms import ArticleForm, ImageForm, LoginForm, ProfileForm, UserRegistrationForm
-from .models import Article, PasswordResetToken, User
+from account.models import PasswordResetToken, User
+from article.models import Article
 
 
 class HtmxHttpRequest(HttpRequest):

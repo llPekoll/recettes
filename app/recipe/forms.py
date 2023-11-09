@@ -1,12 +1,9 @@
 from django import forms
-from django.core.files.storage import default_storage
 from django.utils.text import slugify
 from django_quill.forms import QuillFormField
-from storages.backends.s3boto3 import S3Boto3Storage
 
 from .models import (
     Category,
-    Comment,
     Ingredient,
     Recipe,
     RecipeIngredient,
@@ -59,6 +56,7 @@ class RecipeForm(forms.ModelForm):
     )
     instructions = QuillFormField(required=False)
     recipe_id = forms.IntegerField(widget=forms.HiddenInput())
+    from django.forms import inlineformset_factory
 
     class Meta:
         model = Recipe

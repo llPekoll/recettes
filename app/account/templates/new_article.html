@@ -10,7 +10,7 @@
     <div class="flex items-end ml-20 pt-10">
       <img src="{% static 'notes.svg' %}"
            alt="Profile Picture"
-           class=" w-44 h-44 inline" />
+           class="w-44 h-44 inline" />
       <div class=" inline text-orange-700 ">
         <p class="text-4xl capitalize font-bold underline">New Article</p>
         <p class=" -mt-1.5 text-orange-300">creation of a new article</p>
@@ -19,13 +19,13 @@
     <div class="block w-5/6 ml-20">
       <label for={{ form.title.name }} class="flex mt-10 font-bold text-xl">
         Name<span class="text-red-600">*</span>:
-        {% include 'components/help_circle.html' with help_text="Just the way you want to call it?" %}
+        {% include "components/help_circle.html" with help_text="Just the way you want to call it?" %}
       </label>
       <input type="text" name={{ form.title.name }} data-test="new-recipe" class="rounded-lg ml-3 bg-orange-200 focus:ring-0 border-0 w-full" required placeholder="{{ form.title.label }}" />
       <div>
         <label for={{ form.image.name }} class="flex mt-5 font-bold text-xl">
           Cover Image:
-          {% include 'components/help_circle.html' with help_text="this is going to be the background image of the recipe" %}
+          {% include "components/help_circle.html" with help_text="this is going to be the background image of the recipe" %}
         </label>
         <input type="file" name="image" accept="image/*" class="ml-3">
       </div>

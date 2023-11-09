@@ -1,9 +1,9 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% comment %} TODO: add  Youtube link, insta  {% endcomment %}
 {% load i18n %}
 {% load static %}
 {% block content %}
-  {% include 'navbar.html' %}
+  {% include "navbar.html" %}
   <form method="post" class="bg-orange-50 pt-20 h-screen mx-80">
     {% csrf_token %}
     <input type="hidden" name="article-id" value="{{ article_draft }}" />
@@ -129,4 +129,4 @@
       }
     }
   </style>
-{% endblock %}
+{% endblock content %}

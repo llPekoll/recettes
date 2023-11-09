@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.utils.translation import activate, get_language, gettext
-from django.utils.translation import gettext_lazy as _
 from recipe.models import Recipe
 
 

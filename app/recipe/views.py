@@ -1,15 +1,14 @@
 from datetime import datetime
 
 from account.models import User
+from common.models import Comment, Rate, Tag
 from django.db.models import Avg, Q
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from recipe.models import Recipe
+from recipe.models import Ingredient, Recipe, RecipeIngredient
 
 from .forms import RecipeForm, RecipeIngredientForm
-from recipe.models import Ingredient, Recipe, RecipeIngredient
-from common.models import Comment, Rate, Tag
 
 
 def go_to_new_recipe(request):
@@ -58,7 +57,7 @@ def add_ingredient(request):
         form = RecipeIngredientForm(request.POST)
         print(form.errors)
         if form.is_valid():
-            res = form.save()
+            form.save()
         print(request.POST.get("recipe_id"))
         ings = [
             ingredient
@@ -203,7 +202,7 @@ def search_recipes(request):
 
 
 def add_tags(tags_in_string_format):
-    tag_names = tags_in_string_format.split(",")
+    return tags_in_string_format.split(",")
 
 
 def add_recipe_tags(request, recipe_id):

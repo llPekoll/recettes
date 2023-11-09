@@ -1,6 +1,6 @@
 from enum import Enum
 
-from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.utils.text import slugify
 from django_quill.fields import QuillField

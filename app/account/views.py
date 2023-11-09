@@ -1,6 +1,9 @@
 from datetime import datetime
 
 import requests
+from account.models import PasswordResetToken, User
+from article.models import Article
+from common.models import Comment
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
@@ -16,13 +19,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django_htmx.http import HttpResponseClientRedirect, retarget
 from django_htmx.middleware import HtmxDetails
 from recipe.models import Recipe
-from common.models import Comment
 
 from elisasrecipe import settings
 
 from .forms import ArticleForm, ImageForm, LoginForm, ProfileForm, UserRegistrationForm
-from account.models import PasswordResetToken, User
-from article.models import Article
 
 
 class HtmxHttpRequest(HttpRequest):

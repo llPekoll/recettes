@@ -1,0 +1,5 @@
+{
+    "ignore": "H006",
+    "indent": "4",
+    "format_attribute_template_tags": true
+}

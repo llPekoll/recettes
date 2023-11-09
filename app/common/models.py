@@ -1,10 +1,9 @@
-from django.db import models
-
-from storages.backends.s3boto3 import S3Boto3Storage
-from django.utils.translation import gettext_lazy as _
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+from storages.backends.s3boto3 import S3Boto3Storage
 
 
 class CustomS3Boto3Storage(S3Boto3Storage):

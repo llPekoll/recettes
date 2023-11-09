@@ -8,14 +8,16 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('account', '0001_initial'),
-        ('article', '0001_initial'),
+        ("account", "0001_initial"),
+        ("article", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='favorite_articles',
-            field=models.ManyToManyField(related_name='favorite_articles', to='article.article'),
+            model_name="user",
+            name="favorite_articles",
+            field=models.ManyToManyField(
+                related_name="favorite_articles", to="article.article"
+            ),
         ),
     ]

@@ -15,6 +15,14 @@
 ./manage.py test
 ```
 
+## Lint ##
+```
+isort app/
+black app/
+bandit app/
+flake8 app/
+```
+
 
 ## Cool Stuff ##
 https://codepen.io/nailaahmad/pen/MyZXVE

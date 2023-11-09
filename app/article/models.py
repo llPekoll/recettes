@@ -1,8 +1,7 @@
-from django.db import models
-from django_quill.fields import QuillField
 from django.contrib.contenttypes.fields import GenericRelation
-
+from django.db import models
 from django.utils.text import slugify
+from django_quill.fields import QuillField
 
 
 class Article(models.Model):

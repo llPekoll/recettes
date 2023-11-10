@@ -1,20 +1,17 @@
-from datetime import datetime
-
 import requests
 from account.models import PasswordResetToken, User
 from article.models import Article
-from common.models import Comment
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordResetConfirmView
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpRequest, HttpResponse, JsonResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
-from django.utils.encoding import force_bytes, force_str
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from django.views.decorators.csrf import csrf_exempt
 from django_htmx.http import HttpResponseClientRedirect, retarget
 from django_htmx.middleware import HtmxDetails
@@ -33,89 +30,6 @@ def index(request: HtmxHttpRequest) -> HttpResponse:
     return render(
         request,
         "index.html",
-    )
-
-
-def go_to_new_article(request):
-    date = f"{datetime.now()}"[:-10]
-    Article.objects.create(
-        author=request.user,
-        is_draft=True,
-        title=f"New draft {date}",
-    )
-    return redirect("article-creation")
-
-
-def article_creation(request):
-    if request.method == "POST":
-        print(request.POST.get("article-id"))
-        try:
-            article = Article.objects.get(
-                author=request.user, is_draft=True, id=request.POST.get("article-id")
-            )
-        except Article.DoesNotExist:
-            print("manage this ")
-        form = ArticleForm(request.POST, request.FILES, instance=article)
-        if form.is_valid():
-            recipe = form.save()
-        return redirect(reverse("article-detail", args=[article.id]))
-
-    form = ArticleForm()
-    article_draft = Article.objects.filter(author=request.user, is_draft=True).last()
-    return render(
-        request,
-        "new_article.html",
-        {
-            "form": form,
-            "article_draft": article_draft.id,
-        },
-    )
-
-
-def article_favorite(request, pk):
-    user = request.user
-    article = get_object_or_404(Article, pk=pk)
-    if article in user.favorite_articles.all():
-        print("remove")
-        user.favorite_articles.remove(article)
-        is_favorite = False
-    else:
-        user.favorite_articles.add(article)
-        is_favorite = True
-        print("add")
-    return render(
-        request,
-        "is_favorite.html",
-        {"recipe": article, "is_favorite": is_favorite},
-    )
-
-
-def add_new_comment_article(request, pk):
-    if request.htmx:
-        recipe = get_object_or_404(Recipe, pk=pk)
-        Comment.objects.create(
-            author=request.user, content_object=recipe, text=request.POST.get("comment")
-        )
-    comments = recipe.comments.order_by("-created_at")
-    return render(request, "rate.html", {"comment": comments})
-
-
-def article_detail(request, pk):
-    user = request.user
-    article = get_object_or_404(Article, pk=pk)
-    is_favorite = article in user.favorite_articles.all()
-    is_author = article.author == user
-    print(article)
-    comments = article.comments.all().order_by("-created_at")
-    return render(
-        request,
-        "article_detail.html",
-        {
-            "article": article,
-            "is_author": is_author,
-            "is_favorite": is_favorite,
-            "comments": comments,
-        },
     )
 
 
@@ -240,6 +154,7 @@ def send_password_reset_email(request):
         resp = requests.post(
             "https://api.mailwind.io/v1/send", headers=headers, json=payload
         )
+        print(resp.status_code)
         return render(
             request, "responses/email_sent.html", {"intro": intro, "link": link}
         )
@@ -441,12 +356,12 @@ def user_favorites(request):
     )
 
 
-def user_blog(request):
+def user_articles(request):
     form = ArticleForm()
     articles = Article.objects.filter(author=request.user)
     return render(
         request,
-        "user_blog.html",
+        "user_articles.html",
         {"articles": articles, "onwer": True, "form": form},
     )
 
@@ -462,7 +377,7 @@ def edit_image(request):
             user = request.user
             user.profile_picture = img
             user.save()
-        return """    
+        return """
                 <p>image saved</p>
             """
     print(7)

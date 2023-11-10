@@ -4,7 +4,9 @@
 {% load static %}
 {% block content %}
   {% include "navbar.html" %}
-  <form method="post" class="bg-orange-50 pt-20 h-screen mx-80">
+  <form method="post"
+        class="bg-orange-50 pt-20 h-screen mx-80"
+        action="{% url"article-creation" %}">
     {% csrf_token %}
     <input type="hidden" name="article-id" value="{{ article_draft }}" />
     <div class="flex items-end ml-20 pt-10">

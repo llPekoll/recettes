@@ -28,7 +28,7 @@ random_password = generate_random_password()
 
 
 def delete_users(page: Page):
-    url = f"http://127.0.0.1:3000/users/delete/"
+    url = "http://127.0.0.1:3000/users/delete/"
     page.route(url, lambda route: route.continue_(method="DELETE"))
     page.goto(url)
 

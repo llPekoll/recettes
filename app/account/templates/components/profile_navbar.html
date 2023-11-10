@@ -2,10 +2,10 @@
 <nav class="bg-orange-100 w-56 h-screen shadow px-5">
     <a href="{% url 'home' %}" class="px-5">
         <img src="{% static 'just_logo.svg' %}"
-             alt=" Logo"
+             alt="Logo"
              class="w-16 mx-auto text-center" />
     </a>
-    <ul class="ml-5 first-letter:uppercase pt-10 text-xl text-orange-600 font-bold italic ">
+    <ul class="ml-5 first-letter:uppercase pt-10 text-xl text-orange-600 font-bold italic">
         <a href={% url 'profile' %}>
             <li class="py-2 hover:text-red-800  duration-75 hover:scale-105">profile</li>
         </a>
@@ -15,7 +15,7 @@
         <a href={% url 'my-favorites' %}>
             <li class="py-2 hover:text-red-800  duration-75 hover:scale-105">favorites</li>
         </a>
-        <a href={% url 'my-blog' %}>
+        <a href={% url 'my-articles' %}>
             <li class="py-2 hover:text-red-800  duration-75 hover:scale-105">My Articles</li>
         </a>
         <a href={% url 'logout' %}>

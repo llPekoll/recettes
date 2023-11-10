@@ -1,3 +1,7 @@
-<button class=" text-white  bg-orange-500 rounded-lg px-10 py-2 shadow hover:scale-105 duration-75">
-    <a {% if url == 'new-recipe' %} href="{% url 'new-recipe' %}" {% elif url == 'new-article' %} href="{% url 'new-article' %}" {% endif %}>{{ text_to_display }}</a>
+<button class="text-white  bg-orange-500 rounded-lg px-10 py-2 shadow hover:scale-105 duration-75">
+    <a {% if url == 'new-recipe' %}
+           href="{% url 'new-recipe' %}"
+       {% elif url == 'my-articles' %}
+           href="{% url 'my-articles' %}"
+       {% endif %}>{{ text_to_display }}</a>
 </button>

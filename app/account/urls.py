@@ -4,29 +4,15 @@ from django.urls import path
 from . import views
 from .views import (
     CustomPasswordResetConfirmView,
-    add_new_comment_article,
-    article_creation,
-    article_detail,
-    article_favorite,
     delete_users,
-    go_to_new_article,
     send_password_reset_email,
-    user_blog,
+    user_articles,
     user_favorites,
     user_recipes,
 )
 
 urlpatterns = [
     # Basic auth
-    path("new-article/", go_to_new_article, name="new-article"),
-    path("article_creation/", article_creation, name="article-creation"),
-    path("article/<int:pk>/", article_detail, name="article-detail"),
-    path("article/<int:pk>/favorite", article_favorite, name="article-favorite"),
-    path(
-        "article/<int:pk>/comment/new",
-        add_new_comment_article,
-        name="article-comment-new",
-    ),
     path("register/", views.register, name="register"),
     path("profile/", views.profile, name="profile"),
     path("authors/", views.authors, name="authors"),
@@ -51,7 +37,7 @@ urlpatterns = [
     path("check/email", views.check_email, name="validation email"),
     # profile menu
     path("user/recipes", user_recipes, name="my-recipes"),
-    path("user/blog", user_blog, name="my-blog"),
+    path("user/articles", user_articles, name="my-articles"),
     path("user/favorites", user_favorites, name="my-favorites"),
     # Profile page
     path("edit-bio/image/", views.edit_image, name="edit-image"),

@@ -27,11 +27,24 @@ class Article(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
-        art = Article.objects.filter(slug=self.slug).exclude(id=self.id)
-        if art.exists():
-            slug, nb = art.slug.split("-")
+        art = (
+            Article.objects.filter(slug__contains=self.slug).exclude(id=self.id).last()
+        )
+        if art:
+            slug_and_maybe_number = art.slug.split("-")
+            slug = slug_and_maybe_number[0]
+            if len(slug_and_maybe_number) > 1:
+                nb = int(slug_and_maybe_number[-1])
+                nb += 1
+                self.slug = f"{slug}-{int(nb)}"
+            else:
+                self.slug = f"{slug}-1"
+
+        if len(self.slug) > 199:
+            nb = int(slug_and_maybe_number[-1])
             nb += 1
-            self.slug = f"{slug}-{int(nb)}"
+            self.slug = f"{self.slug[:100]}-{nb}"
+
         super().save(*args, **kwargs)
 
     # this one can be usefull for share btn

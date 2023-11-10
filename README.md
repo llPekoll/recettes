@@ -36,13 +36,14 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
  - [x] Edit profile pricture
  - [x] Add recipie picture
  - [x] Blog
- - [ ] Edit Articles/ Recipes
+ - [x] move article to an serparated app
+ - [~] clean template mess -> use componenent directory
+ - [~] Edit Articles/ Recipes
+ - [ ] add publish for articles too
  - [ ] add tags
  - [ ] Align CSS header
  - [ ] make search better
  - [ ] add advertising for make cash
  - [ ] add crypto reward [BAT,Polygon,NFTL]
  - [ ] Bio -> text area
- - [ ] move article to an serparated app
- - [ ] clean template mess -> use componenent directory
  - [ ] Tests!!!!!

@@ -1,6 +1,7 @@
+import json
 from article.forms import ArticleForm
 from article.models import Article
-from common.models import Comment, Image
+from common.models import Comment, Image, Tag
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from recipe.models import Recipe
@@ -14,6 +15,14 @@ def article_creation(request):
         if form.is_valid():
             article = form.save(commit=False)
             article.author = request.user
+            article.save()
+            if "tags" in request.POST:
+                print(request.POST.get("tags"))
+                print(type(request.POST.get("tags")))
+                tags = json.loads(request.POST.get("tags"))
+                for tag in tags:
+                    tag, _ = Tag.objects.get_or_create(name=tag.get("value"))
+                    article.tags.add(tag)
             if "image" in request.FILES:
                 image = Image(image=request.FILES["image"])
                 image.save()

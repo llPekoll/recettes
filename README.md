@@ -37,10 +37,10 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
  - [x] Add recipie picture
  - [x] Blog
  - [x] move article to an serparated app
- - [~] clean template mess -> use componenent directory
+ - [x] clean template mess -> use componenent directory
  - [~] Edit Articles/ Recipes
  - [ ] add publish for articles too
- - [ ] add tags
+ - [x] add tags
  - [ ] Align CSS header
  - [ ] make search better
  - [ ] add advertising for make cash

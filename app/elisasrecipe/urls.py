@@ -30,6 +30,6 @@ urlpatterns += i18n_patterns(
     path("", index, name="home"),
     path("", include("account.urls")),
     path("", include("article.urls")),
-    # path("", include("common.urls")),
+    path("", include("common.urls")),
     path("", include("recipe.urls")),
 )

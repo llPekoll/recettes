@@ -3,18 +3,19 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {% include 'django_quill/media.html' %}
+    {% include "django_quill/media.html" %}
     <link rel="shortcut icon"
           type="image/svg+xml"
           href="{% static '/favicon.png' %}" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    {% block extra_head %}{% endblock %}
+    {% block extra_head %}
+    {% endblock extra_head %}
     {% tailwind_css %}
     <script src="{% static 'htmx.min.js' %}" defer></script>
   </head>
-  <body class="" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {% block content %}
     {% endblock content %}
   </body>

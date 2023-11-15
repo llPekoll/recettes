@@ -7,5 +7,7 @@
                 <h2>{{ recipe.description }}</h2>
             </div>
         </a>
+    {% empty %}
+        no recipes
     {% endfor %}
 </div>

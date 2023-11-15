@@ -69,6 +69,8 @@ TEMPLATES = [
             os.path.join(BASE_DIR, "base/templates"),
             os.path.join(BASE_DIR, "accounts/templates"),
             os.path.join(BASE_DIR, "elisasrecipe/templates"),
+            os.path.join(BASE_DIR, "common/templates"),
+            os.path.join(BASE_DIR, "articles/templates"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {

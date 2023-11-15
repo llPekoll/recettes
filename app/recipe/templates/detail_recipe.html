@@ -78,12 +78,7 @@
                 </form>
             </div>
         {% endif %}
-        {% if comments is not empty %}
-            <div class="py-4 " id="comments">
-                <p class="text-xl first-letter:uppercase font-thin first-letter:italic">Comments:</p>
-                {% include "comments.html" %}
-            </div>
-        {% endif %}
+        {% include "comment_list.html" %}
         {% if user.is_authenticated %}
             <form method="post"
                   class="mb-4"

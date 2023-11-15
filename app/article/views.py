@@ -1,24 +1,20 @@
 import json
+
 from article.forms import ArticleForm
 from article.models import Article
 from common.models import Comment, Image, Tag
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from recipe.models import Recipe
 
 
 def article_creation(request):
     if request.method == "POST":
-        print(request.POST)
-        print(request.FILES)
         form = ArticleForm(request.POST)
         if form.is_valid():
             article = form.save(commit=False)
             article.author = request.user
             article.save()
             if "tags" in request.POST:
-                print(request.POST.get("tags"))
-                print(type(request.POST.get("tags")))
                 tags = json.loads(request.POST.get("tags"))
                 for tag in tags:
                     tag, _ = Tag.objects.get_or_create(name=tag.get("value"))
@@ -30,6 +26,8 @@ def article_creation(request):
             article.save()
             return redirect(reverse("article-detail", args=[article.id]))
         else:
+            # TODO:
+            # not allow to get there block it from the front!
             print(form.errors)
     return redirect(reverse("my-articles"))
 
@@ -52,14 +50,17 @@ def article_favorite(request, pk):
     )
 
 
-def add_new_comment_article(request, pk):
+def add_comment_article(request, pk):
     if request.htmx:
-        recipe = get_object_or_404(Recipe, pk=pk)
-        Comment.objects.create(
-            author=request.user, content_object=recipe, text=request.POST.get("comment")
-        )
-    comments = recipe.comments.order_by("-created_at")
-    return render(request, "rate.html", {"comment": comments})
+        if request.method == "POST":
+            article = get_object_or_404(Article, pk=pk)
+            Comment.objects.create(
+                author=request.user,
+                content_object=article,
+                text=request.POST.get("comment"),
+            )
+            comments = article.comments.order_by("created_at")
+            return render(request, "comment_list.html", {"comments": comments})
 
 
 def article_detail(request, pk):
@@ -67,8 +68,7 @@ def article_detail(request, pk):
     article = get_object_or_404(Article, pk=pk)
     is_favorite = article in user.favorite_articles.all()
     is_author = article.author == user
-    print(article)
-    comments = article.comments.all().order_by("-created_at")
+    comments = article.comments.all().order_by("created_at")
     return render(
         request,
         "article_detail.html",
@@ -77,5 +77,17 @@ def article_detail(request, pk):
             "is_author": is_author,
             "is_favorite": is_favorite,
             "comments": comments,
+        },
+    )
+
+
+def article_edit(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+    form = ArticleForm(instance=article)
+    return render(
+        request,
+        "edit_article.html",
+        {
+            "article": form,
         },
     )

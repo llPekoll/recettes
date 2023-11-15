@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+    {% include "navbar.html" %}
+    <section class="pt-20 px-10">
+        <div class="text-7xl w-full text-center mx-auto">
+            <h1 class="text-blue-400 hover:underline hover:cursor-pointer hover:text-blue-700"># {{ tag }}</h1>
+        </div>
+        Recipes:
+        {% include "recipe_list.html" %}
+        Articles:
+        {% include "list_article.html" %}
+    </section>
+{% endblock content %}

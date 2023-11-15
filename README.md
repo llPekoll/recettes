@@ -38,12 +38,14 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
  - [x] Blog
  - [x] move article to an serparated app
  - [x] clean template mess -> use componenent directory
- - [~] Edit Articles/ Recipes
- - [ ] add publish for articles too
  - [x] add tags
+ - [~] add publish for articles too
+ - [~] Edit Articles/ Recipes
+ - [ ] add auto suggestion for tag
  - [ ] Align CSS header
  - [ ] make search better
  - [ ] add advertising for make cash
  - [ ] add crypto reward [BAT,Polygon,NFTL]
  - [ ] Bio -> text area
+ - [ ] add pagination(https://realpython.com/django-pagination/)
  - [ ] Tests!!!!!

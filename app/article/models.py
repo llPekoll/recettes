@@ -18,7 +18,7 @@ class Article(models.Model):
     image = models.OneToOneField(
         "common.Image", on_delete=models.SET_NULL, null=True, blank=True
     )
-    tags = models.ManyToManyField("common.Tag", blank=True)
+    tags = models.ManyToManyField("common.Tag", related_name="articles", blank=True)
     comments = GenericRelation("common.Comment")
 
     def __str__(self):

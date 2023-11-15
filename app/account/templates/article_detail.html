@@ -2,65 +2,74 @@
 {% load my_filters %}
 {% block content %}
     {% include "navbar.html" %}
-    <div class="px-10">
-        <div class="container mx-auto px-4 py-8 pt-24">
-            {% if is_author %}
-                <div class="w-full">
-                    <button class="bg-orange-500 text-white py-2 px-10 rounded-lg float-right">🖊️ edit the article</button>
+    <div class="flex items-center justify-center ">
+        <div class=" mx-auto my-24 w-2/3 bg-orange-50 overflow-hidden rounded-lg">
+            {% if article.image %}
+                <div class="article-img bg-auto h-64 w-full shadow-lg flex items-end text-right pb-4 pr-4">
+                    {% if is_author %}
+                        <div class="w-full">
+                            {% url "article-edit" pk=article.pk as article_edit_url %}
+                            {% include "btn.html" with url=article_edit_url  text_to_display="🖊️ Edit the article" %}
+                        </div>
+                    {% endif %}
                 </div>
             {% endif %}
-            <div class="cursor-pointer">
-                <button hx-get="{% url "article-favorite" pk=article.id %}"
-                        hx-trigger="click"
-                        hx-target="#is-fav">{% include "is_favorite.html" %}</button>
-            </div>
-            <div class="flex flex-col md:flex-row md:items-center mb-8">
-                {% if article.image %}
-                    <div class="md:w-1/3">
-                        <img src="{{ article.image.image.url | mino_to_localhost }}"
-                             alt="{{ article.title }}"
-                             class="w-full rounded-lg shadow-lg">
+            <div class="px-10 pt-16">
+                <div class="cursor-pointer float-right">
+                    <button hx-get="{% url "article-favorite" pk=article.id %}"
+                            hx-trigger="click"
+                            hx-target="#is-fav">{% include "is_favorite.html" %}</button>
+                </div>
+                <div class="mb-8 no-tailwind all-initial remove-all">
+                    <p class="text-7xl font-semibold capitalize">{{ article.title }}</p>
+                    <div class="quill-content ml-3 mt-4">
+                        {% autoescape off %}
+                            {{ article.content.html|safe }}
+                        {% endautoescape %}
+                    </div>
+                </div>
+                {% if comment is not empty %}
+                    <div class="py-4 " id="comments">
+                        <p class="text-xl first-letter:uppercase font-thin first-letter:italic">Comments:</p>
+                        {% include "comments.html" %}
                     </div>
                 {% endif %}
+                {% for tag in article.tags.all %}
+                    <a href={% url "tag-page" pk=tag.pk %}>
+                        <p class="inline  text-blue-400 hover:underline hover:cursor-pointer hover:text-blue-700">
+                            #{{ tag.name }}
+                            {% if not forloop.last %},{% endif %}
+                        </p>
+                    </a>
+                {% endfor %}
+                {% include "comment_list.html" %}
+                {% if user.is_authenticated %}
+                    <form hx-post="{% url "detail-comment" pk=article.id content_type="Article" %}"
+                          hx-trigger="submit"
+                          hx-target="#comments">
+                        <label>
+                            Comment:
+                            <textarea name="comment"
+                                      class="rounded block w-1/3 my-2 focus:ring-0 border-0 h-32 bg-slate-100"></textarea>
+                        </label>
+                        <button type="submit" class="bg-orange-500 text-white rounded-lg py-2 px-10">Add comment</button>
+                    </form>
+                {% else %}
+                    <p>
+                        <a href="{% url 'login' %}">Log in</a> to add a comment.
+                    </p>
+                {% endif %}
             </div>
-            <div class="mb-8 no-tailwind all-initial remove-all">
-                <p class="text-2xl font-semibold">{{ article.title }}</p>
-                <div class="quill-content ml-3 mt-2">
-                    {% autoescape off %}
-                        {{ article.content.html|safe }}
-                    {% endautoescape %}
-                </div>
-            </div>
-            {% if comment is not empty %}
-                <div class="py-4 " id="comments">
-                    <p class="text-xl first-letter:uppercase font-thin first-letter:italic">Comments:</p>
-                    {% include "comments.html" %}
-                </div>
-            {% endif %}
-            {% if user.is_authenticated %}
-                <form method="post"
-                      class="mb-4"
-                      hx-post="{% url "article-comment-new" pk=article.id %}"
-                      hx-trigger="change"
-                      hx-target="#rate"
-                      hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-                    {% csrf_token %}
-                    <label>
-                        Comment:
-                        <textarea name="comment"
-                                  class="rounded block w-1/3 my-2 focus:ring-0 border-0 h-32"></textarea>
-                    </label>
-                    <button type="submit" class="bg-orange-500 text-white rounded-lg py-2 px-10">Add comment</button>
-                </form>
-            {% else %}
-                <p>
-                    <a href="{% url 'login' %}">Log in</a> to add a comment.
-                </p>
-            {% endif %}
         </div>
     </div>
     <style>
     @charset "UTF-8";
+.article-img
+{    
+    background: url('{{ article.image.image.url | mino_to_localhost | safe }}');
+    background-size: cover;
+    background-position: center;
+}
     meter {
       background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext font-size="100" x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" stroke-linejoin="round" fill="gray"  %3E★%3C/text%3E%3C/svg%3E') 0/auto 100%;
       height: 4em;

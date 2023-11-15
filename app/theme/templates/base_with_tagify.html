@@ -10,27 +10,26 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        {% if add_tags %}
-            <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
-            <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css"
-                  rel="stylesheet"
-                  type="text/css" />
-        {% endif %}
-        {% tailwind_css %}
-        {% comment %} <script src="{% static 'htmx.js' %}"></script> {% endcomment %}
-        <script src="{% static 'htmx.min.js' %}" defer></script>
-        {% comment %} <script src="https://unpkg.com/htmx.org@1.1.0"></script> {% endcomment %}
-        {% comment %} <script>
+        <meta description="Elisa's recipe the social network for healthy recipe" {% if add_tags %} <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css"
+              rel="stylesheet"
+              type="text/css" />
+    {% endif %}
+    {% tailwind_css %}
+    {% comment %} <script src="{% static 'htmx.js' %}"></script> {% endcomment %}
+    <script src="{% static 'htmx.min.js' %}" defer></script>
+    {% comment %} <script src="https://unpkg.com/htmx.org@1.1.0"></script> {% endcomment %}
+    {% comment %} <script>
 		  document.body.addEventListener('htmx:configRequest', (event) => {
 			event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
 		  })
-        </script> {% endcomment %}
-    </head>
-    <body class="" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-        {% block content %}
-        {% endblock content %}
-    </body>
+    </script> {% endcomment %}
+</head>
+<body class="" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    {% block content %}
+    {% endblock content %}
+</body>
 </html>
 <style>
 	{% comment %} body{

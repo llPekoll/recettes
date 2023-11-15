@@ -36,4 +36,4 @@ def clean_number(number):
 
 @register.filter
 def mino_to_localhost(value):
-    return value.replace("minio", "localhost").lower()
+    return value.replace("http://minio:9000", "http://127.0.0.1:9000")

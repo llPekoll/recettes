@@ -1,0 +1,7 @@
+<div class="bg-orange-50 h-64 w-44 rounded-lg mx-4 pb-4 hover:scale-105 transition hover:shadow-lg overflow-hidden my-10">
+    {% if type == "article" %}
+        {% include "components/block_article_card.html" with article=article %}
+    {% else %}
+        {% include "components/block_recipe_card.html" with recipe=recipe %}
+    {% endif %}
+</div>

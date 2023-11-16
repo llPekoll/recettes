@@ -1,23 +1,37 @@
 {% load my_filters %}
-<h2>Create a new article</h2>
+<h2>
+  {% if edit %}
+    Edit Article
+  {% else %}
+    Create Article
+  {% endif %}
+</h2>
 <form method="post"
       class="w-full"
-      action="{% url "article-creation" %}"
+      {% if edit %}
+        action="{% url "article-edit" pk=article.initial.id %}"
+      {% else %}
+        action="{% url "article-creation" %}"
+      {% endif %}
       enctype="multipart/form-data">
   {% csrf_token %}
+  {% if image %}
+    <img src="{{ image | mino_to_localhost | safe }}"
+         alt="article image"
+         class="w-60 max-h-32 inline" />
+  {% endif %}
   <label class="block">Title</label>
   <input type="text" name="title" value="{{ article.title.value }}" />
   <label class="block">content</label>
-  <div>{{ form.content }}</div>
-  {% if article.image %}
-    <img src="{{ article.image.image.url | mino_to_localhost | safe }}"
-         alt="article image"
-         class="w-60 h-60 inline" />
-  {% endif %}
+  <div>{{ article.content }}</div>
   <label class="block py-5 text-left">
     <input type="file" name="image" accept="image/*" class="ml-3">
   </label>
-  <input name='tags' value= {% for tag in article.tags.all %} autofocus>
+  <input name='tags'
+         value="{% for tag in tags %}
+                  {{ tag }},
+                {% endfor %}"
+         autofocus>
   <div class="checkbox-wrapper-28 text-orange-500 mt-5 text-left">
     <input id="tmp-28"
            type="checkbox"

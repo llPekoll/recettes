@@ -1,3 +1,4 @@
+from article.models import Article
 from django.shortcuts import render
 from django.utils.translation import activate, get_language, gettext
 from recipe.models import Recipe
@@ -15,5 +16,10 @@ def translate(language):
 
 def index(request):
     trans = translate(language="fr")
+    artilces = Article.objects.filter(is_draft=False).order_by("-created_at")
     recipes = Recipe.objects.filter(is_draft=False).order_by("-created_at")
-    return render(request, "index.html", {"trans": trans, "recipes": recipes})
+    return render(
+        request,
+        "index.html",
+        {"trans": trans, "recipes": recipes, "artilces": artilces},
+    )

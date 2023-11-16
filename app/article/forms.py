@@ -1,4 +1,5 @@
 from article.models import Article
+from common.models import Tag
 from django import forms
 from django_quill.forms import QuillFormField
 
@@ -9,4 +10,4 @@ class ArticleForm(forms.ModelForm):
 
     class Meta:
         model = Article
-        fields = ["title", "content", "image", "is_draft"]
+        fields = ["title", "content", "image", "is_draft", "id"]

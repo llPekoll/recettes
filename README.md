@@ -22,6 +22,7 @@ black app/
 bandit app/
 flake8 app/
 ```
+isort app/;black app/;bandit app/;flake8 app/
 
 
 ## Cool Stuff ##
@@ -39,8 +40,10 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
  - [x] move article to an serparated app
  - [x] clean template mess -> use componenent directory
  - [x] add tags
- - [~] add publish for articles too
- - [~] Edit Articles/ Recipes
+ - [x] Edit Articles
+ - [x] add publish for articles too
+ - [ ] Edit Recipes
+ - [ ] add default image for article and recipe
  - [ ] add auto suggestion for tag
  - [ ] Align CSS header
  - [ ] make search better
@@ -49,3 +52,4 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
  - [ ] Bio -> text area
  - [ ] add pagination(https://realpython.com/django-pagination/)
  - [ ] Tests!!!!!
+

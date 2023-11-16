@@ -83,11 +83,34 @@ def article_detail(request, pk):
 
 def article_edit(request, pk):
     article = get_object_or_404(Article, pk=pk)
+    if request.method == "POST":
+        # UPDATE the form wiht all the previous values
+        form = ArticleForm(request.POST, instance=article)
+        if form.is_valid():
+            form.save()
+        if "tags" in request.POST:
+            article.tags.clear()
+            tags = json.loads(request.POST.get("tags"))
+            for tag in tags:
+                tag, _ = Tag.objects.get_or_create(name=tag.get("value"))
+                article.tags.add(tag)
+        if "image" in request.FILES:
+            image = Image(image=request.FILES["image"])
+            image.save()
+            article.image = image
+        else:
+            print("is not valid but why?")
+        return redirect(reverse("article-detail", args=[article.id]))
+
     form = ArticleForm(instance=article)
+    tags = article.tags.all()
+    image = article.image.image.url
     return render(
         request,
         "edit_article.html",
         {
             "article": form,
+            "tags": tags,
+            "image": image,
         },
     )

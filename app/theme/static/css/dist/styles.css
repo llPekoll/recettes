@@ -2172,6 +2172,14 @@ select {
   max-height: 16rem;
 }
 
+.max-h-60 {
+  max-height: 15rem;
+}
+
+.max-h-32 {
+  max-height: 8rem;
+}
+
 .min-h-screen {
   min-height: 100vh;
 }

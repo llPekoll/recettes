@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Comment, Image, Rate
+from .models import Comment, Image, Rate, Report
 
 
 @admin.register(Comment)
@@ -17,4 +17,10 @@ class RateAdmin(admin.ModelAdmin):
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
     list_display = ("id", "image", "type")
+    ordering = ("-id",)
+
+
+@admin.register(Report)
+class AbuseAdmin(admin.ModelAdmin):
+    list_display = ("id", "content_object", "created_at")
     ordering = ("-id",)

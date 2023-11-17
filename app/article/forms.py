@@ -1,5 +1,4 @@
 from article.models import Article
-from common.models import Tag
 from django import forms
 from django_quill.forms import QuillFormField
 

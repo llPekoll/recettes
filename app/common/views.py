@@ -1,8 +1,9 @@
 from article.models import Article
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from recipe.models import Recipe
 
-from .models import Comment, Tag
+from .models import Comment, Report, Tag
 
 
 def detail_comment(request, pk, content_type):
@@ -37,3 +38,21 @@ def tag_page(request, pk):
         "page_tags.html",
         {"articles": articles, "recipes": recipes, "tag": tag.name},
     )
+
+
+def report(request, pk, content_type):
+    """report a comment or an article or a recipe"""
+    if content_type == "Article":
+        content = get_object_or_404(Article, pk=pk)
+    elif content_type == "Recipe":
+        content = get_object_or_404(Recipe, pk=pk)
+    elif content_type == "Comment":
+        content = get_object_or_404(Comment, pk=pk)
+
+    if request.method == "POST":
+        Report.objects.create(
+            author=request.user,
+            content_object=content,
+            message=request.POST.get("message"),
+        )
+        return HttpResponse("Report posted", status=200)

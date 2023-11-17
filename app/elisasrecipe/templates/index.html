@@ -12,10 +12,18 @@
             </div>
         {% endif %} {% endcomment %}
         {% include "searchbar.html" %}
-        Recipes:
-        <div class="flex pt-10">
+        <h2 class="text-3xl font-bold">Recipes:</h2>
+        <div class="flex pt-5">
             {% for recipe in recipes %}
                 {% include "components/recipe_card.html" with title=recipe.title description=recipe.description image=recipe.image %}
+            {% endfor %}
+        </div>
+        <h2 class="text-3xl font-bold">Articles:</h2>
+        <div class="flex ">
+            {% for article in articles.all %}
+                {% include "components/cards.html" with type="article" article=article %}
+            {% empty %}
+                <p>No articles yet on that topic</p>
             {% endfor %}
         </div>
     </div>

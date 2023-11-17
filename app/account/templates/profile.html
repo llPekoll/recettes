@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     <div class="mt-10 ml-10">
-                        <button class=" after:float-right after:pl-4 after:font-bold accordion bg-orange-400 hover:bg-orange-500 rounded-lg text-white cursor-pointer w-full text-3xl px-3 py-4 text-left">
+                        <button class="after:float-right after:pl-4 after:font-bold accordion bg-orange-400 hover:bg-orange-500 rounded-lg text-white cursor-pointer w-full text-3xl px-3 py-4 text-left">
                             Socials
                         </button>
                         <div class="panel overflow-hidden py-3">
@@ -43,9 +43,9 @@
                 </div>
             </div>
             <div class="w-4/5 py-10 ml-10">
-                {% comment %} <div class="float-left">{% include "btn_new_recipe.html" %}</div> {% endcomment %}
-                <div class="float-left">{% include "btn.html" with url="new-article" text_to_display="Create Article" %}</div>
-                <div class="float-right">{% include "btn.html" with url="new-recipe" text_to_display="Create recipe" %}</div>
+                {% url 'article:new' as article_new_url %}
+                <div class="float-left">{% include "btn.html" with url=article_new_url link_text="Create Article" %}</div>
+                <div class="float-right">{% include "btn.html" with url="new-recipe" link_text="Create recipe" %}</div>
             </div>
         </div>
     </div>

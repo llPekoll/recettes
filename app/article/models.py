@@ -20,6 +20,7 @@ class Article(models.Model):
     )
     tags = models.ManyToManyField("common.Tag", related_name="articles", blank=True)
     comments = GenericRelation("common.Comment")
+    Report = GenericRelation("common.Report")
 
     def __str__(self):
         return self.title

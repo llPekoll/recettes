@@ -16,10 +16,10 @@ def translate(language):
 
 def index(request):
     trans = translate(language="fr")
-    artilces = Article.objects.filter(is_draft=False).order_by("-created_at")
+    articles = Article.objects.filter(is_draft=False).order_by("-created_at")
     recipes = Recipe.objects.filter(is_draft=False).order_by("-created_at")
     return render(
         request,
         "index.html",
-        {"trans": trans, "recipes": recipes, "artilces": artilces},
+        {"trans": trans, "recipes": recipes, "articles": articles},
     )

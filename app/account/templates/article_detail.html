@@ -14,8 +14,18 @@
                     {% endif %}
                 </div>
             {% endif %}
-            <div class="px-10 pt-16">
-                <div class="cursor-pointer float-right">
+            {% if user.is_authenticated %}
+                <div class="float-right pr-10">
+                    <p hx-post="{% url "report" pk=article.id content_type="Article" %}"
+                       hx-trigger="click"
+                       hx-confirm="Are you sure you want to report this Article?"
+                       class="text-sm font-semibold text-red-500  duration-100 cursor-pointer scale-90 hover:text-red-800 hover:underline pt-7">
+                        - report abuse -
+                    </p>
+                </div>
+            {% endif %}
+            <div class="px-10 pt-7">
+                <div class="cursor-pointer">
                     <button hx-get="{% url "article-favorite" pk=article.id %}"
                             hx-trigger="click"
                             hx-target="#is-fav">{% include "is_favorite.html" %}</button>

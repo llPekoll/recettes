@@ -11,7 +11,7 @@
       {% if edit %}
         action="{% url "article-edit" pk=article.initial.id %}"
       {% else %}
-        action="{% url "article-creation" %}"
+        action="{% url "article:new" %}"
       {% endif %}
       enctype="multipart/form-data">
   {% csrf_token %}
@@ -21,13 +21,17 @@
          class="w-60 max-h-32 inline" />
   {% endif %}
   <label class="block">Title</label>
-  <input type="text" name="title" value="{{ article.title.value }}" />
+  <input type="text"
+         name="title"
+         {% if article.title.value %}value="{{ article.title.value }}"{% endif %} />
   <label class="block">content</label>
   <div>{{ article.content }}</div>
   <label class="block py-5 text-left">
     <input type="file" name="image" accept="image/*" class="ml-3">
   </label>
+  <label class="block">Tags</label>
   <input name='tags'
+         class="text-left w-full"
          value="{% for tag in tags %}
                   {{ tag }},
                 {% endfor %}"
@@ -62,7 +66,15 @@
 var input = document.querySelector('input[name=tags]');
 
 // initialize Tagify on the above input node reference
-new Tagify(input)
+new Tagify(input, {
+  whitelist : [{% for tag in tag_list %} "{{tag}}"{% if not forloop.last %},{% endif %}{%endfor%}],
+  dropdown : {
+      classname     : "color-blue",
+      position      : "text",         // place the dropdown near the typed text
+      closeOnSelect : false,          // keep the dropdown open after selecting a suggestion
+      highlightFirst: true
+  }
+})
 </script>
 <style>
     .ql-editor{

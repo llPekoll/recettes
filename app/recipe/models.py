@@ -103,6 +103,7 @@ class Recipe(models.Model):
     )
     tags = models.ManyToManyField("common.Tag", related_name="recipes", blank=True)
     comments = GenericRelation("common.Comment")
+    Report = GenericRelation("common.Report")
 
     def __str__(self):
         return self.title

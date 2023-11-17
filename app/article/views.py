@@ -24,12 +24,24 @@ def article_creation(request):
                 image.save()
                 article.image = image
             article.save()
-            return redirect(reverse("article-detail", args=[article.id]))
+            return redirect(reverse("article:detail", args=[article.id]))
         else:
             # TODO:
             # not allow to get there block it from the front!
             print(form.errors)
-    return redirect(reverse("my-articles"))
+
+    form = ArticleForm()
+    articles = Article.objects.filter(author=request.user)
+    tags = Tag.objects.all()
+    return render(
+        request,
+        "user_articles.html",
+        {
+            "articles": articles,
+            "article": form,
+            "tag_list": [tag.name for tag in tags],
+        },
+    )
 
 
 def article_favorite(request, pk):

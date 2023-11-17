@@ -3,8 +3,8 @@
 
 ## traductions ##
 ```
-./manage.py compilemessages
 ./manage.py makemessages --all
+./manage.py compilemessages
 ```
 ## Run tailwind ##
 ```
@@ -21,8 +21,9 @@ isort app/
 black app/
 bandit app/
 flake8 app/
-```
+# cli version
 isort app/;black app/;bandit app/;flake8 app/
+```
 
 
 ## Cool Stuff ##
@@ -42,9 +43,12 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
  - [x] add tags
  - [x] Edit Articles
  - [x] add publish for articles too
+ - [x] Report Report
+ - [x] add auto suggestion for tag
+ - [ ] rework on the slug system
  - [ ] Edit Recipes
+ - [ ] make author page
  - [ ] add default image for article and recipe
- - [ ] add auto suggestion for tag
  - [ ] Align CSS header
  - [ ] make search better
  - [ ] add advertising for make cash
@@ -52,4 +56,3 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
  - [ ] Bio -> text area
  - [ ] add pagination(https://realpython.com/django-pagination/)
  - [ ] Tests!!!!!
-

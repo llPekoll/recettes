@@ -1,8 +1,14 @@
-<div class="pt-2 relative mx-auto text-gray-600 w-52">
-    <input class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
+<div class="py-10 text-gray-600 w-full px-10">
+    <input class="border-2 border-gray-300 bg-white pr-16 rounded-lg font-bold focus:outline-none text-7xl w-full relative"
            type="search"
            name="search"
-           {% if type == "recipe" %} hx-post="{% url 'recipe-search' %}" {% elif type == "author" %} hx-post="{% url 'author-search' %}" {% elif type == "home" %} hx-post="{% url 'home' %}" {% endif %}
+           {% if type == "recipe" %}
+               hx-post="{% url 'recipe-search' %}"
+           {% elif type == "author" %}
+               hx-post="{% url 'author-search' %}"
+           {% elif type == "home" %}
+               hx-post="{% url 'home' %}"
+           {% endif %}
            hx-include="[name=search]"
            hx-trigger="keyup changed delay:1s"
            hx-target="#recipe-list"

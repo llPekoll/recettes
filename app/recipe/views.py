@@ -51,20 +51,39 @@ def recipe_creation(request):
     )
 
 
-def add_ingredient(request):
+def ingredient_list(request):
     if request.htmx:
-        print(request.POST)
-        form = RecipeIngredientForm(request.POST)
-        print(form.errors)
-        if form.is_valid():
-            form.save()
-        print(request.POST.get("recipe_id"))
+        if request.method == "POST":
+            print(request.POST)
+            form = RecipeIngredientForm(request.POST)
+            print(form.errors)
+            if form.is_valid():
+                form.save()
+            print(request.POST.get("recipe_id"))
+            ings = [
+                ingredient
+                for ingredient in RecipeIngredient.objects.filter(
+                    recipe=request.POST.get("recipe_id")
+                )
+            ]
+            return render(
+                request,
+                "ingredient_list.html",
+                {
+                    "ings": ings,
+                },
+            )
+
+
+def ingredient_detail(request, pk):
+    if request.method == "DELETE":
+        ingredient = get_object_or_404(RecipeIngredient, pk=pk)
+        ingredient.delete()
         ings = [
             ingredient
-            for ingredient in RecipeIngredient.objects.filter(
-                recipe=request.POST.get("recipe_id")
-            )
+            for ingredient in RecipeIngredient.objects.filter(recipe=ingredient.recipe)
         ]
+
         return render(
             request,
             "ingredient_list.html",
@@ -72,23 +91,6 @@ def add_ingredient(request):
                 "ings": ings,
             },
         )
-
-
-def delete_ingredient(request, pk):
-    ingredient = get_object_or_404(RecipeIngredient, pk=pk)
-    ingredient.delete()
-    ings = [
-        ingredient
-        for ingredient in RecipeIngredient.objects.filter(recipe=ingredient.recipe)
-    ]
-
-    return render(
-        request,
-        "ingredient_list.html",
-        {
-            "ings": ings,
-        },
-    )
 
 
 def recipe_detail(request, pk):

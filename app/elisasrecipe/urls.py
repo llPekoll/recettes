@@ -31,5 +31,5 @@ urlpatterns += i18n_patterns(
     path("", include("account.urls")),
     path("article/", include("article.urls")),
     path("", include("common.urls")),
-    path("", include("recipe.urls")),
+    path("recipe/", include("recipe.urls")),
 )

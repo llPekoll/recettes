@@ -1,13 +1,12 @@
 from django.urls import path
 
 from .views import (
-    add_ingredient,
+    ingredient_list,
     add_new_comment,
     add_recipe_tags,
     authors,
-    delete_ingredient,
+    ingredient_detail,
     edit_recipe,
-    go_to_new_recipe,
     recipe_creation,
     recipe_detail,
     recipe_favorite,
@@ -16,9 +15,10 @@ from .views import (
     search_recipes,
 )
 
+app_name = "recipe"
+
 urlpatterns = [
-    path("new-recipe/", go_to_new_recipe, name="new-recipe"),
-    path("recipe_creation/", recipe_creation, name="recipe-creation"),
+    path("new/", recipe_creation, name="new"),
     path("recipe/<int:pk>/", recipe_detail, name="recipe-detail"),
     path("recipe/<int:pk>/favorite", recipe_favorite, name="recipe-favorite"),
     path("recipe/<int:pk>/rating", recipe_rating, name="recipe-rating"),
@@ -26,10 +26,11 @@ urlpatterns = [
     path("recipe/<int:pk>/tags/", add_recipe_tags, name="add_recipe_tags"),
     path("recipe/<int:pk>/edit/", edit_recipe, name="edit_recipe"),
     path("recipes/search/", search_recipes, name="recipe-search"),
-    path("recipes/", recipes, name="recipes"),
+    path("", recipes, name="list-page"),
     path("authors/", authors, name="authors"),
-    path("add-ingredient/", add_ingredient, name="add-ingredient"),
-    path("delete-ingredient/<int:pk>/", delete_ingredient, name="delete-ingredient"),
+    # mix add and delete ingredient with post and delete
+    path("ingredient/", ingredient_list, name="ingredient-list"),
+    path("ingredient/<int:pk>/", ingredient_detail, name="ingredient-detail"),
     # path(
     #     "ingredients/<int:pk>/delete/",
     #     DeleteIngredientView.as_view(),

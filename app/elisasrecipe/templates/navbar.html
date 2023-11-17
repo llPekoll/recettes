@@ -2,7 +2,9 @@
 {% load i18n %}
 <nav class="nav bg-orange-200 fixed w-full">
     <a href="{% url 'home' %}">
-        <img src="{% static 'logo3.svg' %}" alt=" Logo" class="w-24 ml-10 pt-1.5 float-left" />
+        <img src="{% static 'logo3.svg' %}"
+             alt="Logo"
+             class="w-24 ml-10 pt-1.5 float-left" />
     </a>
     <li class="md:hidden block float-right">{% include "lang_selector.html" %}</li>
     {% if user.is_authenticated %}
@@ -14,7 +16,7 @@
     </label>
     <ul class="menu overflow-hidden md:overflow-visible pt-5">
         <li>
-            <a href="{% url "recipes" %}"
+            <a href="{% url "recipe:list-page" %}"
                class="px-5 group text-orange-600 transition duration-300 md:hover:bg-transparent hover:bg-orange-800">
                 {% translate "recipes" %}
                 <span class="sm:block max-w-0 group-hover:max-w-full transition-all duration-200 h-0.5 bg-orange-600"></span>

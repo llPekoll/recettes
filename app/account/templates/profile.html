@@ -43,9 +43,10 @@
                 </div>
             </div>
             <div class="w-4/5 py-10 ml-10">
-                {% url 'article:new' as article_new_url %}
-                <div class="float-left">{% include "btn.html" with url=article_new_url link_text="Create Article" %}</div>
-                <div class="float-right">{% include "btn.html" with url="new-recipe" link_text="Create recipe" %}</div>
+                {% url 'article:new' as article_new %}
+                {% url 'recipe:new' as recipe_new %}
+                <div class="float-left">{% include "btn.html" with url=article_new link_text="Create Article" %}</div>
+                <div class="float-right">{% include "btn.html" with url=recipe_new link_text="Create recipe" %}</div>
             </div>
         </div>
     </div>

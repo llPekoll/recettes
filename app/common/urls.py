@@ -1,17 +1,17 @@
 from django.urls import path
 
-from .views import detail_comment, report, tag_page
+from .views import detail_comment, report, tag
 
 urlpatterns = [
     path(
-        "comment/<int:pk>/<str:content_type>",
+        "api/comment/<int:pk>/<str:content_type>",
         detail_comment,
-        name="detail-comment",
+        name="api-detail-comment",
     ),
-    path("report/<int:pk>/<str:content_type>", report, name="report"),
+    path("api/report/<int:pk>/<str:content_type>", report, name="api-report"),
     path(
         "tag/<int:pk>/",
-        tag_page,
-        name="tag-page",
+        tag,
+        name="tag",
     ),
 ]

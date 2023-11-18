@@ -16,7 +16,7 @@
             {% endif %}
             {% if user.is_authenticated %}
                 <div class="float-right pr-10">
-                    <p hx-post="{% url "report" pk=article.id content_type="Article" %}"
+                    <p hx-post="{% url "api-report" pk=article.id content_type="Article" %}"
                        hx-trigger="click"
                        hx-confirm="Are you sure you want to report this Article?"
                        class="text-sm font-semibold text-red-500  duration-100 cursor-pointer scale-90 hover:text-red-800 hover:underline pt-7">
@@ -26,7 +26,7 @@
             {% endif %}
             <div class="px-10 pt-7">
                 <div class="cursor-pointer">
-                    <button hx-get="{% url "article-favorite" pk=article.id %}"
+                    <button hx-get="{% url "article:api-set-favorite" pk=article.id %}"
                             hx-trigger="click"
                             hx-target="#is-fav">{% include "is_favorite.html" %}</button>
                 </div>
@@ -54,7 +54,7 @@
                 {% endfor %}
                 {% include "comment_list.html" %}
                 {% if user.is_authenticated %}
-                    <form hx-post="{% url "detail-comment" pk=article.id content_type="Article" %}"
+                    <form hx-post="{% url "api-detail-comment" pk=article.id content_type="Article" %}"
                           hx-trigger="submit"
                           hx-target="#comments">
                         <label>

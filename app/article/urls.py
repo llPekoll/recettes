@@ -1,20 +1,18 @@
 from django.urls import path
 
-from .views import (
-    add_comment_article,
-    article_creation,
-    article_detail,
-    article_edit,
-    article_favorite,
-)
+from .views.api import article_creation, article_edit, set_favorite
+from .views.page import page_article_creation, page_article_detail, page_article_edit
 
 app_name = "article"
 
 
 urlpatterns = [
-    path("new/", article_creation, name="new"),
-    path("<int:pk>/", article_detail, name="detail"),
-    path("<int:pk>/edit", article_edit, name="edit"),
-    path("<int:pk>/favorite", article_favorite, name="favorite"),
-    path("<int:pk>/comment", add_comment_article, name="add-comment"),
+    # Pages
+    path("new/", page_article_creation, name="new"),
+    path("<int:pk>/", page_article_detail, name="detail"),
+    path("<int:pk>/edit/", page_article_edit, name="edit"),
+    # API
+    path("api/", article_creation, name="api-new"),
+    path("api/<int:pk>/", article_edit, name="api-edit"),
+    path("api/<int:pk>/favorite/", set_favorite, name="api-set-favorite"),
 ]

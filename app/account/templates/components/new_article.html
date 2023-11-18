@@ -29,13 +29,7 @@
   <label class="block py-5 text-left">
     <input type="file" name="image" accept="image/*" class="ml-3">
   </label>
-  <label class="block">Tags</label>
-  <input name='tags'
-         class="text-left w-full"
-         value="{% for tag in tags %}
-                  {{ tag }},
-                {% endfor %}"
-         autofocus>
+  {% include "components/tag_editor.html" %}
   <div class="checkbox-wrapper-28 text-orange-500 mt-5 text-left">
     <input id="tmp-28"
            type="checkbox"
@@ -61,21 +55,6 @@
     {% endif %}
   </button>
 </form>
-<script>
-	// The DOM element you wish to replace with Tagify
-var input = document.querySelector('input[name=tags]');
-
-// initialize Tagify on the above input node reference
-new Tagify(input, {
-  whitelist : [{% for tag in tag_list %} "{{tag}}"{% if not forloop.last %},{% endif %}{%endfor%}],
-  dropdown : {
-      classname     : "color-blue",
-      position      : "text",         // place the dropdown near the typed text
-      closeOnSelect : false,          // keep the dropdown open after selecting a suggestion
-      highlightFirst: true
-  }
-})
-</script>
 <style>
     .ql-editor{
       min-height:200px;

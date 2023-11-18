@@ -45,8 +45,8 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
  - [x] add publish for articles too
  - [x] Report Report
  - [x] add auto suggestion for tag
+ - [~] Edit Recipes
  - [ ] rework on the slug system
- - [ ] Edit Recipes
  - [ ] make author page
  - [ ] add default image for article and recipe
  - [ ] Align CSS header
@@ -55,4 +55,5 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
  - [ ] add crypto reward [BAT,Polygon,NFTL]
  - [ ] Bio -> text area
  - [ ] add pagination(https://realpython.com/django-pagination/)
+ - [ ] export pdf
  - [ ] Tests!!!!!

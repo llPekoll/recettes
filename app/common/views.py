@@ -29,7 +29,7 @@ def detail_comment(request, pk, content_type):
             return render(request, "comment_list.html", {"comments": comments})
 
 
-def tag_page(request, pk):
+def tag(request, pk):
     tag = get_object_or_404(Tag, pk=pk)
     articles = tag.articles.filter(is_draft=False).order_by("-created_at")
     recipes = tag.recipes.filter(is_draft=False).order_by("-created_at")

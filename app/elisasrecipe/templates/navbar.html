@@ -23,7 +23,7 @@
             </a>
         </li>
         <li>
-            <a href="{% url "authors" %}"
+            <a href="{% url "user:authors" %}"
                class="px-5 group text-orange-600 transition duration-300 md:hover:bg-transparent hover:bg-orange-800">
                 {% translate "author" %}
                 <span class="sm:block max-w-0 group-hover:max-w-full transition-all duration-200 h-0.5 bg-orange-600"></span>
@@ -31,20 +31,20 @@
         </li>
         {% if not user.is_authenticated %}
             <li class="hidden md:block">
-                <a href="{% url "login" %}"><span class="bg-orange-600 text-white px-10 py-2 rounded-xl mx-2">{% translate "login" %}</span></a>
+                <a href="{% url "user:login" %}"><span class="bg-orange-600 text-white px-10 py-2 rounded-xl mx-2">{% translate "login" %}</span></a>
             </li>
             <li class="md:hidden block">
-                <a href="{% url "login" %}"
+                <a href="{% url "user:login" %}"
                    class="group text-orange-600 transition duration-300 md:hover:bg-transparent hover:bg-orange-800">
                     {% translate "login" %}
                     <span class="sm:block max-w-0 group-hover:max-w-full transition-all duration-200 h-0.5 bg-orange-600"></span>
                 </a>
             </li>
             <li class="hidden md:block">
-                <a href="{% url "register" %}"><span class="bg-orange-600 text-white px-10 py-2 rounded-xl mx-2">{% translate "register" %}</span></a>
+                <a href="{% url "user:register" %}"><span class="bg-orange-600 text-white px-10 py-2 rounded-xl mx-2">{% translate "register" %}</span></a>
             </li>
             <li class="md:hidden block">
-                <a href="{% url "register" %}"
+                <a href="{% url "user:register" %}"
                    class="group text-orange-600 transition duration-300 md:hover:bg-transparent hover:bg-orange-800">
                     {% translate "register" %}
                     <span class="sm:block max-w-0 group-hover:max-w-full transition-all duration-200 h-0.5 bg-orange-600"></span>

@@ -1,23 +1,36 @@
-from django.contrib.auth import views as auth_views
-from django.urls import path
-
-from . import views
-from .views import (
-    CustomPasswordResetConfirmView,
+from account.views.api import (
+    check_email,
+    check_username,
     delete_users,
+    edit_bio,
+    edit_image,
+)
+from account.views.page import (
+    CustomPasswordResetConfirmView,
+    author_detail,
+    authors,
+    login_view,
+    password_change_success,
+    profile,
+    register,
     send_password_reset_email,
     user_articles,
     user_favorites,
     user_recipes,
 )
+from django.contrib.auth import views as auth_views
+from django.urls import path
+
+app_name = "user"
 
 urlpatterns = [
-    # Basic auth
-    path("register/", views.register, name="register"),
-    path("profile/", views.profile, name="profile"),
-    path("authors/", views.authors, name="authors"),
-    path("account/", views.profile, name="account"),
-    path("login/", views.login_view, name="login"),
+    # page
+    path("register/", register, name="register"),
+    path("profile/", profile, name="profile"),
+    path("authors/", authors, name="authors"),
+    path("author/<int:pk>", author_detail, name="detail"),
+    path("account/", profile, name="account"),
+    path("login/", login_view, name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("reset-password/", send_password_reset_email, name="password-reset"),
     path(
@@ -27,26 +40,16 @@ urlpatterns = [
     ),
     path(
         "password-change-success/",
-        views.password_change_success,
+        password_change_success,
         name="password-change-success",
     ),
-    # for test
-    path("users/delete/", delete_users, name="delete_users"),
-    # HTMX
-    path("check/username", views.check_username, name="validation username"),
-    path("check/email", views.check_email, name="validation email"),
-    # profile menu
     path("user/recipes", user_recipes, name="my-recipes"),
     path("user/articles", user_articles, name="my-articles"),
     path("user/favorites", user_favorites, name="my-favorites"),
-    # Profile page
-    path("edit-bio/image/", views.edit_image, name="edit-image"),
-    path("edit-bio/<str:field>", views.edit_bio, name="edit-bio"),
-    # path("edit/last-name", views.check_email, name="edit-last-name"),
-    # path("edit/bio-name", views.check_email, name="edit-bio-name"),
-    # path("edit/facebook", views.check_email, name="edit-facebook"),
-    # path("edit/instagram", views.check_email, name="edit-instagram"),
-    # path("edit/twitter", views.check_email, name="edit-twitter"),
-    # path("edit/youtube", views.check_email, name="edit-youtube"),
-    # path("edit/profile-picture", view s.check_email, name="edit-profile-picture"),
+    # API
+    path("users/delete/", delete_users, name="api-delete-users"),
+    path("check/username", check_username, name="api-validation-username"),
+    path("check/email", check_email, name="api-validation email"),
+    path("edit-bio/image/", edit_image, name="api-edit-image"),
+    path("edit-bio/<str:field>", edit_bio, name="api-edit-bio"),
 ]

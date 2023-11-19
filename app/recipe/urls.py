@@ -18,8 +18,8 @@ urlpatterns = [
     path("<int:pk>/edit/", page_recipe_creation, name="edit"),
     path("search/", page_search_recipes, name="search"),
     # API
-    path("api/<int:pk>/favorite/", set_favorite, name="favorite"),
-    path("api/<int:pk>/rating/", set_rating, name="rating"),
-    path("api/ingredient/", ingredient_list, name="ingredient-list"),
-    path("api/ingredient/<int:pk>/", ingredient_detail, name="ingredient-detail"),
+    path("api/<int:pk>/favorite/", set_favorite, name="api-favorite"),
+    path("api/<int:pk>/rating/", set_rating, name="api-rating"),
+    path("api/ingredient/", ingredient_list, name="api-ingredient-list"),
+    path("api/ingredient/<int:pk>/", ingredient_detail, name="api-ingredient-detail"),
 ]

@@ -9,7 +9,7 @@
                     {% if is_author %}
                         <div class="w-full">
                             {% url "article-edit" pk=article.pk as article_edit_url %}
-                            {% include "btn.html" with url=article_edit_url  text_to_display="🖊️ Edit the article" %}
+                            {% include "btn.html" with url=article_edit_url text_to_display="🖊️ Edit the article" %}
                         </div>
                     {% endif %}
                 </div>

@@ -6,19 +6,19 @@
              class="w-16 mx-auto text-center" />
     </a>
     <ul class="ml-5 first-letter:uppercase pt-10 text-xl text-orange-600 font-bold italic">
-        <a href={% url 'profile' %}>
+        <a href={% url 'user:profile' %}>
             <li class="py-2 hover:text-red-800  duration-75 hover:scale-105">profile</li>
         </a>
-        <a href={% url 'my-recipes' %}>
+        <a href={% url 'user:my-recipes' %}>
             <li class="py-2 hover:text-red-800  duration-75 hover:scale-105">My recipes</li>
         </a>
-        <a href={% url 'my-favorites' %}>
+        <a href={% url 'user:my-favorites' %}>
             <li class="py-2 hover:text-red-800  duration-75 hover:scale-105">favorites</li>
         </a>
-        <a href={% url 'my-articles' %}>
+        <a href={% url 'user:my-articles' %}>
             <li class="py-2 hover:text-red-800  duration-75 hover:scale-105">My Articles</li>
         </a>
-        <a href={% url 'logout' %}>
+        <a href={% url 'user:logout' %}>
             <li class="py-2 hover:text-red-800  duration-75 hover:scale-105">Logout</li>
         </a>
     </ul>

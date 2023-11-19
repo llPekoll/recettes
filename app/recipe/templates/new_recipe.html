@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% comment %} TODO: add  Youtube link, insta  {% endcomment %}
 {% load i18n %}
 {% load static %}
@@ -9,9 +9,9 @@
     <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css"
           rel="stylesheet"
           type="text/css" />
-{% endblock %}
+{% endblock extra_head %}
 {% block content %}
-    {% include 'navbar.html' %}
+    {% include "navbar.html" %}
     <form class="bg-orange-50 pt-20 h-screen mx-80"
           {% if create %}
               method="post" action="{% url "recipe:list" %}"
@@ -38,13 +38,13 @@
         <div class="block w-5/6 ml-20">
             <label for={{ form.title.name }} class="flex mt-10">
                 Name<span class="text-red-600">*</span>:
-                {% include 'components/help_circle.html' with help_text="Just the way you want to call it?" %}
+                {% include "components/help_circle.html" with help_text="Just the way you want to call it?" %}
             </label>
             <input type="text" name={{ form.title.name }} data-test="new-recipe" class="rounded-lg ml-3 bg-orange-200 focus:ring-0 border-0 w-full" required placeholder="{{ form.title.label }}" value="{{ recipe.title }}" />
             <div>
                 <label for={{ form.title.name }} class="flex mt-5">
                     Category:
-                    {% include 'components/help_circle.html' with help_text="What is the category of your recipe?" %}
+                    {% include "components/help_circle.html" with help_text="What is the category of your recipe?" %}
                 </label>
                 <select name="category"
                         id="{{ form.category.id_for_label }}"
@@ -57,14 +57,14 @@
                 </select>
                 <label for={{ form.title.name }} class="flex mt-5">
                     Description:
-                    {% include 'components/help_circle.html' with help_text="A Description to descibe what is you recipe about" %}
+                    {% include "components/help_circle.html" with help_text="A Description to descibe what is you recipe about" %}
                 </label>
                 <textarea type="textarea" name={{ form.description.name }} data-test="new-recipe" class="ml-3 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5" placeholder="Please enter a desciption">
           {% if form.description.value %}{{ form.description.value }}{% endif%}
         </textarea>
                 <label for={{ form.image.name }} class="flex mt-5">
                     Image:
-                    {% include 'components/help_circle.html' with help_text="this is going to be the background image of the recipe" %}
+                    {% include "components/help_circle.html" with help_text="this is going to be the background image of the recipe" %}
                 </label>
                 {% if recipe.image.url %}
                     <img src="{{ recipe.image.url | mino_to_localhost }}"
@@ -74,7 +74,7 @@
                 <input type="file" name="image" accept="image/*" class="ml-3">
                 <label for={{ form.recipe_origin.name }} class="flex mt-5 ">
                     Origin:
-                    {% include 'components/help_circle.html' with help_text="Just in case if you know where the recipe come from it's always nice to have a bit of background but if you don't that's fine  just dont add anything" %}
+                    {% include "components/help_circle.html" with help_text="Just in case if you know where the recipe come from it's' always nice to have a bit of background but if you don't that's fine just dont add anything" %}
                 </label>
                 <select name="recipe_origin"
                         id="{{ form.recipe_origin.id_for_label }}"
@@ -88,7 +88,7 @@
                 </select>
                 <label for={{ form.recipe_origin.name }} class="flex mt-5 ">
                     Duration:
-                    {% include 'components/help_circle.html' with help_text="How much time is it going to take" %}
+                    {% include "components/help_circle.html" with help_text="How much time is it going to take" %}
                 </label>
                 <div class="flex">
                     <input type="number" name={{ form.duration.name }} value={{ form.duration.value }} data-test="new-recipe" class="ml-3 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block  p-2.5" min=0 />
@@ -101,7 +101,7 @@
                     </select>
                 </div>
             </div>
-            {% include 'components/ingredient_form.html' %}
+            {% include "components/ingredient_form.html" %}
             {{ form.recipe_ingredients }}
             {{ form.instructions }}
             {% include "components/tag_editor.html" %}
@@ -205,4 +205,4 @@
       }
     }
     </style>
-{% endblock %}
+{% endblock content %}

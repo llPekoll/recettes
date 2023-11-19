@@ -1,6 +1,6 @@
 {% load my_filters %}
 <form id="profile-pic-form"
-      hx-post="{% url 'edit-image' %}"
+      hx-post="{% url 'user:api-edit-image' %}"
       hx-target="#saved"
       hx-encoding="multipart/form-data"
       emctype="multipart/form-data"

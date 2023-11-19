@@ -21,7 +21,13 @@
                     <div class="divide-y divide-gray-200">
                         <div class="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
                             <form id="form"
-                                  {% if step == "login" %} hx-post="{% url 'login' %}" {% elif step == "register" %} hx-post="{% url 'register' %}" {% elif step == "reset-password" %} hx-post="{% url 'password-reset' %}" {% endif %}
+                                  {% if step == "login" %}
+                                      hx-post="{% url 'user:login' %}"
+                                  {% elif step == "register" %}
+                                      hx-post="{% url 'register' %}"
+                                  {% elif step == "reset-password" %}
+                                      hx-post="{% url 'password-reset' %}"
+                                  {% endif %}
                                   hx-target="#form-holder"
                                   hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
                                 <div id="form-holder">
@@ -66,16 +72,16 @@
                     </div>
                 </div>
                 {% if step == "login" %}
-                    <a href="{% url 'register' %}"
+                    <a href="{% url 'user:register' %}"
                        class="text-orange-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">{% translate 'register-page-title' %}</a>
                 {% elif step == "register" %}
-                    <a href="{% url 'login' %}"
+                    <a href="{% url 'user:login' %}"
                        class="text-orange-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">{% translate "log-page-title" %}</a>
                 {% endif %}
             </div>
         </div>
     </div>
-    <div class="text-center items-end text-orange-500 font-bold text-xl underline hover:text-orange-700 -mt-14 ">
+    <div class="text-center items-end text-orange-500 font-bold text-xl underline hover:text-orange-700 -mt-14">
         <a href="{% url 'home' %}">- {% translate "home-page" %} -</a>
     </div>
     <script>

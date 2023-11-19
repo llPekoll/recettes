@@ -81,11 +81,13 @@ def edit_recipe(request, pk):
 
 
 def page_recipes(request):
+    recipes = Recipe.objects.filter(is_draft=False)
+    print(recipes)
     return render(
         request,
         "recipes.html",
         {
-            "recipes": Recipe.objects.filter(is_draft=True, is_private=False),
+            "recipes": recipes,
         },
     )
 

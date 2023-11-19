@@ -21,7 +21,7 @@
         <h2 class="text-3xl font-bold">Articles:</h2>
         <div class="flex ">
             {% for article in articles.all %}
-                {% include "components/cards.html" with type="article" article=article %}
+                {% include "components/cards.html" with type="author" content=article %}
             {% empty %}
                 <p>No articles yet on that topic</p>
             {% endfor %}

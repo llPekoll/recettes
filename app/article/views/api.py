@@ -3,6 +3,7 @@ import json
 from article.forms import ArticleForm
 from article.models import Article
 from common.models import Image, Tag
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
@@ -24,6 +25,7 @@ def write_article(form, request):
     if form.is_valid():
         article = form.save(commit=False)
         article.author = request.user
+        article.save()
         if "tags" in request.POST:
             tags = json.loads(request.POST.get("tags"))
             for tag in tags:
@@ -39,6 +41,7 @@ def write_article(form, request):
         # TODO:
         # tell user something went wrong
         print(form.errors)
+        return HttpResponse("the form is not valid", status=410)
 
 
 def set_favorite(request, pk):

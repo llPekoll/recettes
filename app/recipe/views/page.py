@@ -18,7 +18,7 @@ def page_recipe_creation(request):
         request,
         "new_recipe.html",
         {
-            "recipe": form,
+            "form": form,
             "ingredient_names": ingredient_names,
             "ings": ings,
             "create": True,
@@ -63,20 +63,22 @@ def page_recipe_detail(request, pk):
     )
 
 
-def edit_recipe(request, pk):
+def page_edit_recipe(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
     ings = recipe.ingredients.all()
-    if request.method == "POST":
-        form = RecipeForm(request.POST, instance=recipe)
-        if form.is_valid():
-            form.save()
-            return redirect("recipe_detail", recipe_id=recipe.id)
 
     form = RecipeForm(instance=recipe)
+    tags = Tag.objects.all()
     return render(
         request,
         "new_recipe.html",
-        {"form": form, "ings": ings, "recipe": recipe, "create": False},
+        {
+            "form": form,
+            "ings": ings,
+            "recipe": recipe,
+            "create": False,
+            "tag_list": [tag.name for tag in tags],
+        },
     )
 
 

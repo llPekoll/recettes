@@ -44,14 +44,7 @@
                         {% include "comments.html" %}
                     </div>
                 {% endif %}
-                {% for tag in article.tags.all %}
-                    <a href={% url "tag-page" pk=tag.pk %}>
-                        <p class="inline  text-blue-400 hover:underline hover:cursor-pointer hover:text-blue-700">
-                            #{{ tag.name }}
-                            {% if not forloop.last %},{% endif %}
-                        </p>
-                    </a>
-                {% endfor %}
+                {% include "components/tag_list.html" %}
                 {% include "comment_list.html" %}
                 {% if user.is_authenticated %}
                     <form hx-post="{% url "api-detail-comment" pk=article.id content_type="Article" %}"

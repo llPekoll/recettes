@@ -55,8 +55,7 @@ class RecipeForm(forms.ModelForm):
         choices=[(uom.value, uom.name) for uom in UnitOfMeasure], required=False
     )
     instructions = QuillFormField(required=False)
-    recipe_id = forms.IntegerField(widget=forms.HiddenInput())
-    from django.forms import inlineformset_factory
+    image = forms.ImageField(required=False)
 
     class Meta:
         model = Recipe

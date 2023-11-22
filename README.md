@@ -45,7 +45,8 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
  - [x] add publish for articles too
  - [x] Report Report
  - [x] add auto suggestion for tag
- - [~] Edit Recipes
+ - [x] Edit Recipes
+ - [ ] Django pictures
  - [ ] rework on the slug system
  - [ ] make author page
  - [ ] add default image for article and recipe
@@ -57,3 +58,9 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
  - [ ] add pagination(https://realpython.com/django-pagination/)
  - [ ] export pdf
  - [ ] Tests!!!!!
+
+
+
+## Recipe 
+
+ we can create recipe from ingredient or from the form

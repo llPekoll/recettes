@@ -7,6 +7,12 @@ from .models import Comment, Report, Tag
 
 
 def detail_comment(request, pk, content_type):
+    if request.method == "DELETE":
+        # soft delete is better
+        get_object_or_404(Comment, pk=pk)
+        Comment.objects.filter(pk=pk).delete()
+        comments = Comment.objects.all()
+        return render(request, "comment_list.html", {"comments": comments})
     if content_type == "Article":
         content = get_object_or_404(Article, pk=pk)
     elif content_type == "Recipe":
@@ -19,13 +25,6 @@ def detail_comment(request, pk, content_type):
                 text=request.POST.get("comment"),
             )
             comments = content.comments.order_by("created_at")
-            return render(request, "comment_list.html", {"comments": comments})
-
-        if request.method == "DELETE":
-            # soft delete is better
-            get_object_or_404(Comment, pk=pk)
-            Comment.objects.filter(pk=pk).delete()
-            comments = Comment.objects.all()
             return render(request, "comment_list.html", {"comments": comments})
 
 

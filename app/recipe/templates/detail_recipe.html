@@ -6,7 +6,7 @@
         <div class="container mx-auto px-4 py-8 pt-24">
             {% if is_author %}
                 <div class="w-full">
-                    <a href={% url 'recipe:detail' pk=recipe.pk %}>
+                    <a href={% url 'recipe:edit' pk=recipe.pk %}>
                         <button class="bg-orange-500 text-white py-2 px-10 rounded-lg float-right">🖊️ edit the recipe</button>
                     </a>
                 </div>
@@ -16,7 +16,7 @@
                 </div>
             {% endif %}
             <div class="cursor-pointer">
-                <button hx-get="{% url "recipe:favorite" pk=recipe.id %}"
+                <button hx-get="{% url "recipe:api-favorite" pk=recipe.id %}"
                         hx-trigger="click"
                         hx-target="#is-fav">{% include "is_favorite.html" %}</button>
             </div>
@@ -37,7 +37,7 @@
         <div class="flex flex-col md:flex-row md:items-center mb-8">
             {% if recipe.image %}
                 <div class="md:w-1/3">
-                    <img src="{{ recipe.image.url }}"
+                    <img src="{{ recipe.image.image.url | mino_to_localhost | safe }}"
                          alt="{{ recipe.title }}"
                          class="w-full rounded-lg shadow-lg">
                 </div>
@@ -45,6 +45,7 @@
             <div class="md:w-2/3 md:ml-4">
                 <p>Description:</p>
                 <p class="text-lg mb-4">{{ recipe.description }}</p>
+                {% include "components/tag_list.html" %}
                 <ul class="list-disc pl-4">
                     {% for ingredient in ingredients %}
                         <li>{{ ingredient.quantity| clean_number }} {{ ingredient.unit }} {{ ingredient.ingredient.name }}</li>
@@ -60,6 +61,7 @@
                 {% endautoescape %}
             </div>
         </div>
+        {% comment %} TODO: add icon for socials {% endcomment %}
         {% if recipe.youtube %}
             <div class="mb-8">
                 <h2 class="text-xl font-bold mb-4">Video</h2>
@@ -71,7 +73,7 @@
         {% if user.is_authenticated %}
             <div class="flex">
                 Rate:
-                <form hx-post="{% url "recipe:rating" pk=recipe.id %}"
+                <form hx-post="{% url "recipe:api-rating" pk=recipe.id %}"
                       hx-trigger="change"
                       hx-target="#rate"
                       hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
@@ -84,16 +86,18 @@
             <form method="post"
                   class="mb-4"
                   hx-post="{% url "api-detail-comment" pk=recipe.id content_type="Recipe" %}"
-                  hx-trigger="change"
-                  hx-target="#rate"
+                  hx-target="#comments"
                   hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
                 {% csrf_token %}
                 <label>
                     Comment:
                     <textarea name="comment"
+                              id="comment"
                               class="rounded block w-1/3 my-2 focus:ring-0 border-0 h-32 bg-slate-50"></textarea>
                 </label>
-                <button type="submit" class="bg-orange-500 text-white rounded-lg py-2 px-10">Add comment</button>
+                <button type="submit"
+                        class="bg-orange-500 text-white rounded-lg py-2 px-10"
+                        id="submit-comment">Add comment</button>
             </form>
         {% else %}
             <p>
@@ -142,4 +146,10 @@
     
 
     </style>
+    <script>
+        const textArea = document.getElementById("comment")
+        document.addEventListener('htmx:afterRequest', function(evt) {
+            textArea.value = "";
+        });
+    </script>
 {% endblock content %}

@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% comment %} TODO: add  Youtube link, insta  {% endcomment %}
 {% load i18n %}
 {% load static %}
 {% load my_filters %}
@@ -13,14 +12,14 @@
 {% block content %}
     {% include "navbar.html" %}
     <form class="bg-orange-50 pt-20 h-screen mx-80"
+          method="post"
+          enctype="multipart/form-data"
           {% if create %}
-              method="post" action="{% url "recipe:list" %}"
+              action="{% url "recipe:api-new" %}"
           {% else %}
-              method="put" action="{% url "recipe:detail" %}"
+              action="{% url "recipe:api-edit" pk=recipe.id %}"
           {% endif %}>
         {% csrf_token %}
-        {% if not create %}<input type="hidden" name="recipe_id" value="{{ recipe.id }}" />{% endif %}
-        >
         <div class="flex items-end ml-20">
             <img src="{% static 'notes.svg' %}"
                  alt="Profile Picture"
@@ -40,7 +39,7 @@
                 Name<span class="text-red-600">*</span>:
                 {% include "components/help_circle.html" with help_text="Just the way you want to call it?" %}
             </label>
-            <input type="text" name={{ form.title.name }} data-test="new-recipe" class="rounded-lg ml-3 bg-orange-200 focus:ring-0 border-0 w-full" required placeholder="{{ form.title.label }}" value="{{ recipe.title }}" />
+            <input type="text" name={{ form.title.name }} data-test="new-recipe" class="rounded-lg ml-3 bg-orange-200 focus:ring-0 border-0 w-full" required placeholder="{{ form.title.label }}" {% if recipe.title %}value="{{ recipe.title }}"{% endif %} />
             <div>
                 <label for={{ form.title.name }} class="flex mt-5">
                     Category:
@@ -59,9 +58,7 @@
                     Description:
                     {% include "components/help_circle.html" with help_text="A Description to descibe what is you recipe about" %}
                 </label>
-                <textarea type="textarea" name={{ form.description.name }} data-test="new-recipe" class="ml-3 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5" placeholder="Please enter a desciption">
-          {% if form.description.value %}{{ form.description.value }}{% endif%}
-        </textarea>
+                <textarea type="textarea" name={{ form.description.name }} data-test="new-recipe" class="ml-3 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5" placeholder="Please enter a desciption">{% if recipe.description %}{{ recipe.description }}{% endif%}</textarea>
                 <label for={{ form.image.name }} class="flex mt-5">
                     Image:
                     {% include "components/help_circle.html" with help_text="this is going to be the background image of the recipe" %}
@@ -119,6 +116,20 @@
                     <path stroke-linecap="round" stroke-miterlimit="10" fill="none"  d="M22.9 3.7l-15.2 16.6-6.6-7.1"></path>
                     </symbol>
                 </svg>
+            </div>
+        </div>
+        <div class="mt-10 ml-10">
+            <button class="after:float-right after:pl-4 after:font-bold accordion bg-orange-400 hover:bg-orange-500 rounded-lg text-white cursor-pointer w-full text-3xl px-3 py-4 text-left">
+                Socials
+            </button>
+            <div class="panel overflow-hidden py-3">
+                <p>
+                    {% include "components/editable_field.html" with label="Youtube" value=recipe.youtube.value empty_css_class="youtube_empty" input_css_class="youtube_input" %}
+                    {% include "components/editable_field.html" with label="Facebook" value=recipe.facebook.value empty_css_class="facebook_empty" input_css_class="facebook_input" %}
+                    {% include "components/editable_field.html" with label="Twitter" value=recipe.twitter.value empty_css_class="twitter_empty" input_css_class="twitter_input" %}
+                    {% include "components/editable_field.html" with label="Instagram" value=recipe.instagram.value empty_css_class="instagram_empty" input_css_class="instagram_input" %}
+                    {% include "components/editable_field.html" with label="Website" value=recipe.website.value empty_css_class="website_empty" input_css_class="website_input" %}
+                </p>
             </div>
         </div>
         <button type="submit"
@@ -204,5 +215,33 @@
         stroke-dashoffset: 0;
       }
     }
+		.accordion:after {
+			content:'\002B';
+		}
+		
+		.active:after {
+			content: "\2212";
+		}
+		
+		.panel {
+		  max-height: 0;
+		  transition: max-height 0.2s ease-out;
+		}
     </style>
+    <script>
+	var acc = document.getElementsByClassName("accordion");
+	var i;
+	
+	for (i = 0; i < acc.length; i++) {
+	  acc[i].addEventListener("click", function() {
+		this.classList.toggle("active");
+		var panel = this.nextElementSibling;
+		if (panel.style.maxHeight) {
+		  panel.style.maxHeight = null;
+		} else {
+		  panel.style.maxHeight = panel.scrollHeight + "px";
+		} 
+	  });
+	}
+    </script>
 {% endblock content %}

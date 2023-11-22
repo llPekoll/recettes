@@ -2,6 +2,7 @@ import json
 
 from common.models import Image, Rate, Tag
 from django.db.models import Q
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from recipe.forms import RecipeForm, RecipeIngredientForm
@@ -10,57 +11,72 @@ from recipe.models import Recipe, RecipeIngredient
 
 def recipe_edit(request, pk):
     if request.method == "POST":
-        article = get_object_or_404(Recipe, pk=pk)
-        form = RecipeForm(request.POST, instance=article)
-        recipe_write(form, request)
+        recipe = get_object_or_404(Recipe, pk=pk)
+        form = RecipeForm(request.POST, instance=recipe)
+        id = recipe_write(form, request)
+        return redirect(reverse("recipe:detail", args=[id]))
+    return HttpResponse("Method not allowed", status=405)
 
 
 def recipe_creation(request):
     if request.method == "POST":
-        form = RecipeForm(request.POST)
-        recipe_write(form, request)
+        recipe = Recipe.objects.filter(pk=request.POST.get("recipe_id")).first()
+        if recipe:
+            form = RecipeForm(request.POST, instance=recipe)
+        else:
+            form = RecipeForm(request.POST)
+        id = recipe_write(form, request)
+        return redirect(reverse("recipe:detail", args=[id]))
+    return HttpResponse("Method not allowed", status=405)
 
 
 def recipe_write(form, request):
     if form.is_valid():
         recipe = form.save(commit=False)
         recipe.author = request.user
-        if "tags" in request.POST:
+        recipe.save()
+        if request.POST.get("tags"):
             tags = json.loads(request.POST.get("tags"))
             for tag in tags:
                 tag, _ = Tag.objects.get_or_create(name=tag.get("value"))
                 recipe.tags.add(tag)
         if "image" in request.FILES:
+            print(request.FILES["image"])
             image = Image(image=request.FILES["image"])
             image.save()
             recipe.image = image
         recipe.save()
-        return redirect(reverse("recipe:detail", args=[recipe.id]))
+        return recipe.id
     else:
         # TODO:
         # tell user something went wrong
         print(form.errors)
+        return HttpResponse("the form is not valid", status=410)
 
 
+# hugues brimel njinkoue
 def ingredient_list(request):
-    if request.htmx:
-        if request.method == "POST":
-            form = RecipeIngredientForm(request.POST)
-            if form.is_valid():
-                form.save()
-            ings = [
-                ingredient
-                for ingredient in RecipeIngredient.objects.filter(
-                    recipe=request.POST.get("recipe_id")
-                )
-            ]
-            return render(
-                request,
-                "components/ingredient_list.html",
-                {
-                    "ings": ings,
-                },
-            )
+    recipe_id = request.POST.get("recipe_id")
+    if "/" in recipe_id:
+        recipe = Recipe.objects.create(author=request.user)
+    else:
+        recipe = Recipe.objects.get(id=recipe_id, author=request.user)
+
+    if request.method == "POST":
+        form = RecipeIngredientForm(request.POST)
+        form.recipe_id = recipe.id
+        if form.is_valid():
+            form.save()
+            print("form.saved")
+        ings = [
+            ingredient
+            for ingredient in RecipeIngredient.objects.filter(recipe=recipe.id)
+        ]
+        return render(
+            request,
+            "components/ingredient_list.html",
+            {"ings": ings, "recipe": recipe},
+        )
 
 
 def ingredient_detail(request, pk):

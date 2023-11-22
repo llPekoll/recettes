@@ -12,6 +12,6 @@ urlpatterns = [
     path(
         "tag/<int:pk>/",
         tag,
-        name="tag",
+        name="tag-detail",
     ),
 ]

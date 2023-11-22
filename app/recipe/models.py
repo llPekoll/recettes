@@ -96,7 +96,9 @@ class Recipe(models.Model):
     is_published = models.BooleanField(default=False)
     is_private = models.BooleanField(default=False)
     is_featured = models.BooleanField(default=False)
-    is_draft = models.BooleanField(default=True)
+    is_draft = models.BooleanField(
+        default=True
+    )  #  is draft allow to create recipe to store ingredients, if create a new recipe we will create a recipe to store them and then and te recipe is going to be saved it will be undrafted
     url_link = models.URLField(max_length=255, null=True, blank=True)
     image = models.OneToOneField(
         "common.Image", on_delete=models.SET_NULL, null=True, blank=True
@@ -106,7 +108,7 @@ class Recipe(models.Model):
     Report = GenericRelation("common.Report")
 
     def __str__(self):
-        return self.title
+        return self.title if self.title else f"{self.pk}_untitled"
 
     def save(self, *args, **kwargs):
         if not self.slug:

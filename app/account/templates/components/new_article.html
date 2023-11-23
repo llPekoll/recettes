@@ -1,4 +1,3 @@
-{% load my_filters %}
 <h2>
   {% if edit %}
     Edit Article
@@ -15,11 +14,7 @@
       {% endif %}
       enctype="multipart/form-data">
   {% csrf_token %}
-  {% if image %}
-    <img src="{{ image | mino_to_localhost | safe }}"
-         alt="article image"
-         class="w-60 max-h-32 inline" />
-  {% endif %}
+  {% if image %}<img src="{{ image }}" alt="article image" class="w-60 max-h-32 inline" />{% endif %}
   <label class="block">Title</label>
   <input type="text"
          name="title"

@@ -1,6 +1,5 @@
-{% load my_filters %}
 <a href="{% url "article:detail" article.id %}">
-    <img src="{{ article.image.image.url | mino_to_localhost }}"
+    <img src="{{ article.image.image.url }}"
          class="w-full h-32 object-cover"
          alt="cover for {{ article.title }} article" />
     <h1 class="text-xl font-bold pt-3">{{ article.title }}</h1>

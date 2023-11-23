@@ -1,6 +1,6 @@
 from common.models import Rate, Tag
 from django.db.models import Avg, Q
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, render
 from recipe.forms import RecipeForm
 from recipe.models import Ingredient, Recipe, RecipeIngredient
 

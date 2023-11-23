@@ -32,8 +32,3 @@ def format_date_short(date):
 @register.filter
 def clean_number(number):
     return number.normalize() if number else ""
-
-
-@register.filter
-def mino_to_localhost(value):
-    return value.replace("http://minio:9000", "http://127.0.0.1:9000")

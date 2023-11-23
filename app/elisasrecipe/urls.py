@@ -17,6 +17,7 @@ Including another URLconf
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.urls import include, path
+from pictures.conf import get_settings
 
 from .views import index
 
@@ -33,3 +34,9 @@ urlpatterns += i18n_patterns(
     path("", include("common.urls")),
     path("recipe/", include("recipe.urls")),
 )
+
+
+if get_settings().USE_PLACEHOLDERS:
+    urlpatterns += [
+        path("_pictures/", include("pictures.urls")),
+    ]

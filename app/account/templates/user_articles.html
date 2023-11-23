@@ -20,7 +20,7 @@
                     {% for article in articles.all %}
                         <a href="{% url "article:detail" article.id %}">
                             <div class="bg-orange-50 h-64 w-44 rounded-lg mx-4 pb-4 hover:scale-105 transition hover:shadow-lg overflow-hidden my-10">
-                                <img src="{{ article.image.image.url | mino_to_localhost }}"
+                                <img src="{{ article.image.image.url }}"
                                      class="w-full h-32 object-cover"
                                      alt="cover for {{ article.title }} article" />
                                 <h1 class="text-xl font-bold pt-3">{{ article.title }}</h1>

@@ -3,6 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from pictures.models import PictureField
 from storages.backends.s3boto3 import S3Boto3Storage
 
 
@@ -24,9 +25,15 @@ class Image(models.Model):
         (RECIPE, _("Recipe")),
     ]
 
-    image = models.ImageField(
-        upload_to=image_upload_path, storage=CustomS3Boto3Storage()
+    image = PictureField(
+        upload_to=image_upload_path,
+        aspect_ratios=[None, "1/1", "3/2", "16/9"],
+        width_field="width",
+        height_field="height",
+        storage=CustomS3Boto3Storage(),
     )
+    width = models.PositiveIntegerField(null=True, blank=True, editable=False)
+    height = models.PositiveIntegerField(null=True, blank=True, editable=False)
     type = models.CharField(max_length=20, choices=TYPE_CHOICES)
 
     def __str__(self):

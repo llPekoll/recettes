@@ -27,6 +27,7 @@ ALLOWED_HOSTS = []
 INTERNAL_IPS = ["127.0.0.1"]
 
 INSTALLED_APPS = [
+    "pictures",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -224,3 +225,21 @@ QUILL_CONFIGS = {
 
 # Minimum similarity threshold for trigram similarity search
 PG_TRGM_DEFAULT_SIMILARITY_THRESHOLD = 0.1
+
+
+PICTURES = {
+    "BREAKPOINTS": {
+        "xs": 576,
+        "s": 768,
+        "m": 992,
+        "l": 1200,
+        "xl": 1400,
+    },
+    "GRID_COLUMNS": 12,
+    "CONTAINER_WIDTH": 1200,
+    "FILE_TYPES": ["WEBP"],
+    "PIXEL_DENSITIES": [1, 2],
+    "USE_PLACEHOLDERS": False,
+    "QUEUE_NAME": "pictures",
+    "PROCESSOR": "pictures.tasks.process_picture",
+}

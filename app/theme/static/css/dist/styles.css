@@ -6232,6 +6232,10 @@ select {
     display: block;
   }
 
+  .sm\:hidden {
+    display: none;
+  }
+
   .sm\:max-w-xl {
     max-width: 36rem;
   }

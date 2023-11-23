@@ -47,9 +47,9 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
  - [x] add auto suggestion for tag
  - [x] Edit Recipes
  - [x] make search better
+ - [x] Django pictures
  - [ ] rework on the slug system
  - [ ] add trigram for search
- - [ ] Django pictures
  - [ ] make author page
  - [ ] add default image for article and recipe
  - [ ] Align CSS header

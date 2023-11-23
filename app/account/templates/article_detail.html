@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load my_filters %}
 {% block content %}
     {% include "navbar.html" %}
     <div class="flex items-center justify-center ">
@@ -69,7 +68,7 @@
     @charset "UTF-8";
 .article-img
 {    
-    background: url('{{ article.image.image.url | mino_to_localhost | safe }}');
+    background: url('{{ article.image.image.url }}');
     background-size: cover;
     background-position: center;
 }

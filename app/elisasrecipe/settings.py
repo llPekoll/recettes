@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.postgres",
     "theme",
     "tailwind",
     "django_browser_reload",
@@ -219,3 +220,7 @@ QUILL_CONFIGS = {
         },
     }
 }
+
+
+# Minimum similarity threshold for trigram similarity search
+PG_TRGM_DEFAULT_SIMILARITY_THRESHOLD = 0.1

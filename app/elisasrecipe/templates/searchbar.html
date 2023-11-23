@@ -3,9 +3,9 @@
            type="search"
            name="search"
            {% if type == "recipe" %}
-               hx-post="{% url 'recipe:search' %}"
+               hx-post="{% url 'recipe:api-search' %}"
            {% elif type == "author" %}
-               hx-post="{% url 'user:search' %}"
+               hx-post="{% url 'user:api-search' %}"
            {% elif type == "home" %}
                hx-post="{% url 'home' %}"
            {% endif %}

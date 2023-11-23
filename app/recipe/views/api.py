@@ -1,6 +1,13 @@
 import json
 
 from common.models import Image, Rate, Tag
+from django.contrib.postgres.search import (
+    SearchHeadline,
+    SearchQuery,
+    SearchRank,
+    SearchVector,
+    TrigramSimilarity,
+)
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -128,14 +135,19 @@ def set_rating(request, pk):
 
 
 def search_recipes(request):
-    print(request.POST)
     if request.htmx:
-        # include
         search_query = request.POST.get("search")
-        recipes = Recipe.objects.filter(
-            # Q(title__unaccent__icontains=search_query)
-            # | Q(description__search=search_query)
-            Q(title__icontains=search_query)
-            | Q(description__icontains=search_query)
+        vector = SearchVector("title", "description", "instructions")
+        query = SearchQuery(search_query)
+        search_headline = SearchHeadline("title", query)
+
+        recipes = (
+            Recipe.objects.annotate(
+                rank=SearchRank(vector, query),
+                similarity=TrigramSimilarity("title", search_query),
+            )
+            .annotate(headline=search_headline)
+            .filter(rank__gte=0.00001)
+            .order_by("-rank")
         )
         return render(request, "recipe_list.html", {"recipes": recipes})

@@ -5,6 +5,7 @@ from .views.api import (
     ingredient_list,
     recipe_creation,
     recipe_edit,
+    search_recipes,
     set_favorite,
     set_rating,
 )
@@ -26,6 +27,7 @@ urlpatterns = [
     path("<int:pk>/edit/", page_edit_recipe, name="edit"),
     path("search/", page_search_recipes, name="search"),
     # API
+    path("api/search/", search_recipes, name="api-search"),
     path("api/new", recipe_creation, name="api-new"),
     path("api/<int:pk>/edit/", recipe_edit, name="api-edit"),
     path("api/<int:pk>/rating/", set_rating, name="api-rating"),

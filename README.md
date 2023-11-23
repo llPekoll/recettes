@@ -46,12 +46,13 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
  - [x] Report Report
  - [x] add auto suggestion for tag
  - [x] Edit Recipes
- - [ ] Django pictures
+ - [x] make search better
  - [ ] rework on the slug system
+ - [ ] add trigram for search
+ - [ ] Django pictures
  - [ ] make author page
  - [ ] add default image for article and recipe
  - [ ] Align CSS header
- - [ ] make search better
  - [ ] add advertising for make cash
  - [ ] add crypto reward [BAT,Polygon,NFTL]
  - [ ] Bio -> text area

@@ -2,8 +2,15 @@
 {% load my_filters %}
 {% block content %}
     {% include "navbar.html" %}
-    <div class="px-10">
-        <div class="container mx-auto px-4 py-8 pt-24">
+    <div class="flex items-center justify-center ">
+        <div class=" mx-auto my-24 w-2/3 bg-orange-50 overflow-hidden rounded-lg">
+            {% load pictures %}
+            <div class="block sm:hidden">
+                {% picture recipe.image.image img_alt="Image recipe {{ recipe.title }}" img_loading="lazy" picture_class="my-picture" ratio="1/1" m=6 l=4 %}
+            </div>
+            <div class="hidden sm:block">
+                {% picture recipe.image.image img_alt="Image recipe {{ recipe.title }}" img_loading="lazy" picture_class="my-picture" ratio="16/9" m=6 l=4 %}
+            </div>
             {% if is_author %}
                 <div class="w-full">
                     <a href={% url 'recipe:edit' pk=recipe.pk %}>
@@ -35,13 +42,6 @@
             </div>
         {% endif %}
         <div class="flex flex-col md:flex-row md:items-center mb-8">
-            {% load pictures %}
-            <div class="block sm:hidden">
-                {% picture recipe.image.image img_alt="Image recipe {{ recipe.title }}" img_loading="lazy" picture_class="my-picture" ratio="1/1" m=6 l=4 %}
-            </div>
-            <div class="hidden sm:block">
-                {% picture recipe.image.image img_alt="Image recipe {{ recipe.title }}" img_loading="lazy" picture_class="my-picture" ratio="16/9" m=6 l=4 %}
-            </div>
             <div class="md:w-2/3 md:ml-4">
                 <p>Description:</p>
                 <p class="text-lg mb-4">{{ recipe.description }}</p>

@@ -48,15 +48,19 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
  - [x] Edit Recipes
  - [x] make search better
  - [x] Django pictures
+ - [ ] Reduce Search bar
+ - [ ] faire des instructions step!
+ - [ ] faire un model link pour rajouter a instruction
+ - [ ] virer Quill
+ - [ ] add pagination(https://realpython.com/django-pagination/)
+ - [ ] add default image for article and recipe
  - [ ] rework on the slug system
  - [ ] add trigram for search
  - [ ] make author page
- - [ ] add default image for article and recipe
  - [ ] Align CSS header
  - [ ] add advertising for make cash
  - [ ] add crypto reward [BAT,Polygon,NFTL]
  - [ ] Bio -> text area
- - [ ] add pagination(https://realpython.com/django-pagination/)
  - [ ] export pdf
  - [ ] Tests!!!!!
 

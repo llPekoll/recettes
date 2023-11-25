@@ -3,7 +3,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {% include "django_quill/media.html" %}
     <link rel="shortcut icon"
           type="image/svg+xml"
           href="{% static '/favicon.png' %}" />
@@ -14,7 +13,6 @@
     {% endblock extra_head %}
     {% tailwind_css %}
     {% comment %} remove to to block when it's needed {% endcomment %}
-    <script src="{% static 'htmx.min.js' %}" defer></script>
   </head>
   <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {% block content %}

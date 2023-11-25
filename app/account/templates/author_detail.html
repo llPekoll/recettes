@@ -10,12 +10,6 @@
       {% endif %}
       Bio:
       <p class="text-justify text-lg px-4 py-4">{{ user.bio }}</p>
-      <p>youtube: {{ user.youtube_handle }}</p>
-      <p>twitter: {{ user.twitter_handle }}</p>
-      <p>instagram: {{ user.instagram_handle }}</p>
-      <p>facebook: {{ user.facebook_handle }}</p>
-      <p>tiktok: {{ user.tiktok_handle }}</p>
-      <p>website: {{ user.website }}</p>
       Recipes by {{ user.username }}
       {% include "recipe_list.html" %}
       Articles by {{ user.username }}

@@ -63,11 +63,11 @@ class Recipe(models.Model):
     duration = models.IntegerField(default=10)
     duration_scale = models.CharField(
         max_length=20,
-        choices=[(TimeScale.value, TimeScale.name) for TimeScale in TimeScale],
+        choices=[(timeScale.value, timeScale.name) for timeScale in TimeScale],
         default=TimeScale.MINUTE.value,
     )
 
-    instructions = QuillField(null=True, blank=True)
+    # instructions = QuillField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     category = models.CharField(
@@ -87,25 +87,19 @@ class Recipe(models.Model):
     quantity = models.DecimalField(
         max_digits=6, decimal_places=2, null=True, blank=True
     )  # number of persons or number of usage
-    youtube = models.URLField(max_length=255, null=True, blank=True)
-    twitter = models.URLField(max_length=255, blank=True, null=True)
-    instagram = models.URLField(max_length=255, blank=True, null=True)
-    facebook = models.URLField(max_length=255, blank=True, null=True)
-    tiktok = models.URLField(max_length=255, blank=True, null=True)
-    website = models.URLField(max_length=255, blank=True, null=True)
     is_published = models.BooleanField(default=False)
     is_private = models.BooleanField(default=False)
     is_featured = models.BooleanField(default=False)
     is_draft = models.BooleanField(
         default=True
     )  #  is draft allow to create recipe to store ingredients, if create a new recipe we will create a recipe to store them and then and te recipe is going to be saved it will be undrafted
-    url_link = models.URLField(max_length=255, null=True, blank=True)
     image = models.OneToOneField(
         "common.Image", on_delete=models.SET_NULL, null=True, blank=True
     )
     tags = models.ManyToManyField("common.Tag", related_name="recipes", blank=True)
     comments = GenericRelation("common.Comment")
     Report = GenericRelation("common.Report")
+    link = GenericRelation("common.Link")
 
     def __str__(self):
         return self.title if self.title else f"{self.pk}_untitled"
@@ -119,6 +113,19 @@ class Recipe(models.Model):
             self.slug = f"{original_slug}-{count}"
             count += 1
         super().save(*args, **kwargs)
+
+
+class RecipeStps(models.Model):
+    recipe = models.ForeignKey(
+        Recipe, on_delete=models.CASCADE, default=1, related_name="recipe_step"
+    )
+    step_number = models.IntegerField(default=1)
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    link = GenericRelation("common.Link")
+
+    def __str__(self):
+        return f"{self.step_number} {self.title}"
 
 
 class Ingredient(models.Model):

@@ -1,3 +1,6 @@
+{% block extra_head %}
+    <script src="{% static 'htmx.min.js' %}" defer></script>
+{% endblock extra_head %}
 <div class="py-10 text-gray-600 w-full px-10">
     <input class="border-2 border-gray-300 bg-white pr-16 rounded-lg font-bold focus:outline-none text-7xl w-full relative"
            type="search"

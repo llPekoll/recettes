@@ -152,51 +152,6 @@ def edit_bio(request, field):
                 "empty_css_class": "website_empty",
                 "input_css_class": "website_input",
             }
-        elif field == "youtube":
-            if request.GET.get("youtube"):
-                user.youtube_handle = request.GET.get("youtube")
-            args = {
-                "label": "Youtube",
-                "value": user.youtube_handle,
-                "empty_css_class": "youtube_empty",
-                "input_css_class": "youtube_input",
-            }
-        elif field == "twitter":
-            if request.GET.get("twitter"):
-                user.twitter_handle = request.GET.get("twitter")
-            args = {
-                "label": "Twitter",
-                "value": user.twitter_handle,
-                "empty_css_class": "twitter_empty",
-                "input_css_class": "twitter_input",
-            }
-        elif field == "twitter":
-            if request.GET.get("twitter"):
-                user.twitter_handle = request.GET.get("twitter")
-            args = {
-                "label": "Twitter",
-                "value": user.twitter_handle,
-                "empty_css_class": "twitter_empty",
-                "input_css_class": "twitter_input",
-            }
-        elif field == "instagram":
-            if request.GET.get("instagram"):
-                user.instagram_handle = request.GET.get("instagram")
-            args = {
-                "label": "Instagram",
-                "value": user.instagram_handle,
-                "empty_css_class": "instagram_empty",
-                "input_css_class": "instagram_input",
-            }
-        elif field == "facebook":
-            if request.GET.get("facebook"):
-                user.facebook_handle = request.GET.get("facebook")
-            args = {
-                "label": "Facebook",
-                "value": user.facebook_handle,
-                "empty_css_class": "facebook_empty",
-                "input_css_class": "facebook_input",
-            }
         user.save()
     return render(
         request,

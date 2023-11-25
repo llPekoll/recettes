@@ -1,3 +1,12 @@
+{% block extra_head %}
+  <script src="{% static 'htmx.min.js' %}" defer></script>
+  {% include "django_quill/media.html" %}
+  <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css"
+        rel="stylesheet"
+        type="text/css" />
+{% endblock extra_head %}
 <h2>
   {% if edit %}
     Edit Article

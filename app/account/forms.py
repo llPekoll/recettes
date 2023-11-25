@@ -66,11 +66,6 @@ class ProfileForm(forms.ModelForm):
             "first_name",
             "last_name",
             "profile_picture",
-            "youtube_handle",
-            "twitter_handle",
-            "instagram_handle",
-            "facebook_handle",
-            "website",
             "favorite_recipes",
         )
         widgets = {

@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 {% load my_filters %}
+{% block extra_head %}
+    <script src="{% static 'htmx.min.js' %}" defer></script>
+    {% include "django_quill/media.html" %}
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css"
+          rel="stylesheet"
+          type="text/css" />
+{% endblock extra_head %}
 {% block content %}
     {% include "navbar.html" %}
     <div class="flex items-center justify-center ">
@@ -61,15 +70,6 @@
                 {% endautoescape %}
             </div>
         </div>
-        {% comment %} TODO: add icon for socials {% endcomment %}
-        {% if recipe.youtube %}
-            <div class="mb-8">
-                <h2 class="text-xl font-bold mb-4">Video</h2>
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="{{ recipe.youtube }}"></iframe>
-                </div>
-            </div>
-        {% endif %}
         {% if user.is_authenticated %}
             <div class="flex">
                 Rate:

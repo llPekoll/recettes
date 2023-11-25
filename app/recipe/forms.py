@@ -68,7 +68,6 @@ class RecipeForm(forms.ModelForm):
             "category",
             "recipe_origin",
             "quantity",
-            "youtube",
             "image",
             "is_published",
             "is_private",

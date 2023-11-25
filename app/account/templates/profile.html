@@ -1,4 +1,8 @@
 {% extends "base.html" %}
+{% block extra_head %}
+    <script src="{% static 'htmx.min.js' %}" defer></script>
+    {% include "django_quill/media.html" %}
+{% endblock extra_head %}
 {% block content %}
     <div class="flex ">
         {% include "components/profile_navbar.html" %}
@@ -30,15 +34,6 @@
                         <button class="after:float-right after:pl-4 after:font-bold accordion bg-orange-400 hover:bg-orange-500 rounded-lg text-white cursor-pointer w-full text-3xl px-3 py-4 text-left">
                             Socials
                         </button>
-                        <div class="panel overflow-hidden py-3">
-                            <p>
-                                {% include "components/editable_field.html" with label="Youtube" value=user.youtube_handle empty_css_class="youtube_empty" input_css_class="youtube_input" %}
-                                {% include "components/editable_field.html" with label="Facebook" value=user.facebook_handle empty_css_class="facebook_empty" input_css_class="facebook_input" %}
-                                {% include "components/editable_field.html" with label="Twitter" value=user.twitter_handle empty_css_class="twitter_empty" input_css_class="twitter_input" %}
-                                {% include "components/editable_field.html" with label="Instagram" value=user.instagram_handle empty_css_class="instagram_empty" input_css_class="instagram_input" %}
-                                {% include "components/editable_field.html" with label="Website" value=user.website_handle empty_css_class="website_empty" input_css_class="website_input" %}
-                            </p>
-                        </div>
                     </div>
                 </div>
             </div>

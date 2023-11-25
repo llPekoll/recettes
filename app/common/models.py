@@ -1,3 +1,5 @@
+from enum import Enum
+
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -19,10 +21,12 @@ class Image(models.Model):
     PROFILE = "profile"
     ARTICLE = "article"
     RECIPE = "recipe"
+    RECIPESTEP = "recipe step"
     TYPE_CHOICES = [
         (PROFILE, _("Profile")),
         (ARTICLE, _("Article")),
         (RECIPE, _("Recipe")),
+        (RECIPESTEP, _("RecipeStep")),
     ]
 
     image = PictureField(
@@ -64,7 +68,7 @@ class Comment(models.Model):
     edited = models.BooleanField(default=False)
     edtied_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    Report = GenericRelation("common.Report")
+    report = GenericRelation("common.Report")
 
     def __str__(self):
         return f"{self.author.username} commented on {self.content_object}"
@@ -72,7 +76,31 @@ class Comment(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=50)
-    # TODO::
+
+    def __str__(self):
+        return self.name
+
+
+class LinkType(Enum):
+    YOUTUBE = "Youtube"
+    TWITTER = "Twitter"
+    INSTAGRAM = "Instagram"
+    FACEBOOK = "Facebook"
+    TIKTOK = "Tiktok"
+    WEBSITE = "Website"
+
+
+class Link(models.Model):
+    value = models.URLField()
+    type = models.CharField(
+        max_length=20,
+        choices=[(linkType.value, linkType.name) for linkType in LinkType],
+        default=LinkType.YOUTUBE.value,
+    )
+
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey("content_type", "object_id")
 
     def __str__(self):
         return self.name

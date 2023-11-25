@@ -3,145 +3,138 @@
 {% load static %}
 {% load my_filters %}
 {% block extra_head %}
-    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css"
-          rel="stylesheet"
-          type="text/css" />
+  <script src="{% static 'htmx.min.js' %}" defer></script>
+  {% include "django_quill/media.html" %}
+  <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css"
+        rel="stylesheet"
+        type="text/css" />
 {% endblock extra_head %}
 {% block content %}
-    {% include "navbar.html" %}
-    <form class="bg-orange-50 pt-20 h-screen mx-80"
-          method="post"
-          enctype="multipart/form-data"
-          {% if create %}
-              action="{% url "recipe:api-new" %}"
-          {% else %}
-              action="{% url "recipe:api-edit" pk=recipe.id %}"
-          {% endif %}>
-        {% csrf_token %}
-        <div class="flex items-end ml-20">
-            <img src="{% static 'notes.svg' %}"
-                 alt="Profile Picture"
-                 class="w-60 h-60 inline" />
-            <div class=" inline text-orange-700 ">
-                {% if create %}
-                    <p class="text-4xl capitalize font-bold underline">New Recipe</p>
-                    <p class=" -mt-1.5 text-orange-300">creation of a new recipe</p>
-                {% else %}
-                    <p class="text-4xl capitalize font-bold underline">Edit Recipe</p>
-                    <p class=" -mt-1.5 text-orange-300">Make your recipe even better</p>
-                {% endif %}
-            </div>
+  {% include "navbar.html" %}
+  <form class="bg-orange-50 pt-20 h-screen mx-80"
+        method="post"
+        enctype="multipart/form-data"
+        {% if create %}
+          action="{% url "recipe:api-new" %}"
+        {% else %}
+          action="{% url "recipe:api-edit" pk=recipe.id %}"
+        {% endif %}>
+    {% csrf_token %}
+    <div class="flex items-end ml-20">
+      <img src="{% static 'notes.svg' %}"
+           alt="Profile Picture"
+           class="w-60 h-60 inline" />
+      <div class=" inline text-orange-700 ">
+        {% if create %}
+          <p class="text-4xl capitalize font-bold underline">New Recipe</p>
+          <p class=" -mt-1.5 text-orange-300">creation of a new recipe</p>
+        {% else %}
+          <p class="text-4xl capitalize font-bold underline">Edit Recipe</p>
+          <p class=" -mt-1.5 text-orange-300">Make your recipe even better</p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="block w-5/6 ml-20">
+      <label for={{ form.title.name }} class="flex mt-10">
+        Name<span class="text-red-600">*</span>:
+        {% include "components/help_circle.html" with help_text="Just the way you want to call it?" %}
+      </label>
+      <input type="text" name={{ form.title.name }} data-test="new-recipe" class="rounded-lg ml-3 bg-orange-200 focus:ring-0 border-0 w-full" required placeholder="{{ form.title.label }}" {% if recipe.title %}value="{{ recipe.title }}"{% endif %} />
+      <div>
+        <label for={{ form.title.name }} class="flex mt-5">
+          Category:
+          {% include "components/help_circle.html" with help_text="What is the category of your recipe?" %}
+        </label>
+        <select name="category"
+                id="{{ form.category.id_for_label }}"
+                class="ml-3 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5">
+          {% for value in form.category %}
+            <option value="{{ value.data.value }}"
+                    class="capitalize"
+                    {% if value.data.value == form.category.value %}selected{% endif %}>{{ value.data.value }}</option>
+          {% endfor %}
+        </select>
+        <label for={{ form.title.name }} class="flex mt-5">
+          Description:
+          {% include "components/help_circle.html" with help_text="A Description to descibe what is you recipe about" %}
+        </label>
+        <textarea type="textarea" name={{ form.description.name }} data-test="new-recipe" class="ml-3 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5" placeholder="Please enter a desciption">{% if recipe.description %}{{ recipe.description }}{% endif%}</textarea>
+        <label for={{ form.image.name }} class="flex mt-5">
+          Image:
+          {% include "components/help_circle.html" with help_text="this is going to be the background image of the recipe" %}
+        </label>
+        {% if recipe.image.url %}
+          <img src="{{ recipe.image.url }}"
+               alt="recipe image"
+               class="w-60 h-60 inline" />
+        {% endif %}
+        <input type="file" name="image" accept="image/*" class="ml-3">
+        <label for={{ form.recipe_origin.name }} class="flex mt-5 ">
+          Origin:
+          {% include "components/help_circle.html" with help_text="Just in case if you know where the recipe come from it's' always nice to have a bit of background but if you don't that's fine just dont add anything" %}
+        </label>
+        <select name="recipe_origin"
+                id="{{ form.recipe_origin.id_for_label }}"
+                class="ml-3 bg-orange-200 capitalize text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5">
+          <option value="" {% if not form.recipe_origin.value %}selected{% endif %}></option>
+          {% for value in form.recipe_origin %}
+            <option value="{{ value.data.value }}"
+                    class="capitalize"
+                    {% if value.data.value == form.recipe_origin.value %}selected{% endif %}>{{ value.data.value }}</option>
+          {% endfor %}
+        </select>
+        <label for={{ form.recipe_origin.name }} class="flex mt-5 ">
+          Duration:
+          {% include "components/help_circle.html" with help_text="How much time is it going to take" %}
+        </label>
+        <div class="flex">
+          <input type="number" name={{ form.duration.name }} value={{ form.duration.value }} data-test="new-recipe" class="ml-3 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block  p-2.5" min=0 />
+          <select name={{ form.duration_scale.name }} id="{{ form.duration_scale.id_for_label }}" class="ml-3 bg-orange-200 capitalize text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5 ">
+            {% for value in form.duration_scale %}
+              <option value="{{ value.data.value }}"
+                      class="capitalize"
+                      {% if value.data.value == form.duration_scale.value %}selected{% endif %}>{{ value.data.value }}s</option>
+            {% endfor %}
+          </select>
         </div>
-        <div class="block w-5/6 ml-20">
-            <label for={{ form.title.name }} class="flex mt-10">
-                Name<span class="text-red-600">*</span>:
-                {% include "components/help_circle.html" with help_text="Just the way you want to call it?" %}
-            </label>
-            <input type="text" name={{ form.title.name }} data-test="new-recipe" class="rounded-lg ml-3 bg-orange-200 focus:ring-0 border-0 w-full" required placeholder="{{ form.title.label }}" {% if recipe.title %}value="{{ recipe.title }}"{% endif %} />
-            <div>
-                <label for={{ form.title.name }} class="flex mt-5">
-                    Category:
-                    {% include "components/help_circle.html" with help_text="What is the category of your recipe?" %}
-                </label>
-                <select name="category"
-                        id="{{ form.category.id_for_label }}"
-                        class="ml-3 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5">
-                    {% for value in form.category %}
-                        <option value="{{ value.data.value }}"
-                                class="capitalize"
-                                {% if value.data.value == form.category.value %}selected{% endif %}>{{ value.data.value }}</option>
-                    {% endfor %}
-                </select>
-                <label for={{ form.title.name }} class="flex mt-5">
-                    Description:
-                    {% include "components/help_circle.html" with help_text="A Description to descibe what is you recipe about" %}
-                </label>
-                <textarea type="textarea" name={{ form.description.name }} data-test="new-recipe" class="ml-3 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5" placeholder="Please enter a desciption">{% if recipe.description %}{{ recipe.description }}{% endif%}</textarea>
-                <label for={{ form.image.name }} class="flex mt-5">
-                    Image:
-                    {% include "components/help_circle.html" with help_text="this is going to be the background image of the recipe" %}
-                </label>
-                {% if recipe.image.url %}
-                    <img src="{{ recipe.image.url }}"
-                         alt="recipe image"
-                         class="w-60 h-60 inline" />
-                {% endif %}
-                <input type="file" name="image" accept="image/*" class="ml-3">
-                <label for={{ form.recipe_origin.name }} class="flex mt-5 ">
-                    Origin:
-                    {% include "components/help_circle.html" with help_text="Just in case if you know where the recipe come from it's' always nice to have a bit of background but if you don't that's fine just dont add anything" %}
-                </label>
-                <select name="recipe_origin"
-                        id="{{ form.recipe_origin.id_for_label }}"
-                        class="ml-3 bg-orange-200 capitalize text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5">
-                    <option value="" {% if not form.recipe_origin.value %}selected{% endif %}></option>
-                    {% for value in form.recipe_origin %}
-                        <option value="{{ value.data.value }}"
-                                class="capitalize"
-                                {% if value.data.value == form.recipe_origin.value %}selected{% endif %}>{{ value.data.value }}</option>
-                    {% endfor %}
-                </select>
-                <label for={{ form.recipe_origin.name }} class="flex mt-5 ">
-                    Duration:
-                    {% include "components/help_circle.html" with help_text="How much time is it going to take" %}
-                </label>
-                <div class="flex">
-                    <input type="number" name={{ form.duration.name }} value={{ form.duration.value }} data-test="new-recipe" class="ml-3 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block  p-2.5" min=0 />
-                    <select name={{ form.duration_scale.name }} id="{{ form.duration_scale.id_for_label }}" class="ml-3 bg-orange-200 capitalize text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5 ">
-                        {% for value in form.duration_scale %}
-                            <option value="{{ value.data.value }}"
-                                    class="capitalize"
-                                    {% if value.data.value == form.duration_scale.value %}selected{% endif %}>{{ value.data.value }}s</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-            {% include "components/ingredient_form.html" %}
-            {{ form.recipe_ingredients }}
-            {{ form.instructions }}
-            {% include "components/tag_editor.html" %}
-            <div class="checkbox-wrapper-28 text-orange-500 mt-5">
-                <input id="tmp-28"
-                       type="checkbox"
-                       class="promoted-input-checkbox"
-                       name="is_published" />
-                <svg>
-                    <use xlink:href="#checkmark-28" />
-                </svg>
-                <label for="tmp-28">Publish recipe</label>
-                <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
-                    <symbol id="checkmark-28" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-miterlimit="10" fill="none"  d="M22.9 3.7l-15.2 16.6-6.6-7.1"></path>
-                    </symbol>
-                </svg>
-            </div>
-        </div>
-        <div class="mt-10 ml-10">
-            <button class="after:float-right after:pl-4 after:font-bold accordion bg-orange-400 hover:bg-orange-500 rounded-lg text-white cursor-pointer w-full text-3xl px-3 py-4 text-left">
-                Socials
-            </button>
-            <div class="panel overflow-hidden py-3">
-                <p>
-                    {% include "components/editable_field.html" with label="Youtube" value=recipe.youtube.value empty_css_class="youtube_empty" input_css_class="youtube_input" %}
-                    {% include "components/editable_field.html" with label="Facebook" value=recipe.facebook.value empty_css_class="facebook_empty" input_css_class="facebook_input" %}
-                    {% include "components/editable_field.html" with label="Twitter" value=recipe.twitter.value empty_css_class="twitter_empty" input_css_class="twitter_input" %}
-                    {% include "components/editable_field.html" with label="Instagram" value=recipe.instagram.value empty_css_class="instagram_empty" input_css_class="instagram_input" %}
-                    {% include "components/editable_field.html" with label="Website" value=recipe.website.value empty_css_class="website_empty" input_css_class="website_input" %}
-                </p>
-            </div>
-        </div>
-        <button type="submit"
-                class="bg-orange-800 text-white rounded-lg float-right mt-5 px-10 py-2 mr-28">
-            {% if create %}
-                Create Recipe
-            {% else %}
-                Edit Recipe
-            {% endif %}
-        </button>
-    </form>
-    <style>
+      </div>
+      {% include "components/ingredient_form.html" %}
+      {{ form.recipe_ingredients }}
+      {{ form.instructions }}
+      {% include "components/tag_editor.html" %}
+      <div class="checkbox-wrapper-28 text-orange-500 mt-5">
+        <input id="tmp-28"
+               type="checkbox"
+               class="promoted-input-checkbox"
+               name="is_published" />
+        <svg>
+          <use xlink:href="#checkmark-28" />
+        </svg>
+        <label for="tmp-28">Publish recipe</label>
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+          <symbol id="checkmark-28" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-miterlimit="10" fill="none"  d="M22.9 3.7l-15.2 16.6-6.6-7.1"></path>
+          </symbol>
+        </svg>
+      </div>
+    </div>
+    <div class="mt-10 ml-10">
+      <button class="after:float-right after:pl-4 after:font-bold accordion bg-orange-400 hover:bg-orange-500 rounded-lg text-white cursor-pointer w-full text-3xl px-3 py-4 text-left">
+        Socials
+      </button>
+    </div>
+    <button type="submit"
+            class="bg-orange-800 text-white rounded-lg float-right mt-5 px-10 py-2 mr-28">
+      {% if create %}
+        Create Recipe
+      {% else %}
+        Edit Recipe
+      {% endif %}
+    </button>
+  </form>
+  <style>
     .checkbox-wrapper-28 {
       --size: 25px;
       position: relative;
@@ -227,8 +220,8 @@
 		  max-height: 0;
 		  transition: max-height 0.2s ease-out;
 		}
-    </style>
-    <script>
+  </style>
+  <script>
 	var acc = document.getElementsByClassName("accordion");
 	var i;
 	
@@ -243,5 +236,5 @@
 		} 
 	  });
 	}
-    </script>
+  </script>
 {% endblock content %}

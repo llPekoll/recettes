@@ -34,15 +34,9 @@ class User(AbstractUser):
         related_name="myapp_user_permissions",  # specify a custom related name
         related_query_name="user",
     )
-    # Socials
-    youtube_handle = models.URLField(blank=True)
-    twitter_handle = models.URLField(blank=True)
-    instagram_handle = models.URLField(blank=True)
-    facebook_handle = models.URLField(blank=True)
-    tiktok_handle = models.URLField(blank=True)
-    website = models.URLField(blank=True)
     comments = GenericRelation("common.Comment")
     tags = models.ManyToManyField("common.Tag", blank=True)
+    links = models.ManyToManyField("common.Link", blank=True)
 
     def __str__(self):
         return self.username

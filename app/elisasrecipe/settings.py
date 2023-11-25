@@ -193,28 +193,28 @@ STORAGES = {
 
 QUILL_CONFIGS = {
     "default": {
-        "theme": "snow",
+        "theme": "bubble",
         "modules": {
             "syntax": True,
             "toolbar": [
                 [
-                    {"font": []},
-                    {"header": []},
-                    {"align": []},
+                    # {"font": []},
+                    # {"header": []},
+                    # {"align": []},
                     "bold",
                     "italic",
                     "underline",
                     "strike",
-                    "blockquote",
-                    {"color": []},
-                    {"background": []},
+                    # "blockquote",
+                    # {"color": []},
+                    # {"background": []},
                 ],
                 [
                     {"list": "ordered"},
                     {"list": "bullet"},
-                    "code-block",
-                    "link",
-                    "image",
+                    # "code-block",
+                    # "link",
+                    # "image",
                 ],
                 ["clean"],
             ],

@@ -1,3 +1,6 @@
+{% block extra_head %}
+    <script src="{% static 'htmx.min.js' %}" defer></script>
+{% endblock extra_head %}
 {% if form.errors %}
     <div class="text-red-800 font-bold text-center text-xs bg-red-200 py-2 border-solid border border-red-800 rounded-lg">
         <ul>

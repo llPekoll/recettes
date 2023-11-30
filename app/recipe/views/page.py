@@ -1,27 +1,28 @@
 from common.models import Rate, Tag
 from django.db.models import Avg, Q
 from django.shortcuts import get_object_or_404, render
-from recipe.forms import RecipeForm
+from recipe.forms import RecipeForm, RecipeStepForm
 from recipe.models import Ingredient, Recipe, RecipeIngredient
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def page_recipe_creation(request):
     form = RecipeForm()
     ingredient_names = [ingredient.name for ingredient in Ingredient.objects.all()]
-    recipe_draft = Recipe.objects.filter(author=request.user, is_draft=True).last()
-    ings = [
-        ingredient
-        for ingredient in RecipeIngredient.objects.filter(recipe=recipe_draft)
-    ]
+    nb = Recipe.objects.count()
+    recipe = Recipe.objects.create(author=request.user, title=f"New Recipe {nb + 1}")
+    print(recipe)
     tags = Tag.objects.all()
     return render(
         request,
-        "new_recipe.html",
+        "patterns/pages/new_recipe/new_recipe.html",
         {
             "form": form,
-            "ingredient_names": ingredient_names,
-            "ings": ings,
+            "recipeStepForm": RecipeStepForm,
             "create": True,
+            "recipe": recipe,
+            "ingredient_names": ingredient_names,
             "tag_list": [tag.name for tag in tags],
         },
     )

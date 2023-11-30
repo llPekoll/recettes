@@ -3,6 +3,8 @@ from django.urls import path
 from .views.api import (
     ingredient_detail,
     ingredient_list,
+    step_detail,
+    step_list,
     recipe_creation,
     recipe_edit,
     search_recipes,
@@ -34,4 +36,6 @@ urlpatterns = [
     path("api/<int:pk>/favorite/", set_favorite, name="api-favorite"),
     path("api/ingredient/", ingredient_list, name="api-ingredient-list"),
     path("api/ingredient/<int:pk>/", ingredient_detail, name="api-ingredient-detail"),
+    path("api/step/", step_list, name="api-step-list"),
+    path("api/step/<int:pk>/", step_detail, name="api-step-detail"),
 ]

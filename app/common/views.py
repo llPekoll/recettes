@@ -6,13 +6,8 @@ from recipe.models import Recipe
 from .models import Comment, Report, Tag
 
 
-def detail_comment(request, pk, content_type):
-    if request.method == "DELETE":
-        # soft delete is better
-        get_object_or_404(Comment, pk=pk)
-        Comment.objects.filter(pk=pk).delete()
-        comments = Comment.objects.all()
-        return render(request, "comment_list.html", {"comments": comments})
+
+def list_comment(request, pk, content_type):
     if content_type == "Article":
         content = get_object_or_404(Article, pk=pk)
     elif content_type == "Recipe":
@@ -26,6 +21,16 @@ def detail_comment(request, pk, content_type):
             )
             comments = content.comments.order_by("created_at")
             return render(request, "comment_list.html", {"comments": comments})
+
+
+def detail_comment(request, pk):
+    # TODO: add patch method
+    if request.method == "DELETE":
+        # soft delete is better
+        get_object_or_404(Comment, pk=pk)
+        Comment.objects.filter(pk=pk).delete()
+        comments = Comment.objects.all()
+        return render(request, "comment_list.html", {"comments": comments})
 
 
 def tag(request, pk):
@@ -55,3 +60,35 @@ def report(request, pk, content_type):
             message=request.POST.get("message"),
         )
         return HttpResponse("Report posted", status=200)
+
+
+# TODO: maybe merge this 2 function into a get_or_create
+def link_list(request, content_type):
+    if content_type == "Article":
+        content = get_object_or_404(Article, pk=pk)
+    elif content_type == "Recipe":
+        content = get_object_or_404(Recipe, pk=pk)
+    elif content_type == "User":
+        content = get_object_or_404("account.User", pk=pk)
+    Link.objects.create(
+        content_type=content,
+        value=request.POST.get("value"),
+        type=request.POST.get("type"),
+    )
+    return """ link added """
+
+
+def link_detail(request, pk, content_type):
+    if content_type == "Article":
+        content = get_object_or_404(Article, pk=pk)
+    elif content_type == "Recipe":
+        content = get_object_or_404(Recipe, pk=pk)
+    elif content_type == "User":
+        content = get_object_or_404("account.User", pk=pk)
+    Link.objects.get(
+        content_type=content,
+        pk=pk,
+        value=request.POST.get("value"),
+        type=request.POST.get("type"),
+    )
+    return """ link updated """

@@ -1,0 +1,27 @@
+<div>
+    Add link to {{ content_type }}:
+    <form {% if content == "recipe" %}
+              hx-post="{% url 'api-link-list' content_type="recipe" %}"
+          {% elif content == "user" %}
+              hx-post="{% url 'api-link-list' content_type="user" %}"
+          {% elif content == "article" %}
+              hx-post="{% url 'api-link-list' content_type="article" %}"
+          {% endif %}
+          hx-target="#ingredient-list"
+          hx-swap="outerHTML"
+          hx-on="htmx:afterRequest this.remove()"
+          class="mb-4 flex flex-wrap items-center"
+          enctype="multipart/form-data">
+        <select name="socials" class="rounded-lg mr-4 my-2">
+            <option value="youtube">YouTube</option>
+            <option value="twitter">Twitter</option>
+            <option value="tiktok">TikTok</option>
+            <option value="facebook">Facebook</option>
+        </select>
+        <input type="text"
+               name="value"
+               placeholder="link from content"
+               class="px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent mr-2">
+        <div class="px-3">{% include "patterns/components/icons/add/add.html" %}</div>
+    </form>
+</div>

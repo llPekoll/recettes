@@ -1,50 +1,46 @@
-<div>
-    List of ingredient:
-    {% comment %} {% csrf_token %} {% endcomment %}
-    <div class="flex items-center mb-4">
-        <input type="number"
-               name="quantity"
-               id="quantity"
-               placeholder="quatity"
-               class="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent">
-        <select name="unit"
-                value="{{ form.unit.name }}"
-                id="{{ form.unit.id_for_label }}"
-                class="ml-3 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5">
-            {% for value in form.unit %}
-                <option value="{{ value.data.value }}"
-                        class="capitalize"
-                        {% if value == form.category.value %}selected{% endif %}>{{ value.data.value }}</option>
-            {% endfor %}
-        </select>
-        <div class="search-input w-full">
-            <div class="flex">
-                <input type="text"
-                       name="ingredient_name"
-                       id="input-search"
-                       autocomplete="off"
-                       placeholder="Ingredient name"
-                       class="px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent">
-                <div class="icon text-orange-700 -ml-10 mt-2 mr-4">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         width="24"
-                         height="24"
-                         viewBox="0 0 256 256">
-                        <path fill="currentColor" d="M232.49 215.51L185 168a92.12 92.12 0 1 0-17 17l47.53 47.54a12 12 0 0 0 17-17ZM44 112a68 68 0 1 1 68 68a68.07 68.07 0 0 1-68-68Z" />
-                    </svg>
-                </div>
-            </div>
-            <div class="autocom-box absolute bg-red-50 w-40 mt-2"></div>
-        </div>
-        <button hx-post="{% url 'recipe:api-ingredient-list' %}"
-                hx-target="#ingredient-list"
-                hx-swap="outerHTML"
-                class="ml-3 px-2.5 pb-0.5  bg-orange-600 text-white  hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-600 focus:ring-opacity-50 text-3xl rounded-full">
-            +
-        </button>
+<h2 class="text-2xl py-2">Add an ingredient:</h2>
+<form class="flex items-center"
+      hx-post="{% url 'recipe:api-ingredient-list' %}"
+      hx-target="#ingredient-list"
+      hx-swap="outerHTML"
+      hx-on="htmx:afterRequest this.remove()">
+  <input type="number"
+         name="quantity"
+         id="quantity"
+         placeholder="quatity"
+         class="w-1/6 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block p-2.5">
+  <select name="unit"
+          value="{{ form.unit.name }}"
+          id="{{ form.unit.id_for_label }}"
+          class="w-1/6 ml-3 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block p-2.5">
+    {% for value in form.unit %}
+      <option value="{{ value.data.value }}"
+              class="capitalize"
+              {% if value == form.category.value %}selected{% endif %}>{{ value.data.value }}</option>
+    {% endfor %}
+  </select>
+  <div class="search-input">
+    <div class="flex">
+      <input type="text"
+             name="ingredient_name"
+             id="input-search"
+             autocomplete="off"
+             placeholder="Ingredient name"
+             class="ml-3 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block p-2.5">
+      <div class="icon text-orange-700 -ml-10 mt-2 mr-4">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             width="24"
+             height="24"
+             viewBox="0 0 256 256">
+          <path fill="currentColor" d="M232.49 215.51L185 168a92.12 92.12 0 1 0-17 17l47.53 47.54a12 12 0 0 0 17-17ZM44 112a68 68 0 1 1 68 68a68.07 68.07 0 0 1-68-68Z" />
+        </svg>
+      </div>
     </div>
+    <div class="autocom-box absolute bg-red-50 w-40 mt-2"></div>
+  </div>
+  <div class="px-3">{% include "patterns/components/icons/add/add.html" %}</div>
+</form>
 </div>
-<div class="pt-20">{% include "components/ingredient_list.html" %}</div>
 <script>
 
 // suggestion
@@ -112,7 +108,6 @@
 
 .wrapper .search-input{
   background: #fff;
-  width: 100%;
   border-radius: 5px;
   position: relative;
   box-shadow: 0px 1px 5px 3px rgba(0,0,0,0.12);

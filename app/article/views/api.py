@@ -12,21 +12,26 @@ def article_edit(request, pk):
     if request.method == "POST":
         article = get_object_or_404(Article, pk=pk)
         form = ArticleForm(request.POST, instance=article)
-        write_article(form, request)
+        id = write_article(form, request)
 
 
 def article_creation(request):
     if request.method == "POST":
         form = ArticleForm(request.POST)
-        write_article(form, request)
+        errors, content = write_article(form, request)
+        if not errors:
+            return HttpResponse(content, status=410)
+        return redirect(reverse("article:detail", args=[content]))
+    return HttpResponse("Method not allowed", status=405)
 
 
 def write_article(form, request):
     if form.is_valid():
         article = form.save(commit=False)
         article.author = request.user
+
         article.save()
-        if "tags" in request.POST:
+        if request.POST.get("tags"):
             tags = json.loads(request.POST.get("tags"))
             for tag in tags:
                 tag, _ = Tag.objects.get_or_create(name=tag.get("value"))
@@ -36,12 +41,9 @@ def write_article(form, request):
             image.save()
             article.image = image
         article.save()
-        return redirect(reverse("article:detail", args=[article.id]))
+        return True, article.id
     else:
-        # TODO:
-        # tell user something went wrong
-        print(form.errors)
-        return HttpResponse("the form is not valid", status=410)
+        return False, form.errors
 
 
 def set_favorite(request, pk):

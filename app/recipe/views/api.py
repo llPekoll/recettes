@@ -11,8 +11,8 @@ from django.contrib.postgres.search import (
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from recipe.forms import RecipeForm, RecipeIngredientForm
-from recipe.models import Recipe, RecipeIngredient
+from recipe.forms import RecipeForm, RecipeIngredientForm, RecipeStepForm
+from recipe.models import Recipe, RecipeIngredient, RecipeStep
 
 
 def recipe_edit(request, pk):
@@ -60,16 +60,17 @@ def recipe_write(form, request):
         return HttpResponse("the form is not valid", status=410)
 
 
-# hugues brimel njinkoue
 def ingredient_list(request):
-    recipe_id = request.POST.get("recipe_id")
-    if "/" in recipe_id:
+    recipe = request.POST.get("recipe")
+    if recipe and "/" in recipe:
         recipe = Recipe.objects.create(author=request.user)
     else:
-        recipe = Recipe.objects.get(id=recipe_id, author=request.user)
+        recipe = Recipe.objects.get(id=recipe, author=request.user)
 
     if request.method == "POST":
-        form = RecipeIngredientForm(request.POST)
+        post_data = request.POST.copy()
+        post_data["recipe"] = recipe.id
+        form = RecipeIngredientForm(post_data)
         form.recipe_id = recipe.id
         if form.is_valid():
             form.save()
@@ -97,8 +98,41 @@ def ingredient_detail(request, pk):
         return render(
             request,
             "components/ingredient_list.html",
+            {"ings": ings, "recipe": ingredient.recipe},
+        )
+
+
+def step_list(request):
+    step_id = request.POST.get("step_id")
+    if "/" in step_id:
+        recipe = RecipeStep.objects.create(author=request.user)
+    else:
+        recipe = RecipeStep.objects.get(id=step_id, author=request.user)
+
+    if request.method == "POST":
+        form = RecipeStepForm(request.POST)
+        form.recipe_id = recipe.id
+        if form.is_valid():
+            form.save()
+        steps = [step for step in RecipeStep.objects.filter(recipe=recipe.id)]
+        return render(
+            request,
+            "components/step_list.html",
+            {"steps": steps, "recipe": recipe},
+        )
+
+
+def step_detail(request, pk):
+    if request.method == "DELETE":
+        step = get_object_or_404(RecipeStep, pk=pk)
+        step.delete()
+        steps = [step for step in RecipeStep.objects.filter(recipe=recipe.id)]
+
+        return render(
+            request,
+            "components/step_list.html",
             {
-                "ings": ings,
+                "steps": steps,
             },
         )
 
@@ -139,7 +173,6 @@ def search_recipes(request):
         vector = SearchVector("title", "description", "instructions")
         query = SearchQuery(search_query)
         search_headline = SearchHeadline("title", query)
-
         recipes = (
             Recipe.objects.annotate(
                 rank=SearchRank(vector, query),

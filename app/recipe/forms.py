@@ -10,6 +10,7 @@ from .models import (
     Region,
     TimeScale,
     UnitOfMeasure,
+    RecipeStep,
 )
 
 
@@ -18,7 +19,7 @@ class RecipeIngredientForm(forms.ModelForm):
         max_length=100,
         required=True,
     )
-    recipe_id = forms.IntegerField(widget=forms.HiddenInput())
+    recipe = forms.IntegerField()
 
     class Meta:
         model = RecipeIngredient
@@ -29,13 +30,22 @@ class RecipeIngredientForm(forms.ModelForm):
         obj, created = Ingredient.objects.get_or_create(
             name=self.cleaned_data["ingredient_name"]
         )
-        recipe = Recipe.objects.get(id=self.cleaned_data["recipe_id"])
+        print(self.cleaned_data)
+        recipe = Recipe.objects.get(id=self.cleaned_data["recipe"])
         recipe_ingredient.unit = self.cleaned_data["unit"]
         recipe_ingredient.ingredient = obj
         recipe_ingredient.recipe = recipe
         if commit:
             recipe_ingredient.save()
         return recipe_ingredient
+
+
+class RecipeStepForm(forms.ModelForm):
+    instruction = QuillFormField()
+
+    class Meta:
+        model = RecipeStep
+        fields = ["title", "instruction", "step_number"]
 
 
 class RecipeForm(forms.ModelForm):
@@ -54,7 +64,7 @@ class RecipeForm(forms.ModelForm):
     unit = forms.ChoiceField(
         choices=[(uom.value, uom.name) for uom in UnitOfMeasure], required=False
     )
-    instructions = QuillFormField(required=False)
+
     image = forms.ImageField(required=False)
 
     class Meta:
@@ -64,7 +74,6 @@ class RecipeForm(forms.ModelForm):
             "description",
             "duration",
             "duration_scale",
-            "instructions",
             "category",
             "recipe_origin",
             "quantity",

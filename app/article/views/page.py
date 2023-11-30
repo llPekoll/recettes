@@ -6,13 +6,11 @@ from django.shortcuts import get_object_or_404, render
 
 def page_article_creation(request):
     form = ArticleForm()
-    articles = Article.objects.filter(author=request.user)
     tags = Tag.objects.all()
     return render(
         request,
-        "user_articles.html",
+        "new_article.html",
         {
-            "articles": articles,
             "article": form,
             "tag_list": [tag.name for tag in tags],
         },

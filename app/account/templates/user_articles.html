@@ -1,12 +1,10 @@
 {% extends "base.html" %}
-{% load my_filters %}
 {% load i18n %}
 {% load static %}
 {% block content %}
     <div class="flex">
         {% include "components/profile_navbar.html" %}
         <section class="px-52 w-full text-center max-w-7xl pt-20">
-            {% include "components/new_article.html" %}
             <div class="clear-right text-center ">
                 <h1 class="text-xl font-bold py-6">My blog articles</h1>
                 <div class="flex flex-wrap">
@@ -27,9 +25,4 @@
             </div>
         </section>
     </div>
-    <style>
-        .ql-editor{
-          min-height:200px;
-      }
-    </style>
 {% endblock content %}

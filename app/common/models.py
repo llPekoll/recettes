@@ -97,7 +97,7 @@ class Link(models.Model):
         choices=[(linkType.value, linkType.name) for linkType in LinkType],
         default=LinkType.YOUTUBE.value,
     )
-
+    embedded = models.BooleanField(default=False)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey("content_type", "object_id")

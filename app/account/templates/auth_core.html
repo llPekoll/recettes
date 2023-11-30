@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load static %}
 {% block extra_head %}
     <script src="{% static 'htmx.min.js' %}" defer></script>
 {% endblock extra_head %}
@@ -27,9 +28,9 @@
                                   {% if step == "login" %}
                                       hx-post="{% url 'user:login' %}"
                                   {% elif step == "register" %}
-                                      hx-post="{% url 'register' %}"
+                                      hx-post="{% url 'user:register' %}"
                                   {% elif step == "reset-password" %}
-                                      hx-post="{% url 'password-reset' %}"
+                                      hx-post="{% url 'user:password-reset' %}"
                                   {% endif %}
                                   hx-target="#form-holder"
                                   hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>

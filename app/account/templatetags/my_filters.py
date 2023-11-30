@@ -1,5 +1,6 @@
 from django import template
 from django.utils.translation import get_language_info
+from decimal import Decimal
 
 register = template.Library()
 
@@ -31,4 +32,9 @@ def format_date_short(date):
 
 @register.filter
 def clean_number(number):
-    return number.normalize() if number else ""
+    if number:
+        number = Decimal(number)
+        number = number.quantize(Decimal("1.00"))
+
+        return number.normalize()
+    return ""

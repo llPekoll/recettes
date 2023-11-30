@@ -1,0 +1,23 @@
+name: Link List
+context:
+  links:
+    - id: 1
+      value: "http://www.twitter.com/fasdfasdf"
+      embedded: false
+      type: "Tiktok"
+    - id: 2
+      value: "http://www.twitter.com/fasdfasdf"
+      embedded: false
+      type: "Twitter"
+    - id: 3
+      value: "http://www.twitter.com/fasdfasdf"
+      embedded: false
+      type: "Youtube"
+    - id: 4
+      value: "http://www.twitter.com/fasdfasdf"
+      embedded: false
+      type: "Website"
+    - id: 5
+      value: "http://www.twitter.com/fasdfasdf"
+      embedded: false
+      type: "Instagram"

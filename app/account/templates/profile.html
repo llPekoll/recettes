@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block extra_head %}
     <script src="{% static 'htmx.min.js' %}" defer></script>
     {% include "django_quill/media.html" %}
@@ -30,13 +31,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mt-10 ml-10">
-                        <button class="after:float-right after:pl-4 after:font-bold accordion bg-orange-400 hover:bg-orange-500 rounded-lg text-white cursor-pointer w-full text-3xl px-3 py-4 text-left">
-                            Socials
-                        </button>
-                    </div>
                 </div>
             </div>
+            <strong>TODO:</strong>Add links
             <div class="w-4/5 py-10 ml-10">
                 {% url 'article:new' as article_new %}
                 {% url 'recipe:new' as recipe_new %}
@@ -45,34 +42,4 @@
             </div>
         </div>
     </div>
-    <style>
-            .accordion:after {
-                content:'\002B';
-            }
-            
-            .active:after {
-                content: "\2212";
-            }
-            
-            .panel {
-              max-height: 0;
-              transition: max-height 0.2s ease-out;
-            }
-    </style>
-    <script>
-        var acc = document.getElementsByClassName("accordion");
-        var i;
-        
-        for (i = 0; i < acc.length; i++) {
-          acc[i].addEventListener("click", function() {
-            this.classList.toggle("active");
-            var panel = this.nextElementSibling;
-            if (panel.style.maxHeight) {
-              panel.style.maxHeight = null;
-            } else {
-              panel.style.maxHeight = panel.scrollHeight + "px";
-            } 
-          });
-        }
-    </script>
 {% endblock content %}

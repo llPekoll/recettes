@@ -115,17 +115,23 @@ class Recipe(models.Model):
         super().save(*args, **kwargs)
 
 
-class RecipeStps(models.Model):
+class RecipeStep(models.Model):
     recipe = models.ForeignKey(
         Recipe, on_delete=models.CASCADE, default=1, related_name="recipe_step"
     )
     step_number = models.IntegerField(default=1)
     title = models.CharField(max_length=255)
-    content = models.TextField()
+    instruction = models.TextField()
     link = GenericRelation("common.Link")
+    image = models.OneToOneField(
+        "common.Image", on_delete=models.SET_NULL, null=True, blank=True
+    )
 
     def __str__(self):
         return f"{self.step_number} {self.title}"
+
+    class Meta:
+        ordering = ["step_number"]
 
 
 class Ingredient(models.Model):

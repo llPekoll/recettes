@@ -1,3 +1,4 @@
+import uuid
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.utils.text import slugify
@@ -28,23 +29,27 @@ class Article(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
-        art = (
-            Article.objects.filter(slug__contains=self.slug).exclude(id=self.id).last()
-        )
-        if art:
-            slug_and_maybe_number = art.slug.split("-")
-            slug = slug_and_maybe_number[0]
-            if len(slug_and_maybe_number) > 1:
-                nb = int(slug_and_maybe_number[-1])
-                nb += 1
-                self.slug = f"{slug}-{int(nb)}"
-            else:
-                self.slug = f"{slug}-1"
 
-        if len(self.slug) > 199:
-            nb = int(slug_and_maybe_number[-1])
-            nb += 1
-            self.slug = f"{self.slug[:100]}-{nb}"
+        # Check if an article with the same slug already exists
+        existing_article = (
+            Article.objects.filter(slug=self.slug).exclude(id=self.id).first()
+        )
+
+        if existing_article:
+            # If an article with the same slug exists, generate a unique slug
+            for i in range(1, 200):
+                new_slug = f"{self.slug}-{i}"
+                if len(new_slug) > 200:
+                    # If the new slug is too long, raise an error
+                    new_slug = str(uuid.uuid4())[:200]
+                if (
+                    not Article.objects.filter(slug=new_slug)
+                    .exclude(id=self.id)
+                    .exists()
+                ):
+                    # If the new slug is unique, use it and stop the loop
+                    self.slug = new_slug
+                    break
 
         super().save(*args, **kwargs)
 

@@ -184,16 +184,19 @@ def user_recipes(request):
 
 @login_required
 def user_favorites(request):
-    recipes = User.favorite_recipes
+    recipes = request.user.favorite_recipes.all()
+    articles = request.user.favorite_articles.all()
     return render(
         request,
-        "recipe_user_list.html",
+        "user_favorties.html",
         {
             "recipes": recipes,
+            "articles": articles,
         },
     )
 
 
+@login_required
 def user_articles(request):
     form = ArticleForm()
     articles = Article.objects.filter(author=request.user)

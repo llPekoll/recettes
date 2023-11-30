@@ -1,21 +1,21 @@
-# README #
+# Recette
 
 
-## traductions ##
+## traductions
 ```
 ./manage.py makemessages --all
 ./manage.py compilemessages
 ```
-## Run tailwind ##
+## Run tailwind
 ```
 ./manage.py tailwind start
 ```
-## Run test ##
+## Run test
 ```
 ./manage.py test
 ```
 
-## Lint ##
+## Lint
 ```
 isort app/
 black app/
@@ -26,33 +26,23 @@ isort app/;black app/;bandit app/;flake8 app/
 ```
 
 
-## Cool Stuff ##
+## Cool Stuff
 https://codepen.io/nailaahmad/pen/MyZXVE
 
 autocomplete
 https://codepen.io/mrcodebox33/pen/OJaGrra
 
 
-## TODO ##
- - [x] install minio
- - [x] Edit profile pricture
- - [x] Add recipie picture
- - [x] Blog
- - [x] move article to an serparated app
- - [x] clean template mess -> use componenent directory
- - [x] add tags
- - [x] Edit Articles
- - [x] add publish for articles too
- - [x] Report Report
- - [x] add auto suggestion for tag
- - [x] Edit Recipes
- - [x] make search better
- - [x] Django pictures
- - [ ] Reduce Search bar
+
+## TODO 
+ - [ ] Delete Recipe/Article
  - [ ] faire des instructions step!
+ - [ ] Ajouter un quill pour les comment
+ - [ ] mettre les fichier static pour quill plutot que des CDN
+ - [ ] Reduce Search bar
  - [ ] faire un model link pour rajouter a instruction
  - [ ] virer Quill
- - [ ] add pagination(https://realpython.com/django-pagination/)
+ - [ ] add pagination(https://realpython.com/django-pagination/), https://htmx.org/examples/infinite-scroll/
  - [ ] add default image for article and recipe
  - [ ] rework on the slug system
  - [ ] add trigram for search
@@ -65,6 +55,23 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
  - [ ] Tests!!!!!
 
 
+# ChangeLog
+### V 0.01
+  
+ - install minio, 
+ - Edit profile pricture, 
+ - Add recipie picture
+ - Blog
+ - move article to an serparated app
+ - clean template mess -> use componenent directory
+ - add tags
+ - Edit Articles
+ - add publish for articles too
+ - Report Report
+ - add auto suggestion for tag
+ - Edit Recipes
+ - make search better
+ - Django pictures
 
 ## Recipe 
 

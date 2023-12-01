@@ -1,11 +1,11 @@
 <div>
     Enter Recipe Step's:
-    <form hx-post="{% url 'recipe:api-ingredient-list' %}"
-          hx-target="#ingredient-list"
+    <form hx-post="{% url 'recipe:api-step-list' %}"
+          hx-target="#step-list"
           hx-swap="outerHTML"
-          hx-on="htmx:afterRequest this.remove()"
           class="mb-4"
           enctype="multipart/form-data">
+        <input type="hidden" name="recipe" value="{{ recipe.id }}">
         <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
         <input type="text"
                name="title"
@@ -17,6 +17,6 @@
                   class="px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent"></textarea>
         <label for="image" class="block text-sm font-medium text-gray-700">Image</label>
         <input type="file" name="image" accept="image/*">
-        <div class="px-3">{% include "patterns/components/icons/add/add.html" %}</div>
+        <button>{% include "patterns/components/icons/add/add.html" %}</button>
     </form>
 </div>

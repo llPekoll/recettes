@@ -15,10 +15,6 @@ from .models import (
 
 
 class RecipeIngredientForm(forms.ModelForm):
-    ingredient_name = forms.CharField(
-        max_length=100,
-        required=True,
-    )
     recipe = forms.IntegerField()
 
     class Meta:
@@ -41,11 +37,13 @@ class RecipeIngredientForm(forms.ModelForm):
 
 
 class RecipeStepForm(forms.ModelForm):
+    step_number = forms.IntegerField(required=False)
     instruction = QuillFormField()
+    image = forms.ImageField(required=False)
 
     class Meta:
         model = RecipeStep
-        fields = ["title", "instruction", "step_number"]
+        fields = ["title", "instruction", "step_number", "image"]
 
 
 class RecipeForm(forms.ModelForm):

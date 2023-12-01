@@ -61,54 +61,47 @@ def recipe_write(form, request):
 
 
 def ingredient_list(request):
-    recipe = request.POST.get("recipe")
-    if recipe and "/" in recipe:
-        recipe = Recipe.objects.create(author=request.user)
-    else:
-        recipe = Recipe.objects.get(id=recipe, author=request.user)
-
+    recipe = Recipe.objects.get(id=request.POST.get("recipe"))
     if request.method == "POST":
-        post_data = request.POST.copy()
-        post_data["recipe"] = recipe.id
-        form = RecipeIngredientForm(post_data)
+        form = RecipeIngredientForm(request.POST)
         form.recipe_id = recipe.id
         if form.is_valid():
             form.save()
             print("form.saved")
+        else:
+            print(form.errors)
         ings = [
             ingredient
             for ingredient in RecipeIngredient.objects.filter(recipe=recipe.id)
         ]
         return render(
             request,
-            "components/ingredient_list.html",
+            "patterns/components/ingredient_list/ingredient_list.html",
             {"ings": ings, "recipe": recipe},
         )
 
 
 def ingredient_detail(request, pk):
+    print(1)
     if request.method == "DELETE":
+        print(2)
         ingredient = get_object_or_404(RecipeIngredient, pk=pk)
         ingredient.delete()
         ings = [
             ingredient
             for ingredient in RecipeIngredient.objects.filter(recipe=ingredient.recipe)
         ]
+        print(ings)
 
         return render(
             request,
-            "components/ingredient_list.html",
+            "patterns/components/ingredient_list/ingredient_list.html",
             {"ings": ings, "recipe": ingredient.recipe},
         )
 
 
 def step_list(request):
-    step_id = request.POST.get("step_id")
-    if "/" in step_id:
-        recipe = RecipeStep.objects.create(author=request.user)
-    else:
-        recipe = RecipeStep.objects.get(id=step_id, author=request.user)
-
+    recipe = Recipe.objects.get(id=request.POST.get("recipe"))
     if request.method == "POST":
         form = RecipeStepForm(request.POST)
         form.recipe_id = recipe.id

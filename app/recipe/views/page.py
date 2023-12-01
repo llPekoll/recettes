@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def page_recipe_creation(request):
+    if request.htmx:
+        print("jose")
     form = RecipeForm()
     ingredient_names = [ingredient.name for ingredient in Ingredient.objects.all()]
     nb = Recipe.objects.count()

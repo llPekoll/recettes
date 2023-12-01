@@ -1,18 +1,21 @@
 {% load my_filters %}
-<div id="ingredient-list" class="rounded mb-10 flex justify-center w-full">
+<div id="ingredient-list"
+     class="rounded mb-10 flex justify-center w-full pt-5">
     <div class="w-1/3 min-w-fit">
         <input type="hidden" name="recipe" value={{ recipe.id }} />
         {% for ing in ings %}
-            <div class="text-left border-solid border-indigo-200 border-b-2 py-2 pl-2">
+            <div class="text-left border-solid border-red-200 border-b-2 py-2 pl-2">
                 <div class="grid grid-cols-6 gap-4">
                     <p>{{ ing.quantity | clean_number }}</p>
                     <p>{{ ing.unit }}</p>
                     <p class="col-span-3">{{ ing.ingredient.name }}</p>
-                    {% include "patterns/components/icons/delete/delete.html" %}
+                    <div hx-delete="{% url "recipe:api-ingredient-detail" pk=ing.id %}"
+                         hx-target="#ingredient-list"
+                         hx-swap="outerHTML">{% include "patterns/components/icons/delete/delete.html" %}</div>
                 </div>
             </div>
         {% empty %}
-            <p class="text-center">No ingredients yet</p>
+            <p class="text-center text-2xl font-thin py-3 italic">No ingredients yet.</p>
         {% endfor %}
     </div>
 </div>

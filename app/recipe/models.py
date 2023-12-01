@@ -121,7 +121,7 @@ class RecipeStep(models.Model):
     )
     step_number = models.IntegerField(default=1)
     title = models.CharField(max_length=255)
-    instruction = models.TextField()
+    instruction = QuillField(null=True, blank=True)
     link = GenericRelation("common.Link")
     image = models.OneToOneField(
         "common.Image", on_delete=models.SET_NULL, null=True, blank=True

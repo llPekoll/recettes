@@ -20,8 +20,7 @@
               method="post"
               enctype="multipart/form-data"
               hx-post="{% url "recipe:api-edit" pk=recipe.id %}"
-              hx-indicator="#ind1"
-              hx-trigger="click from:#sumit-all">
+              hx-indicator="#ind1">
             <input type="hidden" name=recipe value={{ recipe.id }} />
             <!-- HEADER -->
             <div class="flex items-end ml-20">
@@ -140,7 +139,7 @@
 		const topForm = document.getElementById("top-form")
 		const bottomForm = document.getElementById("bottom-form")
 		const sendForm = document.getElementById("send-form")
-		sendForm.addEventListener("click",submitForm)
+		{% comment %} sendForm.addEventListener("click",submitForm)
 		const submitForm = ()=>{
 			var newInput = document.createElement('input');
 
@@ -150,7 +149,7 @@
 			// add it to top form
 			// send top formd
 		}
-	
+{% endcomment %}
 </script>
 <style>
     .checkbox-wrapper-28 {

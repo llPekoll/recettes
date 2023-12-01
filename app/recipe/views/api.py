@@ -102,15 +102,22 @@ def ingredient_detail(request, pk):
 
 def step_list(request):
     recipe = Recipe.objects.get(id=request.POST.get("recipe"))
+    print(recipe.id)
     if request.method == "POST":
         form = RecipeStepForm(request.POST)
-        form.recipe_id = recipe.id
         if form.is_valid():
-            form.save()
-        steps = [step for step in RecipeStep.objects.filter(recipe=recipe.id)]
+            form.save(commit=False)
+        if "image" in request.FILES:
+            image = Image(image=request.FILES["image"])
+            image.save()
+            form.image = image
+        form.recipe = recipe
+        form.save()
+        steps = [step for step in RecipeStep.objects.filter(recipe=recipe)]
+        print(steps)
         return render(
             request,
-            "components/step_list.html",
+            "patterns/components/step_list/step_list.html",
             {"steps": steps, "recipe": recipe},
         )
 

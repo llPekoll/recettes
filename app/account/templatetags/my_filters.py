@@ -1,6 +1,7 @@
+from decimal import Decimal
+
 from django import template
 from django.utils.translation import get_language_info
-from decimal import Decimal
 
 register = template.Library()
 

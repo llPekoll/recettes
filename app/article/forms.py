@@ -1,7 +1,7 @@
 from article.models import Article
 from django import forms
-from django_quill.forms import QuillFormField
 from django.conf import settings
+from django_quill.forms import QuillFormField
 
 
 class ArticleForm(forms.ModelForm):

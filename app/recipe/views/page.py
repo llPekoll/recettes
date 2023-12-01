@@ -1,9 +1,9 @@
 from common.models import Rate, Tag
+from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, Q
 from django.shortcuts import get_object_or_404, render
 from recipe.forms import RecipeForm, RecipeStepForm
 from recipe.models import Ingredient, Recipe, RecipeIngredient
-from django.contrib.auth.decorators import login_required
 
 
 @login_required
@@ -21,7 +21,7 @@ def page_recipe_creation(request):
         "patterns/pages/new_recipe/new_recipe.html",
         {
             "form": form,
-            "recipeStepForm": RecipeStepForm,
+            "recipeStepForm": RecipeStepForm(),
             "create": True,
             "recipe": recipe,
             "ingredient_names": ingredient_names,

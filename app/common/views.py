@@ -6,7 +6,6 @@ from recipe.models import Recipe
 from .models import Comment, Report, Tag
 
 
-
 def list_comment(request, pk, content_type):
     if content_type == "Article":
         content = get_object_or_404(Article, pk=pk)

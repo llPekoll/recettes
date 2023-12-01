@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import detail_comment, report, tag, link_list, link_detail, list_comment
+from .views import detail_comment, link_detail, link_list, list_comment, report, tag
 
 urlpatterns = [
     path(

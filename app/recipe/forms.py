@@ -7,10 +7,10 @@ from .models import (
     Ingredient,
     Recipe,
     RecipeIngredient,
+    RecipeStep,
     Region,
     TimeScale,
     UnitOfMeasure,
-    RecipeStep,
 )
 
 
@@ -43,7 +43,7 @@ class RecipeStepForm(forms.ModelForm):
 
     class Meta:
         model = RecipeStep
-        fields = ["title", "instruction", "step_number", "image"]
+        fields = ["title", "instruction", "step_number", "image", "recipe"]
 
 
 class RecipeForm(forms.ModelForm):

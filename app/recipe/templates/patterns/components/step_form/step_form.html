@@ -1,3 +1,7 @@
+{% block extra_head %}
+    <link href="//cdn.quilljs.com/1.3.7/quill.bubble.css" rel="stylesheet">
+    <script src="//cdn.quilljs.com/1.3.7/quill.min.js"></script>
+{% endblock extra_head %}
 <div>
     Enter Recipe Step's:
     <form hx-post="{% url 'recipe:api-step-list' %}"
@@ -12,9 +16,7 @@
                placeholder="Give a title for your Recipe step"
                class="px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent">
         <label for="instruction" class="block text-sm font-medium text-gray-700">Instruction</label>
-        <textarea name="instruction"
-                  placeholder="Give the instruction for your Recipe step"
-                  class="px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent"></textarea>
+        {{ recipeStepForm.instruction }}
         <label for="image" class="block text-sm font-medium text-gray-700">Image</label>
         <input type="file" name="image" accept="image/*">
         <button>{% include "patterns/components/icons/add/add.html" %}</button>

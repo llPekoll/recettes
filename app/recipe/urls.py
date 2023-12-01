@@ -3,13 +3,13 @@ from django.urls import path
 from .views.api import (
     ingredient_detail,
     ingredient_list,
-    step_detail,
-    step_list,
     recipe_creation,
     recipe_edit,
     search_recipes,
     set_favorite,
     set_rating,
+    step_detail,
+    step_list,
 )
 from .views.page import (
     page_edit_recipe,

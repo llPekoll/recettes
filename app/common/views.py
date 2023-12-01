@@ -1,4 +1,5 @@
 from article.models import Article
+from common.forms import CommentForm
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from recipe.models import Recipe
@@ -11,14 +12,22 @@ def list_comment(request, pk, content_type):
         content = get_object_or_404(Article, pk=pk)
     elif content_type == "Recipe":
         content = get_object_or_404(Recipe, pk=pk)
+    elif content_type == "Comment":
+        content = get_object_or_404(Comment, pk=pk)
     if request.htmx:
         if request.method == "POST":
-            Comment.objects.create(
-                author=request.user,
-                content_object=content,
-                text=request.POST.get("comment"),
-            )
+            print("request.POST")
+            print(request.POST)
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.author = request.user
+                comment.content_object = content
+                comment.save()
+            else:
+                print(form.errors)
             comments = content.comments.order_by("created_at")
+            print(comments)
             return render(request, "comment_list.html", {"comments": comments})
 
 

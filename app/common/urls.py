@@ -9,7 +9,7 @@ urlpatterns = [
         name="api-detail-comment",
     ),
     path(
-        "api/comment/<str:content_type>",
+        "api/comment/<int:pk>/<str:content_type>",
         list_comment,
         name="api-list-comment",
     ),

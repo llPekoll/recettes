@@ -14,10 +14,18 @@
     {% tailwind_css %}
     {# remove to to block when it's needed #}
   </head>
-  <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+        class="m-16 text-blue-900">
     {% block content %}
       {# pattern_library_rendered_pattern is where the pattern library will inject the rendered pattern. #}
       {{ pattern_library_rendered_pattern }}
     {% endblock content %}
   </body>
+  <style>
+    body {
+      font-family: 'Alegreya', serif;
+      background-image: linear-gradient(-20deg, #fdd6b5 0%, #fffbe7 100%);
+      {% comment %} height: 100vh; {% endcomment %}
+      }
+  </style>
 </html>

@@ -2,11 +2,8 @@
     {% comment %} {% include "components/image.html" with  image=recipe.image %} {% endcomment %}
     {% load pictures %}
     {% if recipe.image %}
-        {% picture recipe.image img_alt="Image {{ type }} {{ title }}" img_loading="lazy" picture_class="my-picture" ratio="1/1" m=6 l=4 %}
+        {% picture recipe.image.image img_alt="Image {{ type }} {{ title }}" img_loading="lazy" picture_class="my-picture" ratio="16/9" m=6 l=4 %}
     {% endif %}
-    <img src="{{ recipe.image.image.url }}"
-         class="w-full h-32 object-cover"
-         alt="cover for {{ recipe.title }} recipe" />
     <div class="px-4">
         <h1 class="text-xl font-bold pt-3">{{ recipe.title }}</h1>
         <h2 class="text-justify px-4">{{ recipe.description | safe }}</h2>

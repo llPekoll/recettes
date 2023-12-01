@@ -1,3 +1,4 @@
+from common.forms import CommentForm
 from common.models import Rate, Tag
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, Q
@@ -55,6 +56,7 @@ def page_recipe_detail(request, pk):
             "recipe": recipe,
             "is_author": is_author,
             "is_favorite": is_favorite,
+            "comment_form": CommentForm(),
             "rate": rate,
             "ingredients": ingredients,
             "comments": comments,

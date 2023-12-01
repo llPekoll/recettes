@@ -255,6 +255,19 @@ QUILL_CONFIGS = {
             ],
         },
     },
+    "comment": {
+        "theme": "bubble",
+        "modules": {
+            "syntax": True,
+            "toolbar": [
+                [
+                    "bold",
+                    "italic",
+                    "strike",
+                ],
+            ],
+        },
+    },
 }
 
 

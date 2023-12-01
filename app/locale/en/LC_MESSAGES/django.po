@@ -76,7 +76,7 @@ msgstr ""
 
 #: elisasrecipe/templates/index.html:7
 msgid "Welcome to Elisa's corner!"
-msgstr "Recette.s"
+msgstr "Recettes"
 
 #: elisasrecipe/templates/index.html:8
 msgid "intro-to-elisa"

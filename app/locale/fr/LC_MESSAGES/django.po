@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-16 12:45+0000\n"
+"POT-Creation-Date: 2023-12-01 13:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,54 +18,60 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: account/templates/auth_core.html:13 account/templates/auth_core.html:73
+#: account/templates/auth_core.html:17 account/templates/auth_core.html:83
 msgid "log-page-title"
 msgstr "Bienvenue!"
 
-#: account/templates/auth_core.html:15 account/templates/auth_core.html:70
+#: account/templates/auth_core.html:19 account/templates/auth_core.html:80
 msgid "register-page-title"
 msgstr "Bienvenue parmis nous!"
 
-#: account/templates/auth_core.html:17
+#: account/templates/auth_core.html:21
 msgid "password-forgot-title"
 msgstr "Oubli du mot de passe?"
 
-#: account/templates/auth_core.html:41
+#: account/templates/auth_core.html:51
 msgid "submit"
 msgstr "Soumettre"
 
-#: account/templates/auth_core.html:79
+#: account/templates/auth_core.html:89
 msgid "home-page"
 msgstr "Home Page"
 
-#: common/models.py:22
+#: common/models.py:26
 #, fuzzy
 #| msgid "profile"
 msgid "Profile"
 msgstr "Mon profile"
 
-#: common/models.py:23
+#: common/models.py:27
 msgid "Article"
 msgstr ""
 
-#: common/models.py:24
+#: common/models.py:28
 #, fuzzy
 #| msgid "recipes"
 msgid "Recipe"
 msgstr "recettes"
 
-#: elisasrecipe/settings.py:123
+#: common/models.py:29
+#, fuzzy
+#| msgid "recipes"
+msgid "RecipeStep"
+msgstr "recettes"
+
+#: elisasrecipe/settings.py:130
 msgid "English"
 msgstr ""
 
-#: elisasrecipe/settings.py:124
+#: elisasrecipe/settings.py:131
 #, fuzzy
 #| msgid "French"
-msgid "Frencais"
+msgid "Francais"
 msgstr "Francais"
 
-#: elisasrecipe/settings.py:125
-msgid "Spanish"
+#: elisasrecipe/settings.py:132
+msgid "Espagnol"
 msgstr ""
 
 #: elisasrecipe/templates/index.html:7
@@ -78,19 +84,19 @@ msgstr ""
 "bienvenue dans le site d'Elisa l'endoir ou on conserve toute nos bonne "
 "vielle recette"
 
-#: elisasrecipe/templates/navbar.html:19
+#: elisasrecipe/templates/navbar.html:21
 msgid "recipes"
 msgstr "recettes"
 
-#: elisasrecipe/templates/navbar.html:26
+#: elisasrecipe/templates/navbar.html:28
 msgid "author"
 msgstr ""
 
-#: elisasrecipe/templates/navbar.html:32 elisasrecipe/templates/navbar.html:37
+#: elisasrecipe/templates/navbar.html:34 elisasrecipe/templates/navbar.html:39
 msgid "login"
 msgstr "Se logger"
 
-#: elisasrecipe/templates/navbar.html:42 elisasrecipe/templates/navbar.html:47
+#: elisasrecipe/templates/navbar.html:44 elisasrecipe/templates/navbar.html:49
 msgid "register"
 msgstr "s'enregister"
 

@@ -1,11 +1,21 @@
 {% extends "base.html" %}
 {% load static tailwind_tags %}
 {% load i18n %}
+{% block extra_head %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Damion&display=swap"
+          rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Damion&display=swap"
+          rel="stylesheet">
+{% endblock extra_head %}
 {% block content %}
     {% include "navbar.html" %}
-    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 pt-40">
-        <h1 class=" text-center text-red-900 font-semibold text-2xl">{% translate "Welcome to Elisa's corner!" %}</h1>
-        <h2 class=" text-center text-red-400 font-light text-xl">{% translate "intro-to-elisa" %}</h2>
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 pt-20">
+        <h1 class=" text-center text-slate-900 font-bold text-9xl title">{% translate "Welcome to Elisa's corner!" %}</h1>
+        <h2 class=" text-center text-slate-600 font-light text-lg">{% translate "intro-to-elisa" %}</h2>
         {% comment %} {% if user.is_authenticated %}
             <div class="text-right pt-4">
                 <div class="">{% include "btn_new_recipe.html" %}</div>
@@ -29,4 +39,11 @@
             {% endfor %}
         </div>
     </div>
+    <style>
+.title {
+font-family: 'Damion', cursive;
+}
+body {
+font-family: 'Alegreya', serif;
+}
 {% endblock content %}

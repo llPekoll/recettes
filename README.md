@@ -35,24 +35,25 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
 
 
 ## TODO 
+ - [ ] use indicator while saving ingredient
+ - [ ] clean step after form sent
+ - [ ] use poetry
  - [ ] Delete Recipe/Article
- - [ ] faire des instructions step!
- - [ ] Ajouter un quill pour les comment
- - [ ] mettre les fichier static pour quill plutot que des CDN
- - [ ] Reduce Search bar
- - [ ] faire un model link pour rajouter a instruction
- - [ ] virer Quill
  - [ ] add pagination(https://realpython.com/django-pagination/), https://htmx.org/examples/infinite-scroll/
  - [ ] add default image for article and recipe
  - [ ] rework on the slug system
  - [ ] add trigram for search
  - [ ] make author page
- - [ ] Align CSS header
  - [ ] add advertising for make cash
  - [ ] add crypto reward [BAT,Polygon,NFTL]
  - [ ] Bio -> text area
- - [ ] export pdf
  - [ ] Tests!!!!!
+ - [ ] export pdf
+ - [x] faire un model link pour rajouter a instruction
+ - [x] faire des instructions step!
+ - [x] Ajouter un quill pour les comment
+ - [x] Reduce Search bar
+ - [x] mettre les fichier static pour quill plutot que des CDN
 
 
 # ChangeLog

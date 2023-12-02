@@ -13,10 +13,9 @@
 {% endblock extra_head %}
 {% block content %}
     {% include "navbar.html" %}
-    {% comment %} here i don;t even need HTMX to do that {% endcomment %}
-    <section class="w-1/2 mx-auto bg-orange-50 px-10">
+    <section class="w-1/2 mx-auto bg-orange-50 px-10 pb-10 rounded-lg">
         <form id="top-form"
-              class="pt-32"
+              class="-mt-10"
               method="post"
               enctype="multipart/form-data"
               hx-post="{% url "recipe:api-edit" pk=recipe.id %}"
@@ -103,39 +102,20 @@
         {% include "patterns/components/ingredient_form/ingredient_form.html" %}
         {% include "patterns/components/ingredient_list/ingredient_list.html" %}
         {% include "patterns/components/step_form/step_form.html" %}
-        {% include "patterns/components/step_list/step_list.html" %}
+        {% include "patterns/components/step_list/step_list.html" with cant_delete_step=True %}
         {% include "patterns/components/tag_editor/tag_editor.html" %}
-        <form class="bg-orange-50 pt-20 h-screen mx-80" id="bottom-form">
-            <input type="hidden" name=recipe value={{ recipe.id }} />
-            {% csrf_token %}
-            <div class="checkbox-wrapper-28 text-orange-500 mt-5">
-                <input id="tmp-28"
-                       type="checkbox"
-                       class="promoted-input-checkbox"
-                       name="is_published" />
-                <svg>
-                    <use xlink:href="#checkmark-28" />
-                </svg>
-                <label for="tmp-28">Publish recipe</label>
-                <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
-                    <symbol id="checkmark-28" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-miterlimit="10" fill="none"  d="M22.9 3.7l-15.2 16.6-6.6-7.1"></path>
-                    </symbol>
-                </svg>
-            </div>
-        </form>
-    </div>
-    <div class="mt-10 ml-10"></div>
-    <button id="send-form"
-            class="bg-orange-800 text-white rounded-lg float-right mt-5 px-10 py-2 mr-28">
-        {% if create %}
-            Create Recipe
-        {% else %}
-            Edit Recipe
-        {% endif %}
-    </button>
-</section>
-<script>
+        {% include "patterns/components/check_box/check_box.html" with value="is_published" text="Publish recipe" %}
+        <div class="w-full text-right">
+            <button id="send-form" class="bg-orange-800 text-white rounded-lg px-10 py-2">
+                {% if create %}
+                    Create Recipe
+                {% else %}
+                    Edit Recipe
+                {% endif %}
+            </button>
+        </div>
+    </section>
+    <script>
 		const topForm = document.getElementById("top-form")
 		const bottomForm = document.getElementById("bottom-form")
 		const sendForm = document.getElementById("send-form")
@@ -150,8 +130,8 @@
 			// send top formd
 		}
 {% endcomment %}
-</script>
-<style>
+    </script>
+    <style>
     .checkbox-wrapper-28 {
       --size: 25px;
       position: relative;
@@ -237,5 +217,5 @@
 		  max-height: 0;
 		  transition: max-height 0.2s ease-out;
 		}
-</style>
+    </style>
 {% endblock content %}

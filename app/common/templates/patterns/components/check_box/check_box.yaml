@@ -1,0 +1,4 @@
+name: CheckBox
+context:
+  value: mol
+  text: est-tu est un animol?

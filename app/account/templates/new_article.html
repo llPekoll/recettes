@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 {% block extra_head %}
-  <link href="//cdn.quilljs.com/1.3.7/quill.bubble.css" rel="stylesheet">
   {% include "django_quill/media.html" %}
+  <script src="{% static 'quill.bubble.css' %}" defer></script>
+  <script src="{% static 'quill.min.js' %}" defer></script>
   <script src="{% static 'htmx.min.js' %}" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
   <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>

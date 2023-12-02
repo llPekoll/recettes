@@ -1,40 +1,40 @@
 {% load static tailwind_tags %}
 {% load i18n %}
 <details class="dropdown">
-    <summary role="button">
-        {% get_current_language as LANGUAGE_CODE %}
-        <div class="bg-orange-400 px-2 py-1 rounded-full border-2 border-white border-solid -mt-2">
-            {% if LANGUAGE_CODE == 'fr' %}
-                🇫🇷 {{ LANGUAGE_CODE }}
-            {% elif LANGUAGE_CODE == 'en' %}
-                🇬🇧 {{ LANGUAGE_CODE }}
-            {% elif LANGUAGE_CODE == 'es' %}
-                🇪🇸  {{ LANGUAGE_CODE }}
+  <summary role="button">
+    {% get_current_language as LANGUAGE_CODE %}
+    <div class="bg-white px-2 py-1 rounded-lg border-2 border-orange-200 border-solid -mt-2 select-none">
+      {% if LANGUAGE_CODE == 'fr' %}
+        🇫🇷 {{ LANGUAGE_CODE }}
+      {% elif LANGUAGE_CODE == 'en' %}
+        🇬🇧 {{ LANGUAGE_CODE }}
+      {% elif LANGUAGE_CODE == 'es' %}
+        🇪🇸  {{ LANGUAGE_CODE }}
+      {% endif %}
+    </div>
+  </summary>
+  <ul>
+    {% get_available_languages as LANGUAGES %}
+    {% get_language_info_list for LANGUAGES as languages %}
+    {% for language in languages %}
+      <li class="flex select-none">
+        <a href="/{{ language.code }}/"
+           class="text-gray-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex"
+           data-test="fr">
+          <span class="hover">
+            {% if language.code == 'fr' %}
+              🇫🇷
+            {% elif language.code == 'en' %}
+              🇬🇧
+            {% elif language.code == 'es' %}
+              🇪🇸
             {% endif %}
-        </div>
-    </summary>
-    <ul>
-        {% get_available_languages as LANGUAGES %}
-        {% get_language_info_list for LANGUAGES as languages %}
-        {% for language in languages %}
-            <li class="flex">
-                <a href="/{{ language.code }}/"
-                   class="text-gray-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex"
-                   data-test="fr">
-                    <span class="hover">
-                        {% if language.code == 'fr' %}
-                            🇫🇷
-                        {% elif language.code == 'en' %}
-                            🇬🇧
-                        {% elif language.code == 'es' %}
-                            🇪🇸
-                        {% endif %}
-                        {{ language.name_local }}
-                    </span>
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
+            {{ language.name_local }}
+          </span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
 </details>
 <style>
   /* Follow me for more pens like this! */
@@ -135,7 +135,7 @@ a.button:active {
 
 .dropdown ul li a:hover {
   background-color: var(--dropdown-highlight);
-  color: var(--dropdown-background);
+  {% comment %} color: var(--dropdown-background); {% endcomment %}
 }
 
 /* Dropdown triangle */

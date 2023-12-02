@@ -66,8 +66,6 @@ class Recipe(models.Model):
         choices=[(timeScale.value, timeScale.name) for timeScale in TimeScale],
         default=TimeScale.MINUTE.value,
     )
-
-    # instructions = QuillField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     category = models.CharField(
@@ -92,7 +90,7 @@ class Recipe(models.Model):
     is_featured = models.BooleanField(default=False)
     is_draft = models.BooleanField(
         default=True
-    )  #  is draft allow to create recipe to store ingredients, if create a new recipe we will create a recipe to store them and then and te recipe is going to be saved it will be undrafted
+    )  # is draft allow to create recipe to store ingredients, if create a new recipe we will create a recipe to store them and then and te recipe is going to be saved it will be undrafted
     image = models.OneToOneField(
         "common.Image", on_delete=models.SET_NULL, null=True, blank=True
     )
@@ -117,7 +115,7 @@ class Recipe(models.Model):
 
 class RecipeStep(models.Model):
     recipe = models.ForeignKey(
-        Recipe, on_delete=models.CASCADE, default=1, related_name="recipe_step"
+        Recipe, on_delete=models.CASCADE, default=1, related_name="steps"
     )
     step_number = models.IntegerField(default=1)
     title = models.CharField(max_length=255)

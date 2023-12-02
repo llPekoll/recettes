@@ -16,6 +16,7 @@ from .models import (
 
 class RecipeIngredientForm(forms.ModelForm):
     recipe = forms.IntegerField()
+    ingredient_name = forms.CharField(max_length=255)
 
     class Meta:
         model = RecipeIngredient

@@ -37,8 +37,8 @@ def page_recipe_detail(request, pk):
     is_author = recipe.author == user
     is_favorite = recipe in user.favorite_recipes.all()
     ingredients = RecipeIngredient.objects.filter(recipe=recipe)
-
     comments = recipe.comments.order_by("-created_at")
+    steps = recipe.steps.all()
     try:
         rate = Rate.objects.get(user=request.user, recipe=recipe).value
         rate_average = Rate.objects.filter(recipe=recipe).aggregate(Avg("value"))[
@@ -53,6 +53,7 @@ def page_recipe_detail(request, pk):
         request,
         "detail_recipe.html",
         {
+            "steps": steps,
             "recipe": recipe,
             "is_author": is_author,
             "is_favorite": is_favorite,

@@ -97,7 +97,7 @@ class Recipe(models.Model):
     tags = models.ManyToManyField("common.Tag", related_name="recipes", blank=True)
     comments = GenericRelation("common.Comment")
     Report = GenericRelation("common.Report")
-    link = GenericRelation("common.Link")
+    links = GenericRelation("common.Link")
 
     def __str__(self):
         return self.title if self.title else f"{self.pk}_untitled"

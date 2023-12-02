@@ -7,20 +7,26 @@
           {% elif content == "article" %}
               hx-post="{% url 'api-link-list' content_type="article" %}"
           {% endif %}
-          hx-target="#ingredient-list"
+          hx-target="#link-list"
           hx-swap="outerHTML"
-          class="mb-4 flex flex-wrap items-center"
-          enctype="multipart/form-data">
-        <select name="socials" class="rounded-lg mr-4 my-2">
-            <option value="youtube">YouTube</option>
-            <option value="twitter">Twitter</option>
-            <option value="tiktok">TikTok</option>
-            <option value="facebook">Facebook</option>
+          class="mb-4 flex flex-wrap items-center">
+        <input type="hidden" name="recipe" value="{{ recipe.id }}">
+        <select name="type" class="rounded-lg mr-4 my-2">
+            <option value="Youtube">YouTube</option>
+            <option value="Twitter">Twitter</option>
+            <option value="Tiktok">TikTok</option>
+            <option value="Facebook">Facebook</option>
+            <option value="Insta">Insta</option>
         </select>
-        <input type="text"
+        <input type="url"
                name="value"
                placeholder="link from content"
                class="px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent mr-2">
-        <div class="px-3">{% include "patterns/components/icons/add/add.html" %}</div>
+        <label for="embeded" class="mr-2">
+            embeded
+            <input type="checkbox" name="embeded" class="mr-2">
+        </label>
+        <button class="px-3">{% include "patterns/components/icons/add/add.html" %}</button>
+        <div id="link-list-indicator" class="hidden">{% include "patterns/components/spinner/spinner.html" %}</div>
     </form>
 </div>

@@ -97,13 +97,19 @@
                     {% endfor %}
                 </select>
             </div>
-            {% comment %} <span class="htmx-indicator">{% include "patterns/components/spinner/spinner.html" %}</span> {% endcomment %}
         </form>
+        <!-- Add ingredients to recipe -->
         {% include "patterns/components/ingredient_form/ingredient_form.html" %}
         {% include "patterns/components/ingredient_list/ingredient_list.html" %}
+        <!-- Add Recipe steps -->
         {% include "patterns/components/step_form/step_form.html" %}
         {% include "patterns/components/step_list/step_list.html" with cant_delete_step=True %}
+        <!-- Add Tags -->
         {% include "patterns/components/tag_editor/tag_editor.html" %}
+        <!-- Add links to recipe -->
+        {% include "patterns/components/link_form/link_form.html" with content="recipe" %}
+        {% include "patterns/components/link_list/link_list.html" %}
+        <!-- to publish recipe -->
         {% include "patterns/components/check_box/check_box.html" with value="is_published" text="Publish recipe" %}
         <div class="w-full text-right">
             <button id="send-form" class="bg-orange-800 text-white rounded-lg px-10 py-2">

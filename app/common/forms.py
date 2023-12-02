@@ -2,15 +2,11 @@ from django import forms
 from django.conf import settings
 from django_quill.forms import QuillFormField
 
-from .models import Comment
+from .models import Comment, Link
 
 
 class CommentForm(forms.ModelForm):
     comment = QuillFormField()
-    # id of the content
-    # content_id = forms.IntegerField()
-    # type of the content
-    # content_type = forms.CharField()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -21,3 +17,9 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ["comment"]
+
+
+class LinkForm(forms.ModelForm):
+    class Meta:
+        model = Link
+        fields = ["value", "type", "embedded"]

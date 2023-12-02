@@ -35,6 +35,7 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
 
 
 ## TODO 
+ - [ ] display error on HTMX
  - [ ] use indicator while saving ingredient
  - [ ] clean step after form sent
  - [ ] use poetry

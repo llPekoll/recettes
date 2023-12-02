@@ -5,7 +5,8 @@
         {% if user.is_authenticated %}
             <li class="flex-none w-28 h-14">{% include "profile_menu.html" %}</li>
         {% else %}
-            <li class="flex-none w-14 h-14">register login</li>
+            <li class="flex-none w-52 h-14"><button><a href="{% url 'user:login' %}" class="bg-orange-500 px-5 h-7 rounded-lg cursor-pointer" data-test="login">login</a></button></li>
+            <li class="flex-none w-52 h-14"><button><a href="{% url 'user:register' %}" class="bg-orange-500 px-5 h-7 rounded-lg cursor-pointer" data-test="register">register</a></button></li>
         {% endif %}
         <div class="grow h-14 "></div>
         <li class="flex-none w-28 h-14">{% include "lang_selector.html" %}</li>

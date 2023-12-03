@@ -1,7 +1,7 @@
 {% load static tailwind_tags %}
 {% load i18n %}
 <details class="dropdown">
-  <summary role="button">
+  <summary role="button" data-test="profile-icon">
     <svg xmlns="http://www.w3.org/2000/svg"
          width="64"
          height="64"
@@ -13,14 +13,14 @@
     <li>
       <a href="/profile/"
          class="text-gray-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-         data-test="fr">
+         data-test="my-profile">
         <span class="hover">{% translate "profile" %}</span>
       </a>
     </li>
     <li>
       <a href="/logout/"
          class="text-gray-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-         data-test="fr">
+         data-test="logout">
         <span class="hover">{% translate "logout" %}</span>
       </a>
     </li>

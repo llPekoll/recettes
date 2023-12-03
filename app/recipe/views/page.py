@@ -9,6 +9,7 @@ from recipe.models import Ingredient, Recipe, RecipeIngredient
 
 @login_required
 def page_recipe_creation(request):
+    print("jose2")
     if request.htmx:
         print("jose")
     form = RecipeForm()
@@ -17,7 +18,6 @@ def page_recipe_creation(request):
     recipe = Recipe.objects.create(author=request.user, title=f"New Recipe {nb + 1}")
     print(recipe)
     tags = Tag.objects.all()
-    links = request.POST.get("link")
     return render(
         request,
         "patterns/pages/new_recipe/new_recipe.html",

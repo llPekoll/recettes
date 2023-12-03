@@ -10,11 +10,13 @@
            id="quantity"
            placeholder="Quatity"
            min="0"
+           data-test="quantity"
            class="w-28 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block">
   </div>
   <div>
     <select name="unit"
             value="{{ form.unit.name }}"
+            data-test="unit"
             class="bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block">
       {% for value in form.unit %}
         <option value="{{ value.data.value }}"
@@ -30,6 +32,7 @@
              id="input-search"
              autocomplete="off"
              placeholder="Ingredient name"
+             data-test="ingredient_name"
              class="bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block">
       <div class="icon text-orange-700 -ml-10 mt-2 mr-4">
         <svg xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +44,7 @@
       </div>
       <div class="autocom-box absolute bg-red-50 w-40 mt-2"></div>
     </div>
-    <button>{% include "patterns/components/icons/add/add.html" %}</button>
+    <button dataTest="add-ingredient">{% include "patterns/components/icons/add/add.html" %}</button>
   </div>
 </form>
 <script>

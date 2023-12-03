@@ -126,7 +126,7 @@ def step_detail(request, pk):
     if request.method == "DELETE":
         step = get_object_or_404(RecipeStep, pk=pk)
         step.delete()
-        steps = [step for step in RecipeStep.objects.filter(recipe=recipe.id)]
+        steps = [step for step in RecipeStep.objects.filter(recipe=step.recipe)]
 
         return render(
             request,

@@ -14,14 +14,30 @@
 {% block content %}
     {% include "navbar.html" %}
     <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 pt-20">
-        <h1 class="text-center font-bold text-9xl title -ml-4 text-blue-950">{% translate "Welcome to Elisa's corner!" %}</h1>
+        <h1 class="text-center font-bold text-9xl title -ml-4 text-blue-950"
+            data-test="title">{% translate "Welcome to Elisa's corner!" %}</h1>
         <h2 class=" text-center text-slate-600 font-light text-lg ml-10">{% translate "intro-to-elisa" %}</h2>
-        {% comment %} {% if user.is_authenticated %}
-            <div class="text-right pt-4">
-                <div class="">{% include "btn_new_recipe.html" %}</div>
-            </div>
-        {% endif %} {% endcomment %}
         {% include "searchbar.html" %}
+        {% if user.is_authenticated %}
+            {% url 'article:new' as article_new %}
+            {% url 'recipe:new' as recipe_new %}
+            <div>
+                <div class="float-left">
+                    {% include "btn.html" with url=article_new link_text="Create Article" dataTest="create-article" %}
+                </div>
+                <div class="float-right">
+                    {% include "btn.html" with url=recipe_new link_text="Create recipe" dataTest="create-recipe" %}
+                </div>
+            </div>
+        {% endif %}
+        <h2 class="text-3xl font-bold clear-both">Featured:</h2>
+        <div class="flex flex-wrap">
+            {% for recipe in recipes %}
+                {% include "components/cards.html" with type="recipe" content=recipe %}
+            {% empty %}
+                <p>No Recipe</p>
+            {% endfor %}
+        </div>
         <h2 class="text-3xl font-bold">Recipes:</h2>
         <div class="flex pt-5 flex-wrap">
             {% for recipe in recipes %}

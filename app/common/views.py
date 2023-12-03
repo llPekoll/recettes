@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from recipe.models import Recipe
 
-from .models import Comment, Report, Tag, Link
+from .models import Comment, Link, Report, Tag
 
 
 def list_comment(request, pk, content_type):

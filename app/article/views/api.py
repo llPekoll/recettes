@@ -12,7 +12,7 @@ def article_edit(request, pk):
     if request.method == "POST":
         article = get_object_or_404(Article, pk=pk)
         form = ArticleForm(request.POST, instance=article)
-        id = write_article(form, request)
+        write_article(form, request)
 
 
 def article_creation(request):

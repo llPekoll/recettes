@@ -4,7 +4,8 @@
     <div class="w-1/3 min-w-fit">
         <input type="hidden" name="recipe" value={{ recipe.id }} />
         {% for ing in ings %}
-            <div class="text-left border-solid border-red-200 border-b-2 py-2 pl-2">
+            <div class="text-left border-solid border-red-200 border-b-2 py-2 pl-2"
+                 data-test="ing-{{ ing.ingredient.name }}">
                 <div class="grid grid-cols-6 gap-4">
                     <p>{{ ing.quantity | clean_number }}</p>
                     <p>{{ ing.unit }}</p>

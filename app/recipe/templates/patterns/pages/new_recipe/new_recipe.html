@@ -3,13 +3,14 @@
 {% load static %}
 {% load my_filters %}
 {% block extra_head %}
-    <script src="{% static 'htmx.min.js' %}" defer></script>
     {% include "django_quill/media.html" %}
-    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css"
-          rel="stylesheet"
-          type="text/css" />
+    {% comment %} <script src="{% static 'quill.bubble.css' %}" defer></script> {% endcomment %}
+    {% comment %} <script src="{% static 'quill.min.js' %}" defer></script> {% endcomment %}
+    <script src="{% static 'htmx.min.js' %}" defer></script>
+    {% comment %} {% include "django_quill/media.html" %} {% endcomment %}
+    <script src={% static "tagify" %}></script>
+    <script src={% static "tagify.polyfills.min.js"%}></script>
+    <link href={% static "tagify.css" %} rel="stylesheet" type="text/css" />
 {% endblock extra_head %}
 {% block content %}
     {% include "navbar.html" %}
@@ -20,6 +21,7 @@
               enctype="multipart/form-data"
               hx-post="{% url "recipe:api-edit" pk=recipe.id %}"
               hx-indicator="#ind1">
+            {% csrf_token %}
             <input type="hidden" name=recipe value={{ recipe.id }} />
             <!-- HEADER -->
             <div class="flex items-end ml-20">
@@ -114,7 +116,9 @@
         <!-- to publish recipe -->
         {% include "patterns/components/check_box/check_box.html" with value="is_published" text="Publish recipe" %}
         <div class="w-full text-right">
-            <button id="send-form" class="bg-orange-800 text-white rounded-lg px-10 py-2">
+            <button id="send-form"
+                    class="bg-orange-800 text-white rounded-lg px-10 py-2"
+                    data-test="submit">
                 {% if create %}
                     Create Recipe
                 {% else %}
@@ -125,19 +129,22 @@
     </section>
     <script>
 		const topForm = document.getElementById("top-form")
-		const bottomForm = document.getElementById("bottom-form")
+		const is_published = document.getElementById("is_published")
 		const sendForm = document.getElementById("send-form")
-		{% comment %} sendForm.addEventListener("click",submitForm)
-		const submitForm = ()=>{
+		console.log(topForm)
+		console.log(is_published)
+		console.log(sendForm)
+		sendForm.addEventListener("click",submitForm)
+		function submitForm(e){
+			console.log("submitting form")
+			e.preventDefault()
 			var newInput = document.createElement('input');
 
-			newInput.value = bottomInput.value;
+			newInput.value = is_published.value;
 			topForm.appendChild(newInput);
-			// take values from bottomForm
-			// add it to top form
-			// send top formd
+			console.log(topForm)
+			topForm.submit()
 		}
-{% endcomment %}
     </script>
     <style>
     .checkbox-wrapper-28 {

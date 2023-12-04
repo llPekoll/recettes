@@ -47,8 +47,8 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
  - [ ] make author page
  - [ ] add advertising for make cash
  - [ ] add crypto reward [BAT,Polygon,NFTL]
- - [ ] Bio -> text area
- - [ ] Tests!!!!!
+ - [ ] Bio -> Quill
+ - [x] Tests!!!!!
  - [ ] export pdf
  - [x] faire un model link pour rajouter a instruction
  - [x] faire des instructions step!

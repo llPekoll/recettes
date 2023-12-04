@@ -104,7 +104,7 @@ class Link(models.Model):
     content_object = GenericForeignKey("content_type", "object_id")
 
     def __str__(self):
-        return self.name
+        return self.value
 
 
 class Report(models.Model):

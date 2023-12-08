@@ -1,5 +1,5 @@
 import requests
-from account.forms import ArticleForm, LoginForm, ProfileForm, UserRegistrationForm
+from account.forms import LoginForm, ProfileForm, UserRegistrationForm
 from account.models import PasswordResetToken, User
 from article.models import Article
 from django.contrib.auth import authenticate, login
@@ -145,10 +145,6 @@ def password_change_success(request):
 
 def profile(request):
     user = request.user
-    if user.profile_picture:
-        print(user.profile_picture.image)
-    else:
-        print("no image")
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
@@ -198,12 +194,11 @@ def user_favorites(request):
 
 @login_required
 def user_articles(request):
-    form = ArticleForm()
     articles = Article.objects.filter(author=request.user)
     return render(
         request,
         "user_articles.html",
-        {"articles": articles, "onwer": True, "form": form},
+        {"onwer": True, "articles": articles},
     )
 
 

@@ -35,7 +35,6 @@ def page_recipe_creation(request):
 def page_recipe_detail(request, pk):
     user = request.user
     recipe = get_object_or_404(Recipe, pk=pk)
-    is_author = recipe.author == user
     is_favorite = recipe in user.favorite_recipes.all()
     ingredients = RecipeIngredient.objects.filter(recipe=recipe)
     comments = recipe.comments.order_by("-created_at")
@@ -56,7 +55,6 @@ def page_recipe_detail(request, pk):
         {
             "steps": steps,
             "recipe": recipe,
-            "is_author": is_author,
             "is_favorite": is_favorite,
             "comment_form": CommentForm(),
             "rate": rate,

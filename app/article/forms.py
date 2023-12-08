@@ -16,4 +16,4 @@ class ArticleForm(forms.ModelForm):
 
     class Meta:
         model = Article
-        fields = ["title", "content", "image", "is_draft", "id"]
+        fields = ["title", "content", "is_draft", "id"]

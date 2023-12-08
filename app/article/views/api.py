@@ -36,10 +36,11 @@ def write_article(form, request):
             for tag in tags:
                 tag, _ = Tag.objects.get_or_create(name=tag.get("value"))
                 article.tags.add(tag)
+        image = Image.objects.get(pk=15)
         if "image" in request.FILES:
             image = Image(image=request.FILES["image"])
             image.save()
-            article.image = image
+        article.image = image
         article.save()
         return True, article.id
     else:

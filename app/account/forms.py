@@ -1,9 +1,7 @@
 from account.models import User
-from article.models import Article
 from common.models import Image
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django_quill.forms import QuillFormField
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -59,26 +57,19 @@ class ResetForm(forms.Form):
 
 
 class ProfileForm(forms.ModelForm):
+    profile_picture = forms.ImageField(required=False)
+
     class Meta:
         model = User
         fields = (
             "email",
             "first_name",
             "last_name",
-            "profile_picture",
             "favorite_recipes",
         )
         widgets = {
             "favorite_recipes": forms.CheckboxSelectMultiple(),
         }
-
-
-class ArticleForm(forms.ModelForm):
-    content = QuillFormField(required=False)
-
-    class Meta:
-        model = Article
-        fields = ["title", "content", "image"]
 
 
 class ImageForm(forms.ModelForm):

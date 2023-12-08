@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block extra_head %}
+    {% include "django_quill/media.html" %}
     <script src="{% static 'htmx.min.js' %}" defer></script>
 {% endblock extra_head %}
 {% block content %}

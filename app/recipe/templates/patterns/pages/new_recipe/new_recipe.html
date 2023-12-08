@@ -3,14 +3,11 @@
 {% load static %}
 {% load my_filters %}
 {% block extra_head %}
-    {% include "django_quill/media.html" %}
-    {% comment %} <script src="{% static 'quill.bubble.css' %}" defer></script> {% endcomment %}
-    {% comment %} <script src="{% static 'quill.min.js' %}" defer></script> {% endcomment %}
+    {% include "components/quill_import.html" %}
     <script src="{% static 'htmx.min.js' %}" defer></script>
-    {% comment %} {% include "django_quill/media.html" %} {% endcomment %}
-    <script src={% static "tagify" %}></script>
-    <script src={% static "tagify.polyfills.min.js"%}></script>
-    <link href={% static "tagify.css" %} rel="stylesheet" type="text/css" />
+    <script src={% static "tagify/tagify" %}></script>
+    <script src={% static "tagify/tagify.polyfills.min.js"%}></script>
+    <link href="{% static "tagify/tagify.css" %}" rel="stylesheet" type="text/css" />
 {% endblock extra_head %}
 {% block content %}
     {% include "navbar.html" %}
@@ -19,8 +16,11 @@
               class="-mt-10"
               method="post"
               enctype="multipart/form-data"
-              hx-post="{% url "recipe:api-edit" pk=recipe.id %}"
-              hx-indicator="#ind1">
+              {% if create %}
+                  action="{% url "recipe:api-new" %}"
+              {% else %}
+                  action="{% url "recipe:api-edit" pk=recipe.id %}"
+              {% endif %}>
             {% csrf_token %}
             <input type="hidden" name=recipe value={{ recipe.id }} />
             <!-- HEADER -->
@@ -101,6 +101,7 @@
                     {% endfor %}
                 </select>
             </div>
+            <input type="checkbox" name="is_draft" id="is_published_top" checked />
         </form>
         <!-- Add ingredients to recipe -->
         {% include "patterns/components/ingredient_form/ingredient_form.html" %}
@@ -117,7 +118,7 @@
         {% include "patterns/components/check_box/check_box.html" with value="is_published" text="Publish recipe" %}
         <div class="w-full text-right">
             <button id="send-form"
-                    class="bg-orange-800 text-white rounded-lg px-10 py-2"
+                    class="bg-orange-800 text-white rounded-lg px-10 py-2 cursor-pointer"
                     data-test="submit">
                 {% if create %}
                     Create Recipe
@@ -125,112 +126,57 @@
                     Edit Recipe
                 {% endif %}
             </button>
+            <button id="is-sending"
+                    class="bg-gray-400 text-white rounded-lg px-10 py-2 cursor-pointer hidden"
+                    disabled>
+                <span id="indicator-form">{% include "patterns/components/spinner/spinner.html" %}</span>
+            </button>
         </div>
     </section>
     <script>
+		const indicatorFull = document.getElementById("indicator-form")
 		const topForm = document.getElementById("top-form")
-		const is_published = document.getElementById("is_published")
+		const isPublished = document.getElementById("is_published")
+		const isPublished_top = document.getElementById("is_published_top")
 		const sendForm = document.getElementById("send-form")
-		console.log(topForm)
-		console.log(is_published)
-		console.log(sendForm)
-		sendForm.addEventListener("click",submitForm)
+		const isSending = document.getElementById("is-sending")
+		const reciptCategory = document.getElementById("{{ form.category.id_for_label }}")
+		reciptCategory.addEventListener("change",updateBg)
+		sendForm.addEventListener("click", submitForm);
+		isPublished.addEventListener("change", updateIsPublished)
+		function updateIsPublished(e){
+			isPublished_top.checked = isPublished.checked
+		}
 		function submitForm(e){
-			console.log("submitting form")
 			e.preventDefault()
-			var newInput = document.createElement('input');
-
-			newInput.value = is_published.value;
-			topForm.appendChild(newInput);
-			console.log(topForm)
-			topForm.submit()
+			sendForm.classList.add("hidden")
+			isSending.classList.remove("hidden")
+			document.getElementById("top-form").submit();
+		}
+		function updateBg(e){
+			console.log(reciptCategory.value)
+			if (reciptCategory.value == "Recipe"){
+				document.body.style.backgroundImage = "linear-gradient(-20deg, #fff 0%, #000 100%)"
+			} else if (reciptCategory.value == "Health"){
+				document.body.style.backgroundImage = "linear-gradient(-20deg, #eee 0%, #111 100%)"
+			} else if (reciptCategory.value == "Cosmetic"){
+				document.body.style.backgroundImage = "linear-gradient(-20deg, #ccc 0%, #222 100%)"
+			} else if (reciptCategory.value == "Garden"){
+				document.body.style.backgroundImage = "linear-gradient(-20deg, #bbb 0%, #333 100%)"
+			} else if (reciptCategory.value == "Home"){
+				document.body.style.backgroundImage = "linear-gradient(-20deg, #aaa 0%, #444 100%)"
+			} else if (reciptCategory.value == "Fermentaion"){
+				document.body.style.backgroundImage = "linear-gradient(-20deg, #999 0%, #555 100%)"
+			} else if (reciptCategory.value == "Animal"){
+				document.body.style.backgroundImage = "linear-gradient(-20deg, #888 0%, #666 100%)"
+			} else if (reciptCategory.value == "Juice"){
+				document.body.style.backgroundImage = "linear-gradient(-20deg, #777 0%, #888 100%)"
+			}
 		}
     </script>
     <style>
-    .checkbox-wrapper-28 {
-      --size: 25px;
-      position: relative;
-    }
-  
-    .checkbox-wrapper-28 *,
-    .checkbox-wrapper-28 *:before,
-    .checkbox-wrapper-28 *:after {
-      box-sizing: border-box;
-    }
-  
-    .checkbox-wrapper-28 .promoted-input-checkbox {
-      border: 0;
-      clip: rect(0 0 0 0);
-      height: 1px;
-      margin: -1px;
-      overflow: hidden;
-      padding: 0;
-      position: absolute;
-      width: 1px;
-    }
-  
-    .checkbox-wrapper-28 input:checked ~ svg {
-      height: calc(var(--size) * 0.6);
-      -webkit-animation: draw-checkbox-28 ease-in-out 0.2s forwards;
-              animation: draw-checkbox-28 ease-in-out 0.2s forwards;
-    }
-    .checkbox-wrapper-28 label:active::after {
-      background-color: #e6e6e6;
-    }
-    .checkbox-wrapper-28 label {
-      line-height: var(--size);
-      cursor: pointer;
-      position: relative;
-    }
-    .checkbox-wrapper-28 label:after {
-      content: "";
-      height: var(--size);
-      width: var(--size);
-      margin-right: 8px;
-      float: left;
-      border: 2px solid ;
-      border-radius: 3px;
-      transition: 0.15s all ease-out;
-    }
-    .checkbox-wrapper-28 svg {
-      stroke: orange;
-      stroke-width: 3px;
-      height: 0;
-      width: calc(var(--size) * 0.6);
-      position: absolute;
-      left: calc(var(--size) * 0.21);
-      top: calc(var(--size) * 0.2);
-      stroke-dasharray: 33;
-    }
-  
-    @-webkit-keyframes draw-checkbox-28 {
-      0% {
-        stroke-dashoffset: 33;
-      }
-      100% {
-        stroke-dashoffset: 0;
-      }
-    }
-  
-    @keyframes draw-checkbox-28 {
-      0% {
-        stroke-dashoffset: 33;
-      }
-      100% {
-        stroke-dashoffset: 0;
-      }
-    }
-		.accordion:after {
-			content:'\002B';
-		}
-		
-		.active:after {
-			content: "\2212";
-		}
-		
-		.panel {
-		  max-height: 0;
-		  transition: max-height 0.2s ease-out;
-		}
+		.bg-red{
+			background-image: linear-gradient(-20deg, #fff 0%, #000 100%);
+		}	
     </style>
 {% endblock content %}

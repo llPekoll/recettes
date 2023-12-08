@@ -15,9 +15,6 @@ class User(AbstractUser):
     )
     bio = models.TextField(blank=True)
     slug = models.SlugField(max_length=200, blank=True)
-    profile_picture = models.OneToOneField(
-        "common.Image", on_delete=models.SET_NULL, null=True, blank=True
-    )
     groups = models.ManyToManyField(
         Group,
         verbose_name="groups",
@@ -37,6 +34,13 @@ class User(AbstractUser):
     comments = GenericRelation("common.Comment")
     tags = models.ManyToManyField("common.Tag", blank=True)
     links = models.ManyToManyField("common.Link", blank=True)
+    profile_picture = models.ForeignKey(
+        "common.Image",
+        related_name="profile_pictures",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return self.username

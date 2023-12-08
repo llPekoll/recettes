@@ -5,19 +5,14 @@
     <script src="{% static 'htmx.min.js' %}" defer></script>
     <script src="{% static 'quill.bubble.css' %}" defer></script>
     <script src="{% static 'quill.min.js' %}" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css"
-          rel="stylesheet"
-          type="text/css" />
 {% endblock extra_head %}
 {% block content %}
     {% include "navbar.html" %}
     <div class="flex items-center justify-center ">
         <div class="mx-auto my-24 w-2/3  overflow-hidden rounded-lg bg-white shadow-lg pb-4">
             <div class="max-h-52 overflow-hidden mb-5">
-                {% load pictures %}
                 <div class="block sm:hidden">
+                    {% load pictures %}
                     {% picture recipe.image.image img_alt="Image recipe {{ recipe.title }}" img_loading="lazy" picture_class="my-picture" ratio="1/1" m=6 l=4 %}
                 </div>
                 <div class="hidden sm:block">
@@ -25,13 +20,14 @@
                 </div>
             </div>
             <div class="px-10">
-                {% if is_author %}
+                {% if request.user == recipe.author %}
                     <div class="w-full">
                         <a href={% url 'recipe:edit' pk=recipe.pk %}>
                             <button class="bg-orange-500 text-white py-2 px-10 rounded-lg float-right">🖊️ edit the recipe</button>
                         </a>
                     </div>
-                {% elif user.is_authenticated and not is_author %}
+                {% endif %}
+                {% if user.is_authenticated %}
                     <div class="w-full">
                         <button class="bg-orange-500 text-white py-2 px-10 rounded-lg float-right">Fork recipe</button>
                     </div>
@@ -49,26 +45,16 @@
                     <div class="md:-ml-12 mt-20 text-gray-600">Duration:{{ recipe.duration }} {{ recipe.duration_scale }}.</div>
                 </div>
                 {% if number_of_rate_given is not empty %}
-                    <div class="flex">
-                        Rate:
-                        <div class="scale-50 ">
-                            <meter value="{{ given_rate.rate_average }}" min="0" max="5" class="">50% satisfied costumers – 2.5 of 5.0 stars</meter>
-                        </div>
-                    </div>
-                    {{ given_rate.rate_average }} from {{ given_rate.number_of_rate_given }}  given rate
+                    {% include "patterns/components/meter/meter.html" with given_rate=given_rate %}
                 {% endif %}
                 <div class="flex flex-col md:flex-row md:items-center mb-8">
                     <div class="md:w-2/3 md:ml-4">
                         <h2 class="text-2xl">Description:</h2>
                         <p class="text-lg mb-4 pl-10">{{ recipe.description }}</p>
                         {% include "components/tag_list.html" %}
-                        <ul class="list-disc pl-4">
-                            {% for ingredient in ingredients %}
-                                <li>{{ ingredient.quantity| clean_number }} {{ ingredient.unit }} {{ ingredient.ingredient.name }}</li>
-                            {% endfor %}
-                        </ul>
                     </div>
                 </div>
+                {% include "patterns/components/ingredient_list/ingredient_list.html" with cant_delete_ingredient=False %}
                 <div class="mb-8">
                     <div class="quill-content">
                         {% autoescape off %}
@@ -83,7 +69,7 @@
                               hx-trigger="change"
                               hx-target="#rate"
                               hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-                            {% include "rate.html" %}
+                            {% include "patterns/components/rate/rate.html" %}
                         </form>
                     </div>
                 {% endif %}
@@ -103,51 +89,24 @@
                         <a href="{% url 'login' %}">Log in</a> to add a comment.
                     </p>
                 {% endif %}
-                <div class="w-full ">
-                    <button class="float-right border-4 rounded-lg border-red-600 text-red-600 px-10 py-2 font-bold">Delete recipe</button>
-                </div>
+                {% if request.user == recipe.author %}
+                    <div class="w-full">
+                        <form hx-delete="{% url 'recipe:api-detail' pk=recipe.id %}"
+                              hx-confirm="Are you sure you want to report this Article?">
+                            <button type="submit"
+                                    class="cursor-pointer float-right border-4 rounded-lg border-red-600 text-red-600 px-10 py-2 font-bold">
+                                Delete recipe
+                            </button>
+                        </form>
+                    </div>
+                {% endif %}
             </div>
         </div>
         <style>
         .ql-editor{
             min-height:100px;
         }
-    @charset "UTF-8";
-    meter {
-      background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext font-size="100" x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" stroke-linejoin="round" fill="gray"  %3E★%3C/text%3E%3C/svg%3E') 0/auto 100%;
-      height: 4em;
-      width: auto;
-      aspect-ratio: 5/1;
-    }
     
-    meter::-webkit-meter-bar {
-      background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext font-size="100" x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" stroke-linejoin="round" fill="gray"  %3E★%3C/text%3E%3C/svg%3E') 0/auto 100%;
-      border: none;
-    }
-    
-    /* firefox styling for the bar (filled stars) */
-    meter:-moz-meter-optimum::-moz-meter-bar,
-    meter:-moz-meter-sub-optimum::-moz-meter-bar,
-    meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
-      background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext font-size="100" x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" stroke-linejoin="round" fill="gold"  %3E★%3C/text%3E%3C/svg%3E') 0/auto 100%;
-    }
-    
-    /* webkit styling for the bar (filled stars) */
-    meter::-webkit-meter-optimum-value,
-    meter::-webkit-meter-suboptimum-value,
-    meter::-webkit-meter-even-less-good-value {
-      background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext font-size="100" x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" stroke-linejoin="round" fill="gold"  %3E★%3C/text%3E%3C/svg%3E') 0/auto 100%;
-    }
-    
-    meter::-webkit-meter-inner-element {
-      display: block;
-    }
-    
-    * {
-      box-sizing: border-box;
-    }
-    
-
         </style>
         <script>
         const textArea = document.getElementById("comment")

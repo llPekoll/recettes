@@ -36,20 +36,24 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
 
 ## TODO 
  - [ ] display error on HTMX
- - [ ] use indicator while saving ingredient
- - [ ] clean step after form sent
  - [ ] use poetry
- - [ ] Delete Recipe/Article
  - [ ] add pagination(https://realpython.com/django-pagination/), https://htmx.org/examples/infinite-scroll/
- - [ ] add default image for article and recipe
- - [ ] rework on the slug system
  - [ ] add trigram for search
  - [ ] make author page
  - [ ] add advertising for make cash
  - [ ] add crypto reward [BAT,Polygon,NFTL]
  - [ ] Bio -> Quill
- - [x] Tests!!!!!
  - [ ] export pdf
+ 
+ - [x] add default image for article and recipe
+ - [x] rework on the slug system
+ - [x] use indicator also on regular form
+ - [x] use indicator on HTMX
+ - [x] clean step after form sent
+ - [x] clear step after submit and display if no title
+ - [x] component star system
+ - [x] Delete Recipe/Article
+ - [x] Tests!!!!!
  - [x] faire un model link pour rajouter a instruction
  - [x] faire des instructions step!
  - [x] Ajouter un quill pour les comment

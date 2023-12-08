@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 from django.utils.text import slugify
 from django_quill.forms import QuillFormField
 
@@ -17,6 +18,7 @@ from .models import (
 class RecipeIngredientForm(forms.ModelForm):
     recipe = forms.IntegerField()
     ingredient_name = forms.CharField(max_length=255)
+    quantity = forms.DecimalField(max_digits=6, decimal_places=2)
 
     class Meta:
         model = RecipeIngredient
@@ -42,6 +44,12 @@ class RecipeStepForm(forms.ModelForm):
     instruction = QuillFormField()
     image = forms.ImageField(required=False)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        configs = getattr(settings, "QUILL_CONFIGS", None)
+        config = configs["recipe"]
+        self.fields["instruction"].widget.config = config
+
     class Meta:
         model = RecipeStep
         fields = ["title", "instruction", "step_number", "image", "recipe"]
@@ -65,6 +73,7 @@ class RecipeForm(forms.ModelForm):
     )
 
     image = forms.ImageField(required=False)
+    is_draft = forms.BooleanField(required=False)
 
     class Meta:
         model = Recipe
@@ -106,7 +115,7 @@ class RecipeForm(forms.ModelForm):
         recipe.category = self.cleaned_data["category"]
         recipe.duration_scale = self.cleaned_data["duration_scale"]
         recipe.recipe_origin = self.cleaned_data["recipe_origin"]
-        recipe.image = self.cleaned_data["image"]
+        recipe.is_published = self.cleaned_data["is_draft"]
 
         slug = slugify(recipe.title)
         original_slug = slug

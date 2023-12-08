@@ -42,7 +42,7 @@ class Image(models.Model):
     type = models.CharField(max_length=20, choices=TYPE_CHOICES)
 
     def __str__(self):
-        return f"{self.type} image"
+        return f"{self.type} image {self.id}"
 
 
 class Rate(models.Model):
@@ -104,7 +104,7 @@ class Link(models.Model):
     content_object = GenericForeignKey("content_type", "object_id")
 
     def __str__(self):
-        return self.value
+        return f"{self.type}_{self.value}"
 
 
 class Report(models.Model):

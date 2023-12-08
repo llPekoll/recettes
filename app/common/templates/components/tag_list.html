@@ -1,5 +1,5 @@
 {% for tag in article.tags.all %}
-    <a href={% url "tag-page" pk=tag.pk %}>
+    <a href={% url "tag-detail" pk=tag.pk %}>
         <p class="inline  text-blue-400 hover:underline hover:cursor-pointer hover:text-blue-700">
             #{{ tag.name }}
             {% if not forloop.last %},{% endif %}

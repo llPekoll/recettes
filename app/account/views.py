@@ -185,10 +185,6 @@ def get_user_reset_token(request, user_email):
 
 def profile(request):
     user = request.user
-    if user.profile_picture:
-        print(user.profile_picture.image)
-    else:
-        print("no image")
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=user)
         if form.is_valid():

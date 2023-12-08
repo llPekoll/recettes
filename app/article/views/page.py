@@ -11,6 +11,7 @@ def page_article_creation(request):
         request,
         "new_article.html",
         {
+            "create": True,
             "article": form,
             "tag_list": [tag.name for tag in tags],
         },

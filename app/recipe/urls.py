@@ -31,7 +31,7 @@ urlpatterns = [
     # API
     path("api/search/", search_recipes, name="api-search"),
     path("api/new", recipe_creation, name="api-new"),
-    path("api/<int:pk>/edit/", recipe_edit, name="api-edit"),
+    path("api/<int:pk>/", recipe_edit, name="api-detail"),
     path("api/<int:pk>/rating/", set_rating, name="api-rating"),
     path("api/<int:pk>/favorite/", set_favorite, name="api-favorite"),
     path("api/ingredient/", ingredient_list, name="api-ingredient-list"),

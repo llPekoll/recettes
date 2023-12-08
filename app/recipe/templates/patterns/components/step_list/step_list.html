@@ -5,7 +5,7 @@
     <h2 class="text-2xl">Steps:</h2>
     <div class=" items-center mb-4">
         {% for step in steps %}
-            <div class="flex py-3 items-center">
+            <div class="flex py-3 items-center" data-test="step-{{ step.title }}">
                 {% load pictures %}
                 {% if step.image %}
                     <div>

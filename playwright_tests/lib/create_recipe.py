@@ -32,19 +32,22 @@ steps = [
 
 
 def add_ingredient(page: Page, quantity: str, unit: str, name: str) -> None:
+    page.locator('[data-test="quantity"]').focus()
     page.locator('[data-test="quantity"]').fill(quantity)
     handle = page.query_selector('[data-test="unit"]')
     handle.select_option(label=unit)
     page.locator('[data-test="ingredient_name"]').fill(name)
     page.locator('[data-test="add-ingredient"]').click()
-    expect(page.locator(f'[data-test="ing-{name}"]')).not_to_be_visible()
+    expect(page.locator(f'[data-test="ing-{name}"]')).to_be_visible()
 
 
 def add_step(page: Page, title: str) -> None:
+    page.locator('[data-test="title-step"]').focus()
     page.locator('[data-test="title-step"]').fill(title)
     page.locator('[data-test="ingredient_name"]').fill(lorem.paragraph())
     page.locator('[data-test="image-step"]').set_input_files(image_path)
     page.locator('[data-test="add-step"]').click()
+    expect(page.locator(f'[data-test="step-{step.title}"]')).to_be_visible()
 
 
 def create_recipe(page: Page) -> None:

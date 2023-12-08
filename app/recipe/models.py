@@ -91,13 +91,17 @@ class Recipe(models.Model):
     is_draft = models.BooleanField(
         default=True
     )  # is draft allow to create recipe to store ingredients, if create a new recipe we will create a recipe to store them and then and te recipe is going to be saved it will be undrafted
-    image = models.OneToOneField(
-        "common.Image", on_delete=models.SET_NULL, null=True, blank=True
-    )
     tags = models.ManyToManyField("common.Tag", related_name="recipes", blank=True)
     comments = GenericRelation("common.Comment")
     Report = GenericRelation("common.Report")
     links = GenericRelation("common.Link")
+    image = models.ForeignKey(
+        "common.Image",
+        related_name="recipes",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return self.title if self.title else f"{self.pk}_untitled"

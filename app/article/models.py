@@ -17,12 +17,16 @@ class Article(models.Model):
     edtied_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     is_draft = models.BooleanField(default=True)
 
-    image = models.OneToOneField(
-        "common.Image", on_delete=models.SET_NULL, null=True, blank=True
-    )
     tags = models.ManyToManyField("common.Tag", related_name="articles", blank=True)
     comments = GenericRelation("common.Comment")
     Report = GenericRelation("common.Report")
+    image = models.ForeignKey(
+        "common.Image",
+        related_name="articles",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return self.title

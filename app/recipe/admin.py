@@ -8,6 +8,11 @@ class RecipeIngredientInline(admin.TabularInline):
     extra = 1
 
 
+class RecipeStepInline(admin.TabularInline):
+    model = RecipeStep
+    extra = 1
+
+
 @admin.register(RecipeStep)
 class RecipeStepAdmin(admin.ModelAdmin):
     pass
@@ -20,7 +25,7 @@ class RecipeAdmin(admin.ModelAdmin):
     search_fields = ("title", "author")
     prepopulated_fields = {"slug": ("title",)}
     ordering = ["created_at"]
-    inlines = [RecipeIngredientInline]
+    inlines = [RecipeIngredientInline, RecipeStepInline]
 
 
 @admin.register(Ingredient)

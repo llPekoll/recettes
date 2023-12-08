@@ -1,12 +1,11 @@
 from django.contrib import admin
 
-from .models import Comment, Image, Rate, Report
+from .models import Comment, Image, Link, Rate, Report
 
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ("__str__", "created_at")
-    # list_filter = ("title",)
 
 
 @admin.register(Rate)
@@ -23,4 +22,10 @@ class ImageAdmin(admin.ModelAdmin):
 @admin.register(Report)
 class AbuseAdmin(admin.ModelAdmin):
     list_display = ("id", "content_object", "created_at")
+    ordering = ("-id",)
+
+
+@admin.register(Link)
+class LinkAdmin(admin.ModelAdmin):
+    list_display = ("id", "content_object")
     ordering = ("-id",)

@@ -176,11 +176,11 @@ def search_authors(request):
 @login_required
 def edit_image(request):
     if request.htmx:
-        form = ImageForm(request.POST, request.FILES)
+        form = ImageForm(request.FILES)
         if form.is_valid():
             img = form.save()
             user = request.user
-            user.profile_picture = img
+            user.profile_picture[0] = img
             user.save()
         return """
                 <p>image saved</p>

@@ -269,6 +269,19 @@ QUILL_CONFIGS = {
             ],
         },
     },
+    "recipe": {
+        "theme": "bubble",
+        "modules": {
+            "syntax": True,
+            "toolbar": [
+                [
+                    "bold",
+                    "italic",
+                    "strike",
+                ],
+            ],
+        },
+    },
 }
 
 

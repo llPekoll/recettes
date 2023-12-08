@@ -2,15 +2,18 @@
 <form hx-post="{% url 'recipe:api-ingredient-list' %}"
       hx-target="#ingredient-list"
       hx-swap="outerHTML"
+      hx-indicator="#indicator-ingredient"
       class="grid grid-cols-4 gap-6">
   <div>
     <input type="hidden" name="recipe" value="{{ recipe.id }}" />
     <input type="number"
            name="quantity"
            id="quantity"
+           step="0.01"
            placeholder="Quatity"
            min="0"
            data-test="quantity"
+           required
            class="w-28 bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block">
   </div>
   <div>
@@ -33,6 +36,7 @@
              autocomplete="off"
              placeholder="Ingredient name"
              data-test="ingredient_name"
+             required
              class="bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block">
       <div class="icon text-orange-700 -ml-10 mt-2 mr-4">
         <svg xmlns="http://www.w3.org/2000/svg"
@@ -45,6 +49,7 @@
       <div class="autocom-box absolute bg-red-50 w-40 mt-2"></div>
     </div>
     <button data-test="add-ingredient">{% include "patterns/components/icons/add/add.html" %}</button>
+    <span id="indicator-ingredient" class="htmx-indicator">{% include "patterns/components/spinner/spinner.html" %}</span>
   </div>
 </form>
 <script>
@@ -102,9 +107,6 @@
     quantity.value = "";
 });
     
-
-
-
 </script>
 <style>
 ::selection{
@@ -154,5 +156,17 @@
   background: #efefef;
 }
 
+
+{% comment %} htmx {% endcomment %}
+.htmx-indicator{
+  opacity:0;
+  transition: opacity 500ms ease-in;
+}
+.htmx-request .htmx-indicator{
+  opacity:1
+}
+.htmx-request.htmx-indicator{
+  opacity:1
+}
 
 </style>

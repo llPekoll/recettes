@@ -1,18 +1,18 @@
 {% load my_filters %}
-<div id="ingredient-list"
-     class="rounded mb-10 flex justify-center w-full pt-5">
+<div id="ingredient-list" class="rounded mb-10 flex w-full">
     <div class="w-1/3 min-w-fit">
-        <input type="hidden" name="recipe" value={{ recipe.id }} />
-        {% for ing in ings %}
-            <div class="text-left border-solid border-red-200 border-b-2 py-2 pl-2"
-                 data-test="ing-{{ ing.ingredient.name }}">
+        <h2 class="text-3xl">Ingredient:</h2>
+        {% for ing in ingredients %}
+            <div class="text-left pl-2" data-test="ing-{{ ing.ingredient.name }}">
                 <div class="grid grid-cols-6 gap-4">
                     <p>{{ ing.quantity | clean_number }}</p>
                     <p>{{ ing.unit }}</p>
-                    <p class="col-span-3">{{ ing.ingredient.name }}</p>
-                    <div hx-delete="{% url "recipe:api-ingredient-detail" pk=ing.id %}"
-                         hx-target="#ingredient-list"
-                         hx-swap="outerHTML">{% include "patterns/components/icons/delete/delete.html" %}</div>
+                    <p class="col-span-3" data-test="ing-{{ ing.ingredient.name }}">{{ ing.ingredient.name }}</p>
+                    {% if cant_delete_ingredient %}
+                        <div hx-delete="{% url "recipe:api-ingredient-detail" pk=ing.id %}"
+                             hx-target="#ingredient-list"
+                             hx-swap="outerHTML">{% include "patterns/components/icons/delete/delete.html" %}</div>
+                    {% endif %}
                 </div>
             </div>
         {% empty %}

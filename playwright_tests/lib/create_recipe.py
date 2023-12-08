@@ -70,8 +70,16 @@ def create_recipe(page: Page) -> None:
 
     for step in steps:
         add_step(page, step.title)
-        time.sleep(3)
+        time.sleep(1)
 
     # add tags add links
+    page.locator("tags").get_by_role("textbox").click()
+    page.locator("tags").get_by_role("textbox").fill("victorine")
+    page.locator("tags").get_by_role("textbox").press("Tab")
+    page.locator("tags").get_by_role("textbox").fill("j'y peux rien")
+    page.locator("tags").get_by_role("textbox").press("Tab")
+    page.locator("tags").get_by_role("textbox").fill("je suis comme ça")
+    page.locator("tags").get_by_role("textbox").press("Tab")
+
     page.locator('[data-test="is_published"]').click()
     page.locator('[data-test="submit"]').click()

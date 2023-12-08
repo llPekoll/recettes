@@ -26,6 +26,7 @@ def article_creation(request):
 
 
 def write_article(form, request):
+    print(request.POST, request.FILES)
     if form.is_valid():
         article = form.save(commit=False)
         article.author = request.user
@@ -38,6 +39,7 @@ def write_article(form, request):
                 article.tags.add(tag)
         image = Image.objects.get(pk=15)
         if "image" in request.FILES:
+            print(request.FILES["image"])
             image = Image(image=request.FILES["image"])
             image.save()
         article.image = image

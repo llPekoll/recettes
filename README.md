@@ -11,9 +11,15 @@
 ./manage.py tailwind start
 ```
 ## Run test
+code gen
 ```
-./manage.py test
+playwright codegen localhost:8000
 ```
+run test
+```
+pytest -s
+```
+
 
 ## Lint
 ```

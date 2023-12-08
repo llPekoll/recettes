@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load static %}
-{% load my_filters %}
 {% block extra_head %}
     {% include "components/quill_import.html" %}
     <script src="{% static 'htmx.min.js' %}" defer></script>
@@ -16,14 +15,9 @@
               class="-mt-10"
               method="post"
               enctype="multipart/form-data"
-              {% if create %}
-                  action="{% url "recipe:api-new" %}"
-              {% else %}
-                  action="{% url "recipe:api-edit" pk=recipe.id %}"
-              {% endif %}>
+              {% if create %} action="{% url "recipe:api-new" %}" {% else %} action="{% url "recipe:api-edit" pk=recipe.id %}" {% endif %}>
             {% csrf_token %}
             <input type="hidden" name=recipe value={{ recipe.id }} />
-            <!-- HEADER -->
             <div class="flex items-end ml-20">
                 <img src="{% static 'notes.svg' %}"
                      alt="Profile Picture"
@@ -54,7 +48,9 @@
                 {% for value in form.category %}
                     <option value="{{ value.data.value }}"
                             class="capitalize"
-                            {% if value.data.value == form.category.value %}selected{% endif %}>{{ value.data.value }}</option>
+                            {% if value.data.value == form.category.value %}selected{% endif %}>
+                        {{ value.data.value }}
+                    </option>
                 {% endfor %}
             </select>
             <label for={{ form.description.name }} class="flex mt-5">
@@ -84,7 +80,9 @@
                 {% for value in form.recipe_origin %}
                     <option value="{{ value.data.value }}"
                             class="capitalize"
-                            {% if value.data.value == form.recipe_origin.value %}selected{% endif %}>{{ value.data.value }}</option>
+                            {% if value.data.value == form.recipe_origin.value %}selected{% endif %}>
+                        {{ value.data.value }}
+                    </option>
                 {% endfor %}
             </select>
             <label for={{ form.recipe_origin.name }} class="flex mt-5 ">
@@ -97,7 +95,9 @@
                     {% for value in form.duration_scale %}
                         <option value="{{ value.data.value }}"
                                 class="capitalize"
-                                {% if value.data.value == form.duration_scale.value %}selected{% endif %}>{{ value.data.value }}s</option>
+                                {% if value.data.value == form.duration_scale.value %}selected{% endif %}>
+                            {{ value.data.value }}s
+                        </option>
                     {% endfor %}
                 </select>
             </div>

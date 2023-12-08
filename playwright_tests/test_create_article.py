@@ -1,6 +1,6 @@
 from faker import Faker
 from playwright.sync_api import Playwright, sync_playwright, expect, Page
-from lib import register, login, logout
+from lib import register, create_article
 
 fake = Faker()
 
@@ -19,27 +19,15 @@ def generate_random_email():
     return fake.email()
 
 
-def test_login():
+def test_article():
     with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=False)
+        context = browser.new_context()
+        page = context.new_page()
+
         username = generate_random_user()
-        password = generate_random_password()
-        email = generate_random_email()
-        browser = playwright.chromium.launch(headless=False)
-        context = browser.new_context()
-        page = context.new_page()
-
         print(f"register {username}")
-        register(page, username, password, email)
-        context.close()
-        browser.close()
-
-        browser = playwright.chromium.launch(headless=False)
-        context = browser.new_context()
-        page = context.new_page()
-        print("login")
-        login(page, username, password)
-
-        print("logout")
-        logout(page)
+        register(page, username, generate_random_password(), generate_random_email())
+        create_article(page)
         context.close()
         browser.close()

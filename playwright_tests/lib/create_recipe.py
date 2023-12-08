@@ -2,6 +2,7 @@ from playwright.sync_api import Playwright, sync_playwright, expect, Page
 import lorem
 import os
 from pydantic import BaseModel
+import time
 
 
 class Ingredient(BaseModel):
@@ -19,7 +20,7 @@ image_path = os.path.abspath("playwright_tests/lib/fixtures/images/bf.jpg")
 ings = [
     Ingredient(quantity="2.5", unit="Spoon", name="citron"),
     Ingredient(quantity="1", unit="Liter", name="citron"),
-    Ingredient(quantity="13", unit="Kilograme", name="Chocolate"),
+    Ingredient(quantity="5", unit="Kilograme", name="Chocolate"),
     Ingredient(quantity="90", unit="Piece", name="oigons"),
 ]
 
@@ -44,10 +45,10 @@ def add_ingredient(page: Page, quantity: str, unit: str, name: str) -> None:
 def add_step(page: Page, title: str) -> None:
     page.locator('[data-test="title-step"]').focus()
     page.locator('[data-test="title-step"]').fill(title)
-    page.locator('[data-test="ingredient_name"]').fill(lorem.paragraph())
+    page.locator("#quill-id_instruction div").first.fill(lorem.paragraph())
     page.locator('[data-test="image-step"]').set_input_files(image_path)
     page.locator('[data-test="add-step"]').click()
-    expect(page.locator(f'[data-test="step-{step.title}"]')).to_be_visible()
+    expect(page.locator(f'[data-test="step-{title}"]')).to_be_visible()
 
 
 def create_recipe(page: Page) -> None:
@@ -65,8 +66,12 @@ def create_recipe(page: Page) -> None:
 
     for ing in ings:
         add_ingredient(page, ing.quantity, ing.unit, ing.name)
+        time.sleep(1)
 
     for step in steps:
         add_step(page, step.title)
+        time.sleep(3)
+
+    # add tags add links
     page.locator('[data-test="is_published"]').click()
     page.locator('[data-test="submit"]').click()

@@ -47,15 +47,11 @@ def register(request):
 
 
 def login_view(request):
-    print("redirect1")
     if request.htmx:
         form = LoginForm(request, request.POST)
-        print("redirect2")
-        print(form)
         if form.is_valid():
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
-            print("redirect3")
             try:
                 user = User.objects.get(username=username)
             except User.DoesNotExist:
@@ -63,14 +59,10 @@ def login_view(request):
             except User.DoesNotExist:
                 # TODO refrsh page with error message
                 return HttpResponse("user not found")
-
-            print("redirect4")
             user = authenticate(request, username=user.username, password=password)
 
-            print("redirect5")
             if user is not None:
                 login(request, user)
-                print("redirect6")
                 return HttpResponseClientRedirect(reverse("home"))
             else:
                 print(form.errors)

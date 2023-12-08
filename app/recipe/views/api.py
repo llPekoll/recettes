@@ -109,9 +109,11 @@ def ingredient_detail(request, pk):
 
 
 def step_list(request):
+    print(request.POST)
     recipe = Recipe.objects.get(id=request.POST.get("recipe"))
     if request.method == "POST":
         form = RecipeStepForm(request.POST)
+        print(form.errors)
         if form.is_valid():
             step = form.save(commit=False)
             if "image" in request.FILES:

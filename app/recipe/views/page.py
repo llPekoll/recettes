@@ -20,7 +20,7 @@ def page_recipe_creation(request):
     tags = Tag.objects.all()
     return render(
         request,
-        "patterns/pages/new_recipe/new_recipe.html",
+        "patterns/pages/list_recipe/list_recipe.html",
         {
             "form": form,
             "recipeStepForm": RecipeStepForm(),
@@ -53,13 +53,13 @@ def page_recipe_detail(request, pk):
         request,
         "detail_recipe.html",
         {
-            "steps": steps,
             "recipe": recipe,
             "is_favorite": is_favorite,
             "comment_form": CommentForm(),
-            "rate": rate,
             "ingredients": ingredients,
+            "steps": steps,
             "comments": comments,
+            "rate": rate,
             "given_rate": {
                 "rate_average": rate_average,
                 "number_of_rate_given": number_of_rate_given,
@@ -76,11 +76,12 @@ def page_edit_recipe(request, pk):
     tags = Tag.objects.all()
     return render(
         request,
-        "new_recipe.html",
+        "patterns/pages/list_recipe/list_recipe.html",
         {
             "form": form,
             "ings": ings,
             "recipe": recipe,
+            "recipeStepForm": RecipeStepForm(),
             "create": False,
             "tag_list": [tag.name for tag in tags],
         },

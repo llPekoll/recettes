@@ -51,35 +51,39 @@ def add_step(page: Page, title: str) -> None:
     expect(page.locator(f'[data-test="step-{title}"]')).to_be_visible()
 
 
-def create_recipe(page: Page) -> None:
-    page.locator('[data-test="create-recipe"]').click()
+def create_recipe(page: Page, basic: bool, create: bool, publish: bool) -> None:
+    if create:
+        page.locator('[data-test="create-recipe"]').click()
     page.locator('[data-test="title"]').fill("My recipe")
-    handle = page.query_selector('[data-test="category"]')
-    handle.select_option(label="Garden")
-    page.locator('[data-test="description"]').fill(lorem.paragraph())
-    page.locator('[data-test="image-desc"]').set_input_files(image_path)
-    handle = page.query_selector('[data-test="origin"]')
-    handle.select_option(label="Asia")
-    page.locator('[data-test="duration-input"]').fill("2.5")
-    handle = page.query_selector('[data-test="duration-select"]')
-    handle.select_option(label="Minutes")
 
-    for ing in ings:
-        add_ingredient(page, ing.quantity, ing.unit, ing.name)
-        time.sleep(1)
+    if not basic:
+        handle = page.query_selector('[data-test="category"]')
+        handle.select_option(label="Garden")
+        page.locator('[data-test="description"]').fill(lorem.paragraph())
+        page.locator('[data-test="image-desc"]').set_input_files(image_path)
+        handle = page.query_selector('[data-test="origin"]')
+        handle.select_option(label="Asia")
+        page.locator('[data-test="duration-input"]').fill("2.5")
+        handle = page.query_selector('[data-test="duration-select"]')
+        handle.select_option(label="Minutes")
 
-    for step in steps:
-        add_step(page, step.title)
-        time.sleep(1)
+        for ing in ings:
+            add_ingredient(page, ing.quantity, ing.unit, ing.name)
+            time.sleep(1)
 
-    # add tags add links
-    page.locator("tags").get_by_role("textbox").click()
-    page.locator("tags").get_by_role("textbox").fill("victorine")
-    page.locator("tags").get_by_role("textbox").press("Tab")
-    page.locator("tags").get_by_role("textbox").fill("j'y peux rien")
-    page.locator("tags").get_by_role("textbox").press("Tab")
-    page.locator("tags").get_by_role("textbox").fill("je suis comme ça")
-    page.locator("tags").get_by_role("textbox").press("Tab")
+        for step in steps:
+            add_step(page, step.title)
+            time.sleep(1)
 
-    page.locator('[data-test="is_published"]').click()
+        # add tags add links
+        page.locator("tags").get_by_role("textbox").click()
+        page.locator("tags").get_by_role("textbox").fill("victorine")
+        page.locator("tags").get_by_role("textbox").press("Tab")
+        page.locator("tags").get_by_role("textbox").fill("j'y peux rien")
+        page.locator("tags").get_by_role("textbox").press("Tab")
+        page.locator("tags").get_by_role("textbox").fill("je suis comme ça")
+        page.locator("tags").get_by_role("textbox").press("Tab")
+
+    if publish:
+        page.locator('[data-test="is_published"]').click()
     page.locator('[data-test="submit"]').click()

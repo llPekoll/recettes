@@ -1,5 +1,5 @@
 from faker import Faker
-from playwright.sync_api import Playwright, sync_playwright, expect, Page
+from playwright.sync_api import sync_playwright
 from lib import register, login, logout
 
 fake = Faker()

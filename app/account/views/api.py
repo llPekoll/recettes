@@ -6,12 +6,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.views.decorators.csrf import csrf_exempt
-from django_htmx.http import retarget
+from django_htmx.http import HttpResponseClientRedirect, retarget
 
 from elisasrecipe import settings
 
@@ -83,7 +84,7 @@ def send_password_reset_email(request):
 
 
 @csrf_exempt
-def delete_users(request):
+def users_list(request):
     if settings.DEBUG:
         if request.method == "DELETE":
             prefix = "pw_test_"
@@ -92,6 +93,14 @@ def delete_users(request):
             return JsonResponse({"message": f"{count} users deleted."})
         else:
             return JsonResponse({"message": "Invalid request method."}, status=405)
+
+
+def users_detail(request, pk):
+    if request.method == "DELETE":
+        user = get_object_or_404(User, pk=pk)
+        # print(user)
+        user.delete()
+        return HttpResponseClientRedirect(reverse("home"))
 
 
 def get_user_reset_token(request, user_email):

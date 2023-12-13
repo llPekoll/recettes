@@ -11,40 +11,32 @@ from django.contrib.postgres.search import (
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django_htmx.http import HttpResponseClientRedirect
 from recipe.forms import RecipeForm, RecipeIngredientForm, RecipeStepForm
 from recipe.models import Recipe, RecipeIngredient, RecipeStep
 
 
 def recipe_edit(request, pk):
+    print(request.POST)
     if request.method == "POST":
-        recipe = get_object_or_404(Recipe, pk=pk)
+        recipe = Recipe.objects.get(pk=pk)
         form = RecipeForm(request.POST, instance=recipe)
-        id = recipe_write(form, request)
-        return redirect(reverse("recipe:detail", args=[id]))
-    elif request.method == "DELETE":
-        print("pas que des asticol")
-        recipe = get_object_or_404(Recipe, pk=pk)
-        recipe.delete()
-        return HttpResponseClientRedirect(reverse("user:profile"))
-
+        recipe_write(form, request)
+        return redirect(reverse("recipe:detail", args=[pk]))
     return HttpResponse("Method not allowed", status=405)
 
 
-def recipe_creation(request):
-    if request.method == "POST":
-        recipe = Recipe.objects.get(pk=request.POST.get("recipe"))
-        form = RecipeForm(request.POST, instance=recipe)
-        id = recipe_write(form, request)
-        return redirect(reverse("recipe:detail", args=[id]))
-    return HttpResponse("Method not allowed", status=405)
+# def recipe_creation(request):
+#     if request.method == "POST":
+#         recipe = Recipe.objects.get(pk=request.POST.get("recipe"))
+#         form = RecipeForm(request.POST, instance=recipe)
+#         id = recipe_write(form, request)
+#         return redirect(reverse("recipe:detail", args=[id]))
+#     return HttpResponse("Method not allowed", status=405)
 
 
 def recipe_write(form, request):
     if form.is_valid():
-        recipe = form.save(
-            commit=False,
-        )
+        recipe = form.save(commit=False)
         recipe.author = request.user
         recipe.save()
         if request.POST.get("tags"):
@@ -53,12 +45,15 @@ def recipe_write(form, request):
                 tag, _ = Tag.objects.get_or_create(name=tag.get("value"))
                 recipe.tags.add(tag)
 
-        image = Image.objects.get(pk=15)
         if "image" in request.FILES:
             print(request.FILES["image"])
             image = Image(image=request.FILES["image"])
             image.save()
-        recipe.image = image
+            recipe.image = image
+        else:
+            if not recipe.image:
+                image = Image.objects.get(pk=15)
+                recipe.image = image
         recipe.save()
         return recipe.id
     else:

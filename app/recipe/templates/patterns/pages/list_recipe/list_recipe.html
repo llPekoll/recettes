@@ -2,11 +2,9 @@
 {% load i18n %}
 {% load static %}
 {% block extra_head %}
-    {% include "components/quill_import.html" %}
+    {% include "components/import_quill.html" %}
+    {% include "components/import_tagify.html" %}
     <script src="{% static 'htmx.min.js' %}" defer></script>
-    <script src={% static "tagify/tagify" %}></script>
-    <script src={% static "tagify/tagify.polyfills.min.js"%}></script>
-    <link href="{% static "tagify/tagify.css" %}" rel="stylesheet" type="text/css" />
 {% endblock extra_head %}
 {% block content %}
     {% include "navbar.html" %}
@@ -15,7 +13,7 @@
               class="-mt-10"
               method="post"
               enctype="multipart/form-data"
-              {% if create %} action="{% url "recipe:api-new" %}" {% else %} action="{% url "recipe:api-edit" pk=recipe.id %}" {% endif %}>
+              action="{% url "recipe:api-detail" pk=recipe.id %}">
             {% csrf_token %}
             <input type="hidden" name=recipe value={{ recipe.id }} />
             <div class="flex items-end ml-20">

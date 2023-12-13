@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 {% block extra_head %}
+    {% include "components/import_quill.html" %}
+    {% include "components/import_tagify.html" %}
+    {% include "components/import_sweetalert.html" %}
     <script src="{% static 'htmx.min.js' %}" defer></script>
-    {% include "django_quill/media.html" %}
 {% endblock extra_head %}
 {% block content %}
     <div class="flex ">
@@ -40,6 +42,44 @@
                 <div class="float-left">{% include "btn.html" with url=article_new link_text="Create Article" %}</div>
                 <div class="float-right">{% include "btn.html" with url=recipe_new link_text="Create recipe" %}</div>
             </div>
+            <div class="w-full  text-right px-10 pt-20">
+                <button id="delete-button"
+                        hx-delete="{% url "user:api-user-detail" pk=user.pk %}"
+                        data-test="delete-account"
+                        {% comment %} hx-confirm="delete" {% endcomment %}
+                        class="border-2 border-red-500 px-10 py-2 rounded-lg text-red-600 hover:text-white hover:border-0 hover:bg-red-600">
+                    Delete account
+                </button>
+            </div>
         </div>
     </div>
+    <script>
+        const deleteInput = "I want to delete"
+        const deleteButton = document.getElementById("delete-button")
+        deleteButton.addEventListener("htmx:confirm", async function(e) {
+            e.preventDefault()
+          Swal.fire({
+            icon: "error",
+            showCancelButton: true,
+            title: "Input email address",
+            input: "text",
+            inputAttributes: {
+                "data-test": "delete-input",
+              },
+            html: `to delete your account type: <b>${deleteInput}</b>`,
+            inputPlaceholder: deleteInput
+          }).then(function(result) {
+            e.detail.issueRequest(false) 
+            if(result.isConfirmed){
+                if(result.value == deleteInput){
+                    Swal.fire(" Account Delete!", "", "success");
+                } else if (result.isDenied) {
+                    Swal.fire("String don't match", "", "info");
+                }
+            } else if (result.isDenied) {
+                Swal.fire("Account not Deleted", "", "info");
+            }
+            })
+        })
+    </script>
 {% endblock content %}

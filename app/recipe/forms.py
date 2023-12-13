@@ -1,5 +1,7 @@
+from common.models import Image
 from django import forms
 from django.conf import settings
+from django.db.utils import IntegrityError
 from django.utils.text import slugify
 from django_quill.forms import QuillFormField
 
@@ -72,7 +74,8 @@ class RecipeForm(forms.ModelForm):
         choices=[(uom.value, uom.name) for uom in UnitOfMeasure], required=False
     )
 
-    image = forms.ImageField(required=False)
+    image = forms.ModelChoiceField(queryset=Image.objects.all(), required=False)
+
     is_draft = forms.BooleanField(required=False)
 
     class Meta:
@@ -124,4 +127,12 @@ class RecipeForm(forms.ModelForm):
             slug = f"{original_slug}-{count}"
             count += 1
         recipe.slug = slug
-        return recipe
+        while True:
+            try:
+                if commit:
+                    recipe.save()
+                return recipe
+            except IntegrityError:
+                slug = f"{original_slug}-{count}"
+                count += 1
+                recipe.slug = slug

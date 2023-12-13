@@ -1,9 +1,10 @@
 from account.views.api import (
     check_email,
     check_username,
-    delete_users,
     edit_bio,
     edit_image,
+    users_detail,
+    users_list,
 )
 from account.views.page import (
     CustomPasswordResetConfirmView,
@@ -47,7 +48,8 @@ urlpatterns = [
     path("user/articles", user_articles, name="my-articles"),
     path("user/favorites", user_favorites, name="my-favorites"),
     # API
-    path("users/delete/", delete_users, name="api-delete-users"),
+    path("api/users/", users_list, name="api-user-list"),
+    path("apo/users/<int:pk>", users_detail, name="api-user-detail"),
     path("check/username", check_username, name="api-validation-username"),
     path("check/email", check_email, name="api-validation email"),
     path("edit-bio/image/", edit_image, name="api-edit-image"),

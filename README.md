@@ -41,6 +41,12 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
 
 
 ## TODO 
+ - [ ] test on edit recipe
+ - [ ] faire le footer RGPD etc.... 
+ - [ ] test on edit article
+ - [ ] test on comment
+ - [ ] test on edit bio
+ - [ ] test on search
  - [ ] display error on HTMX
  - [ ] use poetry
  - [ ] add pagination(https://realpython.com/django-pagination/), https://htmx.org/examples/infinite-scroll/

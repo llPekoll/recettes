@@ -2,9 +2,9 @@
 {% load static %}
 {% load my_filters %}
 {% block extra_head %}
+    {% include "components/import_quill.html" %}
+    {% include "components/import_sweetalert.html" %}
     <script src="{% static 'htmx.min.js' %}" defer></script>
-    <script src="{% static 'quill.bubble.css' %}" defer></script>
-    <script src="{% static 'quill.min.js' %}" defer></script>
 {% endblock extra_head %}
 {% block content %}
     {% include "navbar.html" %}
@@ -95,13 +95,15 @@
                 {% endif %}
                 {% if request.user == recipe.author %}
                     <div class="w-full">
-                        <form hx-delete="{% url 'recipe:api-detail' pk=recipe.id %}"
-                              hx-confirm="Are you sure you want to report this Article?">
-                            <button type="submit"
-                                    class="cursor-pointer float-right border-4 rounded-lg border-red-600 text-red-600 px-10 py-2 font-bold">
-                                Delete recipe
-                            </button>
-                        </form>
+                        <button id="delete-button"
+                                hx-delete="{% url 'recipe:api-detail' pk=recipe.id %}"
+                                data-test="delete-recipe"
+                                {% comment %}
+                                hx-confirm="delete"
+                                {% endcomment %}
+                                class="border-2 border-red-500 px-10 py-2 rounded-lg text-red-600 hover:text-white hover:border-0 hover:bg-red-600">
+                            Delete recipe
+                        </button>
                     </div>
                 {% endif %}
             </div>
@@ -110,12 +112,31 @@
         .ql-editor{
             min-height:100px;
         }
-    
         </style>
         <script>
         const textArea = document.getElementById("comment")
-        document.addEventListener('htmx:afterRequest', function(evt) {
+        textArea.addEventListener('htmx:afterRequest', function(evt) {
             textArea.value = "";
         });
+        const deleteButton = document.getElementById("delete-button")
+        deleteButton.addEventListener("htmx:confirm", async function(e) {
+            e.preventDefault()
+          Swal.fire({
+            icon: "error",
+            confirmButtonText: "Delete",
+            confirmButtonColor: "#d33",
+            showCancelButton: true,
+            title: "Delete Recipe",
+            inputAttributes: {
+                "data-test": "delete-input",
+              },
+            html: `Are you sure that you want to <b>delete</b> that recipe?`,
+          }).then(function(result) {
+            e.detail.issueRequest(false) 
+            if(result.isConfirmed){
+                Swal.fire(" Recipe Deleted!", "", "success");
+            }
+            })
+        })
         </script>
     {% endblock content %}

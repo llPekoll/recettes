@@ -19,7 +19,7 @@ def generate_random_email():
     return fake.email()
 
 
-def test_article():
+def test_create():
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=False)
         context = browser.new_context()

@@ -22,6 +22,10 @@ def recipe_edit(request, pk):
         form = RecipeForm(request.POST, instance=recipe)
         recipe_write(form, request)
         return redirect(reverse("recipe:detail", args=[pk]))
+    if request.method == "DELETE":
+        recipe = Recipe.objects.get(pk=pk)
+        # recipe.delete()
+        return redirect(reverse("profile"))
     return HttpResponse("Method not allowed", status=405)
 
 

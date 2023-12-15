@@ -168,7 +168,7 @@ def set_rating(request, pk):
     if request.htmx:
         recipe = get_object_or_404(Recipe, pk=pk)
         obj, _ = Rate.objects.update_or_create(
-            recipe=recipe,
+            content_object=recipe,
             user=request.user,
             defaults={"value": request.POST.get("rate")},
         )

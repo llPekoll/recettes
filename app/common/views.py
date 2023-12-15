@@ -8,6 +8,7 @@ from .models import Comment, Link, Report, Tag
 
 
 def list_comment(request, pk, content_type):
+    print("list_comment")
     if content_type == "Article":
         content = get_object_or_404(Article, pk=pk)
     elif content_type == "Recipe":
@@ -19,6 +20,7 @@ def list_comment(request, pk, content_type):
             print("request.POST")
             print(request.POST)
             form = CommentForm(request.POST)
+            print(1)
             if form.is_valid():
                 comment = form.save(commit=False)
                 comment.author = request.user

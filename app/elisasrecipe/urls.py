@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.urls import include, path
 from pictures.conf import get_settings
 
-from .views import index
+from .views import index, FeedView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -30,6 +30,7 @@ urlpatterns = [
 
 urlpatterns += i18n_patterns(
     path("", index, name="home"),
+    path("feed/", FeedView.as_view(), name="feed"),
     path("", include("account.urls")),
     path("article/", include("article.urls")),
     path("", include("common.urls")),

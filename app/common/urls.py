@@ -4,7 +4,7 @@ from .views import detail_comment, link_detail, link_list, list_comment, report,
 
 urlpatterns = [
     path(
-        "api/comment/<int:pk>/<str:content_type>",
+        "api/comment/<int:pk>",
         detail_comment,
         name="api-detail-comment",
     ),

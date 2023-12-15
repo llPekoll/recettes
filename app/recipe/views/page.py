@@ -35,20 +35,25 @@ def page_recipe_creation(request):
 def page_recipe_detail(request, pk):
     user = request.user
     recipe = get_object_or_404(Recipe, pk=pk)
-    is_favorite = recipe in user.favorite_recipes.all()
+    if user.is_authenticated:
+        is_favorite = recipe in user.favorite_recipes.all()
+        try:
+            rate = Rate.objects.get(user=request.user, content_object=recipe).value
+        except Rate.DoesNotExist:
+            rate = 3
+    else:
+        is_favorite = False
+        rate = False
+    try:
+        rate_average = Rate.objects.filter(content_object=recipe).aggregate(Avg("value"))[
+            "value__avg"
+        ]
+    except Rate.DoesNotExist:
+        rate_average = 3
     ingredients = RecipeIngredient.objects.filter(recipe=recipe)
     comments = recipe.comments.order_by("-created_at")
     steps = recipe.steps.all()
-    try:
-        rate = Rate.objects.get(user=request.user, recipe=recipe).value
-        rate_average = Rate.objects.filter(recipe=recipe).aggregate(Avg("value"))[
-            "value__avg"
-        ]
-
-    except Rate.DoesNotExist:
-        rate = 3
-        rate_average = 3
-    number_of_rate_given = Rate.objects.filter(recipe=recipe).count()
+    number_of_rate_given = Rate.objects.filter(content_object=recipe).count()
     return render(
         request,
         "detail_recipe.html",

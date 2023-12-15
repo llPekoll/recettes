@@ -41,15 +41,13 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
 
 
 ## TODO 
- - [ ] test on edit recipe
- - [ ] faire le footer RGPD etc.... 
  - [ ] test on edit article
+ - [ ] faire le footer RGPD etc.... 
  - [ ] test on comment
  - [ ] test on edit bio
  - [ ] test on search
  - [ ] display error on HTMX
  - [ ] use poetry
- - [ ] add pagination(https://realpython.com/django-pagination/), https://htmx.org/examples/infinite-scroll/
  - [ ] add trigram for search
  - [ ] make author page
  - [ ] add advertising for make cash
@@ -57,6 +55,8 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
  - [ ] Bio -> Quill
  - [ ] export pdf
  
+ - [x] test on edit recipe
+ - [x] add pagination(https://realpython.com/django-pagination/), https://htmx.org/examples/infinite-scroll/
  - [x] add default image for article and recipe
  - [x] rework on the slug system
  - [x] use indicator also on regular form
@@ -94,3 +94,9 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
 ## Recipe 
 
  we can create recipe from ingredient or from the form
+
+
+ ## Misc link
+ https://codepen.io/KaioRocha/pen/YoEVvZ
+ https://codepen.io/alvarotrigo/pen/PoKMyWE
+ https://www.fontpair.co/all

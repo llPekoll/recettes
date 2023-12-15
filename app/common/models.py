@@ -47,14 +47,18 @@ class Image(models.Model):
 
 class Rate(models.Model):
     user = models.ForeignKey("account.User", on_delete=models.CASCADE)
-    recipe = models.ForeignKey("recipe.Recipe", on_delete=models.CASCADE)
+    content_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE, null=True, blank=True
+    )
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    content_object = GenericForeignKey("content_type", "object_id")
     created_at = models.DateTimeField(auto_now_add=True)
     value = models.IntegerField(
         validators=[MinValueValidator(0), MaxValueValidator(5)], default=3
     )
 
     def __str__(self):
-        return f"{self.user.username} rates {self.recipe.title}: {self.value}"
+        return f"{self.user.username} rates {self.content_object}: {self.value}"
 
 
 class Comment(models.Model):

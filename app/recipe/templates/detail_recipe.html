@@ -38,11 +38,13 @@
                 <div class="w-11/12 text-right">
                     <button class="bg-orange-500 text-white rounded-lg py-2 px-10">export as pdf</button>
                 </div>
-                <div class="cursor-pointer">
-                    <button hx-get="{% url "recipe:api-favorite" pk=recipe.id %}"
-                            hx-trigger="click"
-                            hx-target="#is-fav">{% include "is_favorite.html" %}</button>
-                </div>
+                {% if user.is_authenticated %}
+                    <div class="cursor-pointer">
+                        <button hx-get="{% url "recipe:api-favorite" pk=recipe.id %}"
+                                hx-trigger="click"
+                                hx-target="#is-fav">{% include "is_favorite.html" %}</button>
+                    </div>
+                {% endif %}
                 <div class="flex flex-col md:flex-row md:items-center mb-8">
                     <h1 class="text-3xl font-bold mb-2 md:mb-0 first-letter:text-7xl"
                         data-test="title-recipe">{{ recipe.title }}</h1>
@@ -80,6 +82,7 @@
                 {% include "comment_list.html" %}
                 {% if user.is_authenticated %}
                     <form class="mb-4"
+                          id="add-comment"
                           hx-post="{% url "api-list-comment" pk=recipe.id content_type="Recipe" %}"
                           hx-target="#comments">
                         <label>
@@ -90,7 +93,7 @@
                     </form>
                 {% else %}
                     <p>
-                        <a href="{% url 'login' %}">Log in</a> to add a comment.
+                        <a href="{% url 'user:login' %}">Log in</a> to add a comment.
                     </p>
                 {% endif %}
                 {% if request.user == recipe.author %}
@@ -114,9 +117,10 @@
         }
         </style>
         <script>
-        const textArea = document.getElementById("comment")
-        textArea.addEventListener('htmx:afterRequest', function(evt) {
-            textArea.value = "";
+        const element = document.getElementsByClassName("ql-editor");
+        const btnAddComment = document.getElementById("add-comment");
+        btnAddComment.addEventListener('htmx:afterRequest', function(evt) {
+            element[0].innerHTML = "";
         });
         const deleteButton = document.getElementById("delete-button")
         deleteButton.addEventListener("htmx:confirm", async function(e) {

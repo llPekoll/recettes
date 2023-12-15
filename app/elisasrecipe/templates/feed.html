@@ -1,0 +1,16 @@
+{% load my_filters %}
+{% for obj in page_obj %}
+    {% if forloop.last %}
+        <div hx-get="{% url 'feed' %}?page={{ page_obj.number | add:1 }}"
+             hx-trigger="revealed"
+             hx-swap="afterend">{% else %}</div>
+    {% endif %}
+    {% if obj|class_name == "Article" %}
+        {% include "components/cards.html" with type="article" content=obj %}
+    {% elif obj|class_name == "Recipe" %}
+        {{ obj.title }}
+        {% include "components/cards.html" with type="recipe" content=obj %}
+    {% endif %}
+{% empty %}
+    <p>Nothing in the feed</p>
+{% endfor %}

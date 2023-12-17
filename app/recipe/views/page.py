@@ -58,7 +58,7 @@ def page_recipe_detail(request, pk):
             "ingredients": ingredients,
             "steps": steps,
             "comments": comments,
-            "rate": rate,
+            "rate": rate.value,
             "given_rate": {
                 "rate_average": rate_average,
                 "number_of_rate_given": number_of_rate_given,

@@ -46,9 +46,9 @@
         var type = file.type;
         let output = document.getElementById('profile-pic');
         save_image.classList.remove('hidden');
-        
+
         output.src = URL.createObjectURL(event.target.files[0]);
-        
+
         output.onload = function() {
             URL.revokeObjectURL(output.src) // free memory
         }

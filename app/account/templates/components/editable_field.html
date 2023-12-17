@@ -44,7 +44,7 @@
             {{ input_css_class }}.classList.remove('hidden');
             {{ input_css_class }}.focus();
         });
-         
+
     } else {
         console.log('empty_css_class is not defined');
         let {{ empty_css_class }}  = document.querySelector('.{{ empty_css_class }}');
@@ -55,7 +55,7 @@
             {{ input_css_class }}.classList.add('inline');
             {{ input_css_class }}.focus();
         });
-         
+
     }
     {% comment %} input tag {% endcomment %}
     if (typeof {{ input_css_class }} !== 'undefined') {
@@ -64,13 +64,13 @@
             {{ empty_css_class }}.classList.add('hidden');
             {{ input_css_class }}.classList.remove('hidden');
         });
-         
+
     } else {
         let {{ input_css_class }}  = document.querySelector('.{{ input_css_class }}');
         {{ input_css_class }}.addEventListener('blur', () => {
             {{ empty_css_class }}.classList.add('hidden');
             {{ input_css_class }}.classList.remove('hidden');
         });
-         
+
     }
 </script>

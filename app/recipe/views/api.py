@@ -167,13 +167,15 @@ def set_favorite(request, pk):
 def set_rating(request, pk):
     if request.htmx:
         recipe = get_object_or_404(Recipe, pk=pk)
-        obj, _ = Rate.objects.update_or_create(
-            content_object=recipe,
-            user=request.user,
-            defaults={"value": request.POST.get("rate")},
-        )
-
-    return render(request, "star_rate.html", {"rate": obj.value})
+        rate = recipe.rates.filter(user=request.user).first()
+        if rate:
+            rate.value = request.POST.get("rate")
+            rate.save()
+        else:
+            rate = Rate.objects.create(
+                user=request.user, content_object=recipe, value=request.POST.get("rate")
+            )
+    return render(request, "patterns/components/rate/rate.html", {"rate": rate.value})
 
 
 def search_recipes(request):

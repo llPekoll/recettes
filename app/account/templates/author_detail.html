@@ -20,10 +20,10 @@
   <style>
     @charset "UTF-8";
     .article-img
-    {    
-        background: url('{{ article.image.image.url  }}');
-        background-size: cover;
-        background-position: center;
+    {
+      background: url('{{ article.image.image.url  }}');
+      background-size: cover;
+      background-position: center;
     }
     meter {
       background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext font-size="100" x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" stroke-linejoin="round" fill="gray"  %3E★%3C/text%3E%3C/svg%3E') 0/auto 100%;
@@ -31,34 +31,34 @@
       width: auto;
       aspect-ratio: 5/1;
     }
-    
+
     meter::-webkit-meter-bar {
       background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext font-size="100" x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" stroke-linejoin="round" fill="gray"  %3E★%3C/text%3E%3C/svg%3E') 0/auto 100%;
       border: none;
     }
-    
+
     /* firefox styling for the bar (filled stars) */
     meter:-moz-meter-optimum::-moz-meter-bar,
     meter:-moz-meter-sub-optimum::-moz-meter-bar,
     meter:-moz-meter-sub-sub-optimum::-moz-meter-bar {
       background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext font-size="100" x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" stroke-linejoin="round" fill="gold"  %3E★%3C/text%3E%3C/svg%3E') 0/auto 100%;
     }
-    
+
     /* webkit styling for the bar (filled stars) */
     meter::-webkit-meter-optimum-value,
     meter::-webkit-meter-suboptimum-value,
     meter::-webkit-meter-even-less-good-value {
       background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext font-size="100" x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" stroke-linejoin="round" fill="gold"  %3E★%3C/text%3E%3C/svg%3E') 0/auto 100%;
     }
-    
+
     meter::-webkit-meter-inner-element {
       display: block;
     }
-    
+
     * {
       box-sizing: border-box;
     }
-    
+
 
   </style>
 {% endblock content %}

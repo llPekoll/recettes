@@ -67,9 +67,9 @@
                                     </button>
                                 </div>
                                 <script>
-                                document.body.addEventListener('configRequest.htmx', (event) => {
-                                    event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
-                                })
+                                    document.body.addEventListener('configRequest.htmx', (event) => {
+                                        event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+                                    })
                                 </script>
                             </form>
                         </div>
@@ -89,18 +89,18 @@
         <a href="{% url 'home' %}">- {% translate "home-page" %} -</a>
     </div>
     <script>
-    const submit = document.getElementById("submit")
-    const loader = document.getElementById("loader")
-    console.log(submit)
-    console.log(loader)
-    submit.addEventListener("click", function(event) {
-        console.log("clicked")
-        submit.style.display = "none";
-        loader.style.display = "block";
-    });
-    document.addEventListener("htmx:afterSwap", function(event) {
+        const submit = document.getElementById("submit")
+        const loader = document.getElementById("loader")
+        console.log(submit)
+        console.log(loader)
+        submit.addEventListener("click", function(event) {
+            console.log("clicked")
+            submit.style.display = "none";
+            loader.style.display = "block";
+        });
+        document.addEventListener("htmx:afterSwap", function(event) {
             submit.style.display = "block";
             loader.style.display = "none";
-    });
+        });
     </script>
 {% endblock content %}

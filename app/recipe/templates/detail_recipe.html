@@ -8,7 +8,7 @@
 {% endblock extra_head %}
 {% block content %}
     {% include "navbar.html" %}
-    <div class="flex items-center justify-center ">
+    <div class="flex items-center justify-center">
         <div class="mx-auto my-24 w-2/3  overflow-hidden rounded-lg bg-white shadow-lg pb-4">
             <div class="max-h-52 overflow-hidden mb-5">
                 <div class="sm:block hidden h-52 overflow-hidden mb-5 bg-cover bg-center w-full"
@@ -69,11 +69,10 @@
                 </div>
                 {% if user.is_authenticated %}
                     <div class="flex">
-                        Rate:
                         <form hx-post="{% url "recipe:api-rating" pk=recipe.id %}"
                               hx-trigger="change"
-                              hx-target="#rate"
-                              hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+                              hx-target="this"
+                              class="rate">
                             {% include "patterns/components/rate/rate.html" %}
                         </form>
                     </div>
@@ -101,36 +100,38 @@
                 {% endif %}
             </div>
         </div>
-        <style>
-        .ql-editor{
-            min-height:100px;
-        }
-        </style>
-        <script>
-        const element = document.getElementsByClassName("ql-editor");
-        const btnAddComment = document.getElementById("add-comment");
-        btnAddComment.addEventListener('htmx:afterRequest', function(evt) {
-            element[0].innerHTML = "";
-        });
-        const deleteButton = document.getElementById("delete-button")
-        deleteButton.addEventListener("htmx:confirm", async function(e) {
-            e.preventDefault()
-          Swal.fire({
-            icon: "error",
-            confirmButtonText: "Delete",
-            confirmButtonColor: "#d33",
-            showCancelButton: true,
-            title: "Delete Recipe",
-            inputAttributes: {
-                "data-test": "delete-input",
-              },
-            html: `Are you sure that you want to <b>delete</b> that recipe?`,
-          }).then(function(result) {
-            e.detail.issueRequest(false) 
-            if(result.isConfirmed){
-                Swal.fire(" Recipe Deleted!", "", "success");
+    </div>
+    <style>
+            .ql-editor{
+                min-height:100px;
             }
+    </style>
+    <script>
+        let rate;
+            const element = document.getElementsByClassName("ql-editor");
+            const btnAddComment = document.getElementById("add-comment");
+            btnAddComment.addEventListener('htmx:afterRequest', function(evt) {
+                element[0].innerHTML = "";
+            });
+            const deleteButton = document.getElementById("delete-button")
+            deleteButton.addEventListener("htmx:confirm", async function(e) {
+                e.preventDefault()
+                Swal.fire({
+                    icon: "error",
+                    confirmButtonText: "Delete",
+                    confirmButtonColor: "#d33",
+                    showCancelButton: true,
+                    title: "Delete Recipe",
+                    inputAttributes: {
+                        "data-test": "delete-input",
+                    },
+                    html: `Are you sure that you want to <b>delete</b> that recipe?`,
+                }).then(function(result) {
+                    e.detail.issueRequest(false)
+                    if(result.isConfirmed){
+                        Swal.fire(" Recipe Deleted!", "", "success");
+                    }
+                })
             })
-        })
-        </script>
-    {% endblock content %}
+    </script>
+{% endblock content %}

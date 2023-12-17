@@ -132,53 +132,53 @@
         </div>
     </section>
     <script>
-		const indicatorFull = document.getElementById("indicator-form")
-		const topForm = document.getElementById("top-form")
-		const isPublished = document.getElementById("is_published")
-		const isPublished_top = document.getElementById("is_published_top")
-		const sendForm = document.getElementById("send-form")
-		const isSending = document.getElementById("is-sending")
-		const reciptCategory = document.getElementById("{{ form.category.id_for_label }}")
-		reciptCategory.addEventListener("change",updateBg)
-		sendForm.addEventListener("click", submitForm);
-		isPublished.addEventListener("change", updateIsPublished)
-		function updateIsPublished(e){
-			isPublished_top.checked = isPublished.checked
-		}
-		function submitForm(e){
-			e.preventDefault()
-			sendForm.classList.add("hidden")
-			isSending.classList.remove("hidden")
-			document.getElementById("top-form").submit();
-		}
-		function updateBg(e){
-			console.log(reciptCategory.value)
-			if (reciptCategory.value == "Recipe"){
-				document.body.style.backgroundImage = "linear-gradient(-20deg, #fff 0%, #000 100%)"
-			} else if (reciptCategory.value == "Health"){
-				document.body.style.backgroundImage = "linear-gradient(-20deg, #eee 0%, #111 100%)"
-			} else if (reciptCategory.value == "Cosmetic"){
-				document.body.style.backgroundImage = "linear-gradient(-20deg, #ccc 0%, #222 100%)"
-			} else if (reciptCategory.value == "Garden"){
-				document.body.style.backgroundImage = "linear-gradient(-20deg, #bbb 0%, #333 100%)"
-			} else if (reciptCategory.value == "Home"){
-				document.body.style.backgroundImage = "linear-gradient(-20deg, #aaa 0%, #444 100%)"
-			} else if (reciptCategory.value == "Fermentaion"){
-				document.body.style.backgroundImage = "linear-gradient(-20deg, #999 0%, #555 100%)"
-			} else if (reciptCategory.value == "Animal"){
-				document.body.style.backgroundImage = "linear-gradient(-20deg, #888 0%, #666 100%)"
-			} else if (reciptCategory.value == "Juice"){
-				document.body.style.backgroundImage = "linear-gradient(-20deg, #777 0%, #888 100%)"
-			}
-		}
+        const indicatorFull = document.getElementById("indicator-form")
+        const topForm = document.getElementById("top-form")
+        const isPublished = document.getElementById("is_published")
+        const isPublished_top = document.getElementById("is_published_top")
+        const sendForm = document.getElementById("send-form")
+        const isSending = document.getElementById("is-sending")
+        const reciptCategory = document.getElementById("{{ form.category.id_for_label }}")
+        reciptCategory.addEventListener("change",updateBg)
+        sendForm.addEventListener("click", submitForm);
+        isPublished.addEventListener("change", updateIsPublished)
+        function updateIsPublished(e){
+            isPublished_top.checked = isPublished.checked
+        }
+        function submitForm(e){
+            e.preventDefault()
+            sendForm.classList.add("hidden")
+            isSending.classList.remove("hidden")
+            document.getElementById("top-form").submit();
+        }
+        function updateBg(e){
+            console.log(reciptCategory.value)
+            if (reciptCategory.value == "Recipe"){
+                document.body.style.backgroundImage = "linear-gradient(-20deg, #fff 0%, #000 100%)"
+            } else if (reciptCategory.value == "Health"){
+                document.body.style.backgroundImage = "linear-gradient(-20deg, #eee 0%, #111 100%)"
+            } else if (reciptCategory.value == "Cosmetic"){
+                document.body.style.backgroundImage = "linear-gradient(-20deg, #ccc 0%, #222 100%)"
+            } else if (reciptCategory.value == "Garden"){
+                document.body.style.backgroundImage = "linear-gradient(-20deg, #bbb 0%, #333 100%)"
+            } else if (reciptCategory.value == "Home"){
+                document.body.style.backgroundImage = "linear-gradient(-20deg, #aaa 0%, #444 100%)"
+            } else if (reciptCategory.value == "Fermentaion"){
+                document.body.style.backgroundImage = "linear-gradient(-20deg, #999 0%, #555 100%)"
+            } else if (reciptCategory.value == "Animal"){
+                document.body.style.backgroundImage = "linear-gradient(-20deg, #888 0%, #666 100%)"
+            } else if (reciptCategory.value == "Juice"){
+                document.body.style.backgroundImage = "linear-gradient(-20deg, #777 0%, #888 100%)"
+            }
+        }
     </script>
     <style>
-		.bg-red{
-			background-image: linear-gradient(-20deg, #fff 0%, #000 100%);
-		}	
-            h2 {
+        .bg-red{
+            background-image: linear-gradient(-20deg, #fff 0%, #000 100%);
+        }
+        h2 {
             font-family: 'Damion', cursive;
-            }
-            
+        }
+
     </style>
 {% endblock content %}

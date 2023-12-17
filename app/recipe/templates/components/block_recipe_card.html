@@ -1,7 +1,7 @@
 {% load my_filters %}
 <div class="overflow-hidden relative">
-    <div class="ribbon-recipe absolute">
-        <a href="#">Recile</a>
+    <div class="ribbon-recipe absolute shadow">
+        <a href="#">Recipe</a>
     </div>
     <a href="{% url "recipe:detail" pk=recipe.id %}">
         <div class="header-card">
@@ -10,8 +10,8 @@
         </div>
         <div class="sm:block hidden h-52 overflow-hidden mb-5 bg-cover bg-center w-full"
              style="background-image: url('{{ recipe.image.image.crop.600x200.url|mino_to_localhost }}')"></div>
-        <div class="sm:hidden block h-52 overflow-hidden mb-5 bg-cover bg-center w-full"
-             style="background-image: url('{{ recipe.image.image.crop.400x400.url|mino_to_localhost }}')"></div>
+        <div class="sm:hidden block h-96 overflow-hidden mb-5 bg-cover bg-center w-full"
+             style="background-image: url('{{ recipe.image.image.crop.400x500.url|mino_to_localhost }}')"></div>
         <h2 class="text-justify">{{ recipe.description | safe }}</h2>
         {% if recipe|total_rate_count %}
             <div class="float-left">
@@ -28,27 +28,25 @@
 </div>
 <style>
     .ribbon-recipe {
-       background-color: green;        
-       right: -40px;
-       top: 10px;
-       -webkit-transform: rotate(45deg);
-          -moz-transform: rotate(45deg);
-           -ms-transform: rotate(45deg);
-            -o-transform: rotate(45deg);
-               transform: rotate(45deg);
-         -webkit-box-shadow: 0 0 10px #888;
-          -moz-box-shadow: 0 0 10px #888;
-               box-shadow: 0 0 10px #888;
-} 
-     .ribbon-recipe a {
-       border: 1px solid #faa;
-       color: #fff;
-       display: block;
-       font: bold 81.25% 'Helvetica Neue', Helvetica, Arial, sans-serif;
-       margin: 1px 0;
-       padding: 10px 50px;
-       text-align: center;
-       text-decoration: none;
-       text-shadow: 0 0 5px #444;
-} 
+        background-color: green;
+        right: -40px;
+        top: 10px;
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        transform: rotate(45deg);
+        
+    }
+    .ribbon-recipe a {
+        border: 1px solid #faa;
+        color: #fff;
+        display: block;
+        font: bold 81.25% 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        margin: 1px 0;
+        padding: 10px 50px;
+        text-align: center;
+        text-decoration: none;
+        text-shadow: 0 0 5px #444;
+    }
 </style>

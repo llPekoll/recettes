@@ -58,27 +58,27 @@
         const deleteButton = document.getElementById("delete-button")
         deleteButton.addEventListener("htmx:confirm", async function(e) {
             e.preventDefault()
-          Swal.fire({
-            icon: "error",
-            showCancelButton: true,
-            title: "Input email address",
-            input: "text",
-            inputAttributes: {
-                "data-test": "delete-input",
-              },
-            html: `to delete your account type: <b>${deleteInput}</b>`,
-            inputPlaceholder: deleteInput
-          }).then(function(result) {
-            e.detail.issueRequest(false) 
-            if(result.isConfirmed){
-                if(result.value == deleteInput){
-                    Swal.fire(" Account Delete!", "", "success");
+            Swal.fire({
+                icon: "error",
+                showCancelButton: true,
+                title: "Input email address",
+                input: "text",
+                inputAttributes: {
+                    "data-test": "delete-input",
+                },
+                html: `to delete your account type: <b>${deleteInput}</b>`,
+                inputPlaceholder: deleteInput
+            }).then(function(result) {
+                e.detail.issueRequest(false)
+                if(result.isConfirmed){
+                    if(result.value == deleteInput){
+                        Swal.fire(" Account Delete!", "", "success");
+                    } else if (result.isDenied) {
+                        Swal.fire("String don't match", "", "info");
+                    }
                 } else if (result.isDenied) {
-                    Swal.fire("String don't match", "", "info");
+                    Swal.fire("Account not Deleted", "", "info");
                 }
-            } else if (result.isDenied) {
-                Swal.fire("Account not Deleted", "", "info");
-            }
             })
         })
     </script>

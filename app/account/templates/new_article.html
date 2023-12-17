@@ -67,20 +67,20 @@
         </form>
     </section>
     <style>
-    .ql-editor{
-      min-height:200px;
-  }
+        .ql-editor{
+            min-height:200px;
+        }
 
     </style>
     <script>
-    const form = document.getElementById('article-form');
-    const notSending = document.getElementById('not-sending');
-    const isSending = document.getElementById('is-sending');
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        notSending.classList.add('hidden');
-        isSending.classList.remove('hidden');
-        form.submit();
-    });
+        const form = document.getElementById('article-form');
+        const notSending = document.getElementById('not-sending');
+        const isSending = document.getElementById('is-sending');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            notSending.classList.add('hidden');
+            isSending.classList.remove('hidden');
+            form.submit();
+        });
     </script>
 {% endblock content %}

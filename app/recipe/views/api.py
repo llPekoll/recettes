@@ -24,8 +24,8 @@ def recipe_edit(request, pk):
         return redirect(reverse("recipe:detail", args=[pk]))
     if request.method == "DELETE":
         recipe = Recipe.objects.get(pk=pk)
-        # recipe.delete()
-        return redirect(reverse("profile"))
+        recipe.delete()
+        return redirect(reverse("home"))
     return HttpResponse("Method not allowed", status=405)
 
 

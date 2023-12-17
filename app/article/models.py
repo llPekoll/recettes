@@ -18,7 +18,7 @@ class Article(models.Model):
     is_draft = models.BooleanField(default=True)
 
     tags = models.ManyToManyField("common.Tag", related_name="articles", blank=True)
-    rate = GenericRelation("common.Rate")
+    rates = GenericRelation("common.Rate")
     comments = GenericRelation("common.Comment")
     Report = GenericRelation("common.Report")
     image = models.ForeignKey(

@@ -1,5 +1,6 @@
 from article.forms import ArticleForm
 from article.models import Article
+from common.forms import CommentForm
 from common.models import Tag
 from django.shortcuts import get_object_or_404, render
 
@@ -31,6 +32,7 @@ def page_article_detail(request, pk):
             "article": article,
             "is_author": is_author,
             "is_favorite": is_favorite,
+            "comment_form": CommentForm(),
             "comments": comments,
         },
     )

@@ -1,0 +1,25 @@
+<form class="mb-4"
+      id="add-comment"
+      hx-post="{% url "api-list-comment" pk=pk content_type=content_type %}"
+      hx-indicator="#indicator-comment"
+      hx-target="#comments">
+    <label>
+        Comment:
+        <div class="bg-slate-100 rounded-lg">{{ comment_form.comment }}</div>
+    </label>
+    <button class="bg-orange-500 text-white rounded-lg py-2 px-10">Add comment</button>
+    <span id="indicator-comment" class="htmx-indicator">{% include "patterns/components/spinner/spinner.html" %}</span>
+</form>
+<style>
+    .htmx-indicator{
+      opacity:0;
+      transition: opacity 500ms ease-in;
+    }
+    .htmx-request .htmx-indicator{
+      opacity:1
+    }
+    .htmx-request.htmx-indicator{
+      opacity:1
+    }
+    
+</style>

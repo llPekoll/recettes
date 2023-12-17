@@ -8,7 +8,6 @@
     {% if obj|class_name == "Article" %}
         {% include "components/cards.html" with type="article" content=obj %}
     {% elif obj|class_name == "Recipe" %}
-        {{ obj.title }}
         {% include "components/cards.html" with type="recipe" content=obj %}
     {% endif %}
 {% empty %}

@@ -8,11 +8,14 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
 
-def article_edit(request, pk):
+def article_detail(request, pk):
+    article = get_object_or_404(Article, pk=pk)
     if request.method == "POST":
-        article = get_object_or_404(Article, pk=pk)
         form = ArticleForm(request.POST, instance=article)
         write_article(form, request)
+    if request.method == "DELETE":
+        article.delete()
+        return redirect(reverse("home"))
 
 
 def article_creation(request):

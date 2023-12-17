@@ -93,8 +93,8 @@ class Recipe(models.Model):
     )  # is draft allow to create recipe to store ingredients, if create a new recipe we will create a recipe to store them and then and te recipe is going to be saved it will be undrafted
     tags = models.ManyToManyField("common.Tag", related_name="recipes", blank=True)
     comments = GenericRelation("common.Comment")
-    rate = GenericRelation("common.Rate")
-    Report = GenericRelation("common.Report")
+    rates = GenericRelation("common.Rate")
+    reports = GenericRelation("common.Report")
     links = GenericRelation("common.Link")
     image = models.ForeignKey(
         "common.Image",

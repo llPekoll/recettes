@@ -1,5 +1,5 @@
 from common.forms import CommentForm
-from common.models import Rate, Tag
+from common.models import Tag
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, Q
 from django.shortcuts import get_object_or_404, render
@@ -37,23 +37,17 @@ def page_recipe_detail(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
     if user.is_authenticated:
         is_favorite = recipe in user.favorite_recipes.all()
-        try:
-            rate = Rate.objects.get(user=request.user, content_object=recipe).value
-        except Rate.DoesNotExist:
-            rate = 3
+        rate = recipe.rates.filter(user=request.user).first() or 3
     else:
         is_favorite = False
         rate = False
-    try:
-        rate_average = Rate.objects.filter(content_object=recipe).aggregate(Avg("value"))[
-            "value__avg"
-        ]
-    except Rate.DoesNotExist:
-        rate_average = 3
+
+    rate_average = recipe.rates.aggregate(Avg("value"))["value__avg"]
+
     ingredients = RecipeIngredient.objects.filter(recipe=recipe)
     comments = recipe.comments.order_by("-created_at")
     steps = recipe.steps.all()
-    number_of_rate_given = Rate.objects.filter(content_object=recipe).count()
+    number_of_rate_given = recipe.rates.count()
     return render(
         request,
         "detail_recipe.html",

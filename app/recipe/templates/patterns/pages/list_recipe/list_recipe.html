@@ -41,7 +41,8 @@
             <select name="category"
                     id="{{ form.category.id_for_label }}"
                     class="bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5"
-                    data-test="category">
+                    data-test="category"
+                    required>
                 {% for value in form.category %}
                     <option value="{{ value.data.value }}"
                             class="capitalize"
@@ -124,7 +125,7 @@
                 {% endif %}
             </button>
             <button id="is-sending"
-                    class="bg-gray-400 text-white rounded-lg px-10 py-2 cursor-pointer hidden"
+                    class="bg-gray-400 text-white rounded-lg px-10 py-2 cursor-not-allowed hidden"
                     disabled>
                 <span id="indicator-form">{% include "patterns/components/spinner/spinner.html" %}</span>
             </button>

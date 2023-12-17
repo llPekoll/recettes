@@ -41,8 +41,8 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
 
 
 ## TODO 
+ - [~] indicator for create Recipe Article
  - [ ] test on edit article
- - [ ] faire le footer RGPD etc.... 
  - [ ] test on comment
  - [ ] test on edit bio
  - [ ] test on search
@@ -55,6 +55,9 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
  - [ ] Bio -> Quill
  - [ ] export pdf
  
+ - [x] install versatile image
+ - [x] faire le footer RGPD etc.... 
+ - [x] make a component from comment
  - [x] test on edit recipe
  - [x] add pagination(https://realpython.com/django-pagination/), https://htmx.org/examples/infinite-scroll/
  - [x] add default image for article and recipe

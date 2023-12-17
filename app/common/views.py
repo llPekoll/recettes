@@ -8,6 +8,7 @@ from .models import Comment, Link, Report, Tag
 
 
 def list_comment(request, pk, content_type):
+    """Add comment to a content_type"""
     print("list_comment")
     if content_type == "Article":
         content = get_object_or_404(Article, pk=pk)
@@ -34,6 +35,7 @@ def list_comment(request, pk, content_type):
 
 
 def detail_comment(request, pk):
+    """Delete a coment or report a comment"""
     # TODO: add patch method
     if request.method == "DELETE":
         # soft delete is better

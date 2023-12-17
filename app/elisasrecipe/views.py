@@ -1,9 +1,9 @@
 from article.models import Article
+from django.core.paginator import Paginator
 from django.shortcuts import render
 from django.utils.translation import activate, get_language, gettext
-from recipe.models import Recipe
-from django.core.paginator import Paginator
 from django.views.generic import ListView
+from recipe.models import Recipe
 
 
 def translate(language):

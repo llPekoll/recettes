@@ -1,25 +1,54 @@
 {% load my_filters %}
-<a href="{% url "article:detail" pk=article.id %}">
-    {% load pictures %}
-    <div>
-        <div>
+<div class="overflow-hidden relative">
+    <div class="ribbon-article absolute">
+        <a href="#">Artcile</a>
+    </div>
+    <a href="{% url "article:detail" pk=article.id %}">
+        <div class="header-card">
             <h2 class="text-3xl font-bold">{{ article.title }}</h2>
             <p class="text-sm font-light ml-20">by {{ article.author.username }}</p>
         </div>
-    </div>
-    <div class="w-full flex justify-center py-5">
-        {% with image_title="Image "|add:type|add:" "|add:title %}
-            <div class="hidden md:block">
-                {% picture obj.image.image img_alt=image_title img_loading="lazy" picture_class="my-picture object-fill" ratio="16/9" m=6 l=4 %}
+        <div class="sm:block hidden h-52 overflow-hidden mb-5 bg-cover bg-center w-full"
+             style="background-image: url('{{ article.image.image.crop.600x200.url|mino_to_localhost }}')"></div>
+        <div class="sm:hidden block h-52 overflow-hidden mb-5 bg-cover bg-center w-full"
+             style="background-image: url('{{ article.image.image.crop.400x400.url|mino_to_localhost }}')"></div>
+        <h2 class="text-justify">{{ article.content.html | safe }}</h2>
+        {% if  article|total_rate_count %}
+            <div class="float-left">
+                {% include "patterns/components/meter/meter2.html" with rate_average=article|total_rate_avg number_of_rate_given=article|total_rate_count %}
             </div>
-            <div class="md:hidden block">
-                {% picture obj.image.image img_alt=image_title img_loading="lazy" picture_class="my-picture object-fill" ratio="3/2" m=6 l=4 %}
+            <p class="text-sm font-light text-right pt-5">{{ article.created_at }}</p>
+        {% else %}
+            <div class="pt-4">
+                <p class="text-sm font-light float-right">{{ article.created_at }}</p>
+                <p class=" italic text-red-600">not yet rated</p>
             </div>
-        {% endwith %}
-    </div>
-    <h2 class="text-justify">{{ article.content.html | safe }}</h2>
-    <div class="float-left">
-        {% include "patterns/components/meter/meter2.html" with rate_average=article|total_rate_avg number_of_rate_given=article|total_rate_count %}
-    </div>
-    <p class="text-sm font-light text-right pt-5">{{ article.created_at }}</p>
-</a>
+        {% endif %}
+    </a>
+</div>
+<style>
+     .ribbon-article {
+        background-color: #a00;        
+        right: -40px;
+        top: 10px;
+        -webkit-transform: rotate(45deg);
+           -moz-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+             -o-transform: rotate(45deg);
+                transform: rotate(45deg);
+          -webkit-box-shadow: 0 0 10px #888;
+           -moz-box-shadow: 0 0 10px #888;
+                box-shadow: 0 0 10px #888;
+} 
+      .ribbon-article a {
+        border: 1px solid #faa;
+        color: #fff;
+        display: block;
+        font: bold 81.25% 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        margin: 1px 0;
+        padding: 10px 50px;
+        text-align: center;
+        text-decoration: none;
+        text-shadow: 0 0 5px #444;
+} 
+</style>

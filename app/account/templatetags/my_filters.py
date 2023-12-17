@@ -1,21 +1,25 @@
 from decimal import Decimal
 
 from django import template
+from django.db.models import Avg
 from django.utils.translation import get_language_info
 
 register = template.Library()
 
-from django.db.models import Avg
+
+@register.filter
+def mino_to_localhost(value):
+    return value.replace("minio:9000", "localhost:9000")
 
 
 @register.filter
-def total_rate_avg(article):
-    return article.rate.all().aggregate(Avg("value"))["value__avg"] or 0
+def total_rate_avg(content):
+    return content.rates.all().aggregate(Avg("value"))["value__avg"] or 0
 
 
 @register.filter
-def total_rate_count(article):
-    return article.rate.count()
+def total_rate_count(content):
+    return content.rates.count()
 
 
 @register.filter

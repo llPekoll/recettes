@@ -18,9 +18,8 @@ from django.apps import apps
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.urls import include, path
-from pictures.conf import get_settings
 
-from .views import index, FeedView
+from .views import FeedView, index
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -36,12 +35,6 @@ urlpatterns += i18n_patterns(
     path("", include("common.urls")),
     path("recipe/", include("recipe.urls")),
 )
-
-
-if get_settings().USE_PLACEHOLDERS:
-    urlpatterns += [
-        path("_pictures/", include("pictures.urls")),
-    ]
 
 if apps.is_installed("pattern_library"):
     urlpatterns += [

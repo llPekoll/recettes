@@ -16,7 +16,7 @@ class Article(models.Model):
     edited = models.BooleanField(default=False)
     edtied_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     is_draft = models.BooleanField(default=True)
-
+    is_published = models.BooleanField(default=False)
     tags = models.ManyToManyField("common.Tag", related_name="articles", blank=True)
     rates = GenericRelation("common.Rate")
     comments = GenericRelation("common.Comment")

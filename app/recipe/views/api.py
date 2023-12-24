@@ -20,7 +20,7 @@ def recipe_edit(request, pk):
     if request.method == "POST":
         recipe = Recipe.objects.get(pk=pk)
         form = RecipeForm(request.POST, instance=recipe)
-        recipe_write(form, request)
+        recipe_write(form, recipe, request)
         return redirect(reverse("recipe:detail", args=[pk]))
     if request.method == "DELETE":
         recipe = Recipe.objects.get(pk=pk)
@@ -29,42 +29,38 @@ def recipe_edit(request, pk):
     return HttpResponse("Method not allowed", status=405)
 
 
-# def recipe_creation(request):
-#     if request.method == "POST":
-#         recipe = Recipe.objects.get(pk=request.POST.get("recipe"))
-#         form = RecipeForm(request.POST, instance=recipe)
-#         id = recipe_write(form, request)
-#         return redirect(reverse("recipe:detail", args=[id]))
-#     return HttpResponse("Method not allowed", status=405)
-
-
-def recipe_write(form, request):
+def recipe_write(form, recipe, request):
     if form.is_valid():
-        recipe = form.save(commit=False)
-        recipe.author = request.user
-        recipe.save()
-        if request.POST.get("tags"):
-            tags = json.loads(request.POST.get("tags"))
-            for tag in tags:
-                tag, _ = Tag.objects.get_or_create(name=tag.get("value"))
-                recipe.tags.add(tag)
-
-        if "image" in request.FILES:
-            print(request.FILES["image"])
-            image = Image(image=request.FILES["image"])
-            image.save()
-            recipe.image = image
-        else:
-            if not recipe.image:
-                image = Image.objects.get(pk=15)
-                recipe.image = image
-        recipe.save()
-        return recipe.id
+        form = form.save(commit=False)
+        form.author = request.user
+        if form.is_published:
+            recipe.is_draft = False
     else:
         # TODO:
         # tell user something went wrong
         print(form.errors)
         return HttpResponse("the form is not valid", status=410)
+    form.save()
+    recipe.tags.clear()
+    if request.POST.get("tags"):
+        tags = json.loads(request.POST.get("tags"))
+        for tag in tags:
+            tag, _ = Tag.objects.get_or_create(name=tag.get("value"))
+            recipe.tags.add(tag)
+    print("recipe image", recipe.image, recipe.id)
+    if "image" in request.FILES:
+        print(request.FILES["image"])
+        image = Image(image=request.FILES["image"])
+        image.save()
+        recipe.image = image
+    else:
+        print("recipe.image", recipe.image)
+        if not recipe.image:
+            print("no image")
+            image = Image.objects.get(pk=15)
+            recipe.image = image
+    recipe.save()
+    return recipe.id
 
 
 def ingredient_list(request):

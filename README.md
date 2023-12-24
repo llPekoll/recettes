@@ -41,8 +41,9 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
 
 
 ## TODO 
+ - [ ] bug ondetail page recipe False is not defined somw stuff need to be lowered
  - [~] indicator for create Recipe Article
- - [ ] put back image when reate recipe
+ - [x] put back image when create recipe
  - [ ] Show rules to user to avoid shit on the app
  - [ ] test on edit article
  - [ ] test on comment

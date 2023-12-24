@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load my_filters %}
 {% load static %}
 {% block extra_head %}
     <link href="https://fonts.googleapis.com/css2?family=Damion&display=swap"
@@ -51,13 +52,14 @@
                 {% endfor %}
             </select>
             <label for={{ form.description.name }} class="flex mt-5">
-                Description:
+                Description<span class="text-red-600">*</span>:
                 {% include "patterns/components/icons/help/help.html" with help_text="A Description to descibe what is you recipe about" %}
             </label>
-            <textarea type="textarea" name={{ form.description.name }} data-test="description" class=" bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5" placeholder="Please enter a desciption">{% if recipe.description %}{{ recipe.description }}{% endif%}</textarea>
+            <textarea type="textarea" name={{ form.description.name }} data-test="description" class=" bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5" placeholder="Please enter a desciption" required >{% if recipe.description %}{{ recipe.description }}{% endif%}</textarea>
             {% if recipe.image %}
-                <img src="{{ recipe.image.image.url }}"
+                <img src="{{ recipe.image.image.url|mino_to_localhost }}"
                      alt="recipe image"
+                     id="base-image"
                      class="w-60 h-60 inline" />
             {% endif %}
             <img id="output"/>
@@ -65,11 +67,6 @@
                 Image:
                 {% include "patterns/components/icons/help/help.html" with help_text="this is going to be the background image of the recipe" %}
             </label>
-            {% if recipe.image.url and not imageAdded %}
-                <img src="{{ recipe.image.url }}"
-                     alt="recipe image"
-                     class="w-60 h-60 inline" />
-            {% endif %}
             <input type="file" name="image" accept="image/*" data-test="image-desc" onchange="showImage(event)">
             <label for={{ form.recipe_origin.name }} class="flex mt-5 ">
                 Origin:
@@ -104,7 +101,7 @@
                     {% endfor %}
                 </select>
             </div>
-            <input type="checkbox" name="is_draft" id="is_published_top" checked />
+            <input type="checkbox" name="is_draft" id="is_published_top" class="hidden"checked />
         </form>
         <!-- Add ingredients to recipe -->
         {% include "patterns/components/ingredient_form/ingredient_form.html" %}
@@ -138,10 +135,10 @@
     </section>
     <script>
         // input image management
-        let imageAdded = false;
         const showImage = function(event) {
-            imageAdded = true;
             let output = document.getElementById('output');
+            let baseImage = document.getElementById('base-image');
+            baseImage.classList.add("hidden");
             output.src = URL.createObjectURL(event.target.files[0]);
             output.onload = function() {
                 URL.revokeObjectURL(output.src) // free memory
@@ -160,6 +157,17 @@
         function updateIsPublished(e){
             isPublished_top.checked = isPublished.checked
         }
+        const b = {{ form.is_published.value|lower }}
+        const updateIsPublishedFromPrevious = ()=>{
+            if(b){
+                isPublished_top.checked = true;
+                isPublished.checked = true;
+            } else {
+                isPublished_top.checked = false;
+                isPublished.checked = false;
+            }
+        }
+        updateIsPublishedFromPrevious();
         function submitForm(e){
             e.preventDefault()
             sendForm.classList.add("hidden")

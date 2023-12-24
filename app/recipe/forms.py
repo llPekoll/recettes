@@ -118,8 +118,10 @@ class RecipeForm(forms.ModelForm):
         recipe.category = self.cleaned_data["category"]
         recipe.duration_scale = self.cleaned_data["duration_scale"]
         recipe.recipe_origin = self.cleaned_data["recipe_origin"]
-        recipe.is_published = self.cleaned_data["is_draft"]
-
+        # keep certain fields from being updated
+        if self.instance.pk is not None:
+            orig = RecipeForm.Meta.model.objects.get(pk=self.instance.pk)
+            recipe.image = orig.image
         slug = slugify(recipe.title)
         original_slug = slug
         count = 1

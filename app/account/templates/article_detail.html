@@ -14,7 +14,8 @@
                  style="background-image: url('{{ article.image.image.crop.600x200.url|mino_to_localhost }}')"></div>
             <div class="sm:hidden block h-52 overflow-hidden mb-5 bg-cover bg-center w-full"
                  style="background-image: url('{{ article.image.image.crop.400x400.url|mino_to_localhost }}')"></div>
-            {% include "btn.html" with url=article_edit_url link_text="🖊️ Edit the article" %}
+            {% url 'article:edit-page' pk=article.id as article_edit %}
+            {% include "btn.html" with url=article_edit link_text="🖊️ Edit the article" dataTest="edit-article" %}
             {% if user.is_authenticated %}
                 <div class="float-right pr-10">
                     <p hx-post="{% url "api-report" pk=article.id content_type="Article" %}"

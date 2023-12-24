@@ -9,14 +9,10 @@ from recipe.models import Ingredient, Recipe, RecipeIngredient
 
 @login_required
 def page_recipe_creation(request):
-    print("jose2")
-    if request.htmx:
-        print("jose")
     form = RecipeForm()
     ingredient_names = [ingredient.name for ingredient in Ingredient.objects.all()]
     nb = Recipe.objects.count()
     recipe = Recipe.objects.create(author=request.user, title=f"New Recipe {nb + 1}")
-    print(recipe)
     tags = Tag.objects.all()
     return render(
         request,
@@ -37,7 +33,11 @@ def page_recipe_detail(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
     if user.is_authenticated:
         is_favorite = recipe in user.favorite_recipes.all()
-        rate = recipe.rates.filter(user=request.user).first() or 3
+        rate = recipe.rates.filter(user=request.user).first()
+        if rate:
+            rate = rate.value or 3
+        else:
+            rate = False
     else:
         is_favorite = False
         rate = False
@@ -58,7 +58,7 @@ def page_recipe_detail(request, pk):
             "ingredients": ingredients,
             "steps": steps,
             "comments": comments,
-            "rate": rate.value,
+            "rate": rate,
             "given_rate": {
                 "rate_average": rate_average,
                 "number_of_rate_given": number_of_rate_given,

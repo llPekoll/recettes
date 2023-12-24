@@ -45,8 +45,9 @@ def page_article_edit(request, pk):
     image = article.image.image.url
     return render(
         request,
-        "edit_article.html",
+        "new_article.html",
         {
+            "create": False,
             "article": form,
             "tags": tags,
             "image": image,

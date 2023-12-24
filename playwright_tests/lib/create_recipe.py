@@ -54,12 +54,13 @@ def add_step(page: Page, title: str) -> None:
 def create_recipe(page: Page, basic: bool, create: bool, publish: bool) -> None:
     if create:
         page.locator('[data-test="create-recipe"]').click()
+
     page.locator('[data-test="title"]').fill("My recipe")
+    page.locator('[data-test="description"]').fill(lorem.paragraph())
 
     if not basic:
         handle = page.query_selector('[data-test="category"]')
         handle.select_option(label="Garden")
-        page.locator('[data-test="description"]').fill(lorem.paragraph())
         page.locator('[data-test="image-desc"]').set_input_files(image_path)
         handle = page.query_selector('[data-test="origin"]')
         handle.select_option(label="Asia")

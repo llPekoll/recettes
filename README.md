@@ -42,6 +42,8 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
 
 ## TODO 
  - [~] indicator for create Recipe Article
+ - [ ] put back image when reate recipe
+ - [ ] Show rules to user to avoid shit on the app
  - [ ] test on edit article
  - [ ] test on comment
  - [ ] test on edit bio

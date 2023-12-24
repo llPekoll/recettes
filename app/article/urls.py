@@ -9,8 +9,8 @@ app_name = "article"
 urlpatterns = [
     # Pages
     path("new/", page_article_creation, name="new"),
+    path("edit/<int:pk>/", page_article_edit, name="edit-page"),
     path("<int:pk>/", page_article_detail, name="detail"),
-    path("<int:pk>/edit/", page_article_edit, name="edit"),
     # API
     path("api/", article_creation, name="api-new"),
     path("api/<int:pk>/", article_detail, name="api-detail"),

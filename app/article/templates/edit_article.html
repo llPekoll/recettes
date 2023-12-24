@@ -11,12 +11,7 @@
           type="text/css" />
 {% endblock %}
 {% block content %}
-    <div class="flex">
-        {% include "components/profile_navbar.html" %}
-        <section class="px-52 w-full text-center max-w-7xl pt-20">
-            {% include "components/new_article.html" with article=article edit=True %}
-        </section>
-    </div>
+    {% include "new_article.html" with article=article edit=True %}
     <style>
         .ql-editor{
             min-height:200px;

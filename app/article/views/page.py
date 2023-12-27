@@ -43,12 +43,14 @@ def page_article_edit(request, pk):
     form = ArticleForm(instance=article)
     tags = article.tags.all()
     image = article.image.image.url
+    # print(form.is_publishd)
     return render(
         request,
         "new_article.html",
         {
             "create": False,
-            "article": form,
+            "article": article,
+            "form": form,
             "tags": tags,
             "image": image,
         },

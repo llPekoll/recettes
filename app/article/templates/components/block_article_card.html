@@ -9,9 +9,9 @@
             <p class="text-sm font-light ml-20">by {{ article.author.username }}</p>
         </div>
         <div class="sm:block hidden h-52 overflow-hidden mb-5 bg-cover bg-center w-full"
-             style="background-image: url('{{ article.image.image.crop.600x200.url|mino_to_localhost }}')"></div>
+             style="background-image: url('{{ article.image.image.crop.600x200.url|minio_to_localhost }}')"></div>
         <div class="sm:hidden block h-96 overflow-hidden mb-5 bg-cover bg-center w-full"
-             style="background-image: url('{{ article.image.image.crop.400x400.url|mino_to_localhost }}')"></div>
+             style="background-image: url('{{ article.image.image.crop.400x400.url|minio_to_localhost }}')"></div>
         <h2 class="text-justify">{{ article.content.html | safe }}</h2>
         {% if article|total_rate_count %}
             <div class="float-left">

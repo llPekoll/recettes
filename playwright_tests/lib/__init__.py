@@ -15,4 +15,7 @@ from .edit_article import edit_article
 from .delete_article import delete_article
 
 # Comment
-from .add_comment import add_comment
+from .comment import add_comment, delete_comment
+
+# Report
+from .report import post_report

@@ -20,33 +20,19 @@ def generate_random_email():
     return fake.email()
 
 
-# def test_comment_on_recipe():
-#     with sync_playwright() as playwright:
-#         browser = playwright.chromium.launch(headless=False)
-#         context = browser.new_context()
-#         page = context.new_page()
+def test_comment_on_recipe():
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=False)
+        context = browser.new_context()
+        page = context.new_page()
 
-#         username = generate_random_user()
-#         print(f"register {username}")
-#         register(page, username, generate_random_password(), generate_random_email())
-#         create_recipe(page, basic=True, create=True, publish=True)
-#         add_comment(page)
-#         delete_account(page)
-#         context.close()
-#         browser.close()
+        username = generate_random_user()
+        register(page, username, generate_random_password(), generate_random_email())
+        create_recipe(page, basic=True, create=True, publish=True)
+        add_comment(page)
+        create_article(page)
+        add_comment(page)
+        delete_account(page)
+        context.close()
+        browser.close()
 
-
-# def test_comment_on_article():
-#     with sync_playwright() as playwright:
-#         browser = playwright.chromium.launch(headless=False)
-#         context = browser.new_context()
-#         page = context.new_page()
-
-#         username = generate_random_user()
-#         print(f"register {username}")
-#         register(page, username, generate_random_password(), generate_random_email())
-
-#         create_article(page)
-#         delete_account(page)
-#         context.close()
-#         browser.close()

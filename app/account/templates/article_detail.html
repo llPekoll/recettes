@@ -11,9 +11,9 @@
     <div class="flex items-center justify-center ">
         <div class=" mx-auto my-24 w-2/3 bg-orange-50 overflow-hidden rounded-lg">
             <div class="sm:block hidden h-52 overflow-hidden mb-5 bg-cover bg-center w-full"
-                 style="background-image: url('{{ article.image.image.crop.600x200.url|mino_to_localhost }}')"></div>
+                 style="background-image: url('{{ article.image.image.crop.600x200.url|minio_to_localhost }}')"></div>
             <div class="sm:hidden block h-52 overflow-hidden mb-5 bg-cover bg-center w-full"
-                 style="background-image: url('{{ article.image.image.crop.400x400.url|mino_to_localhost }}')"></div>
+                 style="background-image: url('{{ article.image.image.crop.400x400.url|minio_to_localhost }}')"></div>
             {% url 'article:edit-page' pk=article.id as article_edit %}
             {% include "btn.html" with url=article_edit link_text="🖊️ Edit the article" dataTest="edit-article" %}
             {% if user.is_authenticated %}

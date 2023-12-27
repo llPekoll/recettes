@@ -8,7 +8,7 @@ register = template.Library()
 
 
 @register.filter
-def mino_to_localhost(value):
+def minio_to_localhost(value):
     return value.replace("minio:9000", "localhost:9000")
 
 

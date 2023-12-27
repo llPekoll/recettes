@@ -1,20 +1,24 @@
 <div class="checkbox-wrapper-28 text-orange-500 select-none">
-  <input id="{{ value }}" type="checkbox" class="promoted-input-checkbox" name={{ value }} />
+  <input id="{{ value }}" type="checkbox" class="promoted-input-checkbox" name={{ value }} 
+    is_published = forms.BooleanField()
+                                          {%if is_checked%}
+                                            checked
+                                        {% endif %}/>
   <svg>
     <use xlink:href="#checkmark-28" />
   </svg>
   <label for="{{ value }}" data-test="{{ value }}">{{ text }}</label>
   <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
     <symbol id="checkmark-28" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-miterlimit="10" fill="none"  d="M22.9 3.7l-15.2 16.6-6.6-7.1"></path>
+    <path stroke-linecap="round" stroke-miterlimit="10" fill="none"  d="M22.9 3.7l-15.2 16.6-6.6-7.1"></path>
     </symbol>
   </svg>
 </div>
 <style>
-  .checkbox-wrapper-28 {
-    --size: 25px;
-    position: relative;
-  }
+.checkbox-wrapper-28 {
+  --size: 25px;
+  position: relative;
+}
 
   .checkbox-wrapper-28 *,
   .checkbox-wrapper-28 *:before,

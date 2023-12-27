@@ -1,89 +1,112 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load my_filters %}
 {% load static %}
 {% block extra_head %}
-    <link href="https://fonts.googleapis.com/css2?family=Damion&display=swap"
-          rel="stylesheet">
-    {% include "components/import_quill.html" %}
-    {% include "components/import_tagify.html" %}
-    <script src="{% static 'htmx.min.js' %}" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Damion&display=swap"
+      rel="stylesheet">
+{% include "components/import_quill.html" %}
+{% include "components/import_tagify.html" %}
+<script src="{% static 'htmx.min.js' %}" defer></script>
 {% endblock extra_head %}
 {% block content %}
-    {% include "navbar.html" %}
-    <section class="bg-orange-50 pt-20 h-screen mx-80">
-        <div class="flex items-end ml-20">
-            <div class=" inline text-orange-700 ">
-                {% if create %}
-                    <h2 class="text-4xl capitalize font-bold underline">New Article</h2>
-                    <p class=" -mt-1.5 text-orange-300">creation of a new article</p>
-                {% else %}
-                    <h2 class="text-4xl capitalize font-bold underline">Edit Article</h2>
-                    <p class=" -mt-1.5 text-orange-300">Make your article even better</p>
-                {% endif %}
-            </div>
+{% include "navbar.html" %}
+<section class="bg-orange-50 pt-20 h-screen mx-80">
+    <div class="flex items-end ml-20">
+        <div class=" inline text-orange-700 ">
+            {% if create %}
+            <h2 class="text-4xl capitalize font-bold underline">New Article</h2>
+            <p class=" -mt-1.5 text-orange-300">creation of a new article</p>
+            {% else %}
+            <h2 class="text-4xl capitalize font-bold underline">Edit Article</h2>
+            <p class=" -mt-1.5 text-orange-300">Make your article even better</p>
+            {% endif %}
         </div>
-        <form method="post"
-              class="w-full"
-              id="article-form"
-              {% if edit %} action="{% url "article:api-detail" pk=article.initial.id %}" {% else %} action="{% url "article:api-new" %}" {% endif %}
-              enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ article.image }}
-            <img src="{{ article.image.image.url }}"
-                 alt="article image"
-                 class="w-60 max-h-32 inline" />
-            <label class="block">Title</label>
-            <input type="text"
-                   name="title"
-                   data-test="title"
-                   required
-                   {% if article.title.value %}value="{{ article.title.value }}"{% endif %} />
-            <label class="block">content</label>
-            <div class="bg-white rounded-lg mx-10">{{ article.content }}</div>
-            <label class="block py-5 text-left">
-                <input type="file"
-                       name="image"
-                       accept="image/*"
-                       class="ml-3"
-                       data-test="image">
-            </label>
-            {% include "patterns/components/tag_editor/tag_editor.html" %}
-            {% include "patterns/components/check_box/check_box.html" with value="is_published" text="Publish artice" %}
-            <button type="submit"
-                    id="not-sending"
-                    data-test="submit"
-                    class="bg-orange-600 text-white px-10 rounded-lg py-2 float-right">
-                {% if create %}
-                    Create Article
-                {% else %}
-                    Update Article
-                {% endif %}
-            </button>
-            <button id="is-sending"
-                    class="bg-gray-400 text-white rounded-lg px-10 py-2 cursor-not-allowed hidden"
-                    disabled>
-                <span id="indicator-form">{% include "patterns/components/spinner/spinner.html" %}</span>
-            </button>
-        </form>
-    </section>
-    <style>
-        .ql-editor{
-            min-height:200px;
-        }
+    </div>
+    <form method="post"
+          class="w-full"
+          id="article-form"
+          {% if edit %} 
+          action="{% url "article:api-detail" pk=article.initial.id %}" 
+          {% else %} 
+          action="{% url "article:api-new" %}" 
+          {% endif %}
+          enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% if article.image %}
+        <img src="{{ article.image.image.url|minio_to_localhost }}"
+             alt="article image"
+             id="base-image"
+             class="w-60 h-60 inline" />
+        {% endif %}
+        <img id="output" />
+        <label for={{ form.image.name }} class="flex mt-5">
+            Image:
+            {% include "patterns/components/icons/help/help.html" with help_text="this is going to be the background image of the article" %}
+        </label>
+        <input type="file"
+               name="image"
+               accept="image/*"
+               data-test="image-desc"
+               onchange="showImage(event)">
+        <label class="block">Title</label>
+        <input type="text"
+               name="title"
+               data-test="title"
+               required
+               {% if form.title.value %}value="{{ form.title.value }}"{% endif %} />
+        <label class="block">content</label>
+        <div class="bg-white rounded-lg mx-10">{{ form.content }}</div>
+        {% include "patterns/components/tag_editor/tag_editor.html" %}
+        {% include "patterns/components/check_box/check_box.html" with value="is_published" text="Publish artice" is_checked=form.is_published.value %}
+        <button type="submit"
+                id="not-sending"
+                data-test="submit"
+                class="bg-orange-600 text-white px-10 rounded-lg py-2 float-right">
+            {% if create %}
+            Create Article
+            {% else %}
+            Update Article
+            {% endif %}
+        </button>
+        <button id="is-sending"
+                class="bg-gray-400 text-white rounded-lg px-10 py-2 cursor-not-allowed hidden"
+                disabled>
+            <span id="indicator-form">{% include "patterns/components/spinner/spinner.html" %}</span>
+        </button>
+    </form>
+</section>
+<style>
+.ql-editor{
+    min-height:200px;
+}
         h2 {
             font-family: 'Damion', cursive;
         }
 
-    </style>
-    <script>
-        const form = document.getElementById('article-form');
-        const notSending = document.getElementById('not-sending');
-        const isSending = document.getElementById('is-sending');
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            notSending.classList.add('hidden');
-            isSending.classList.remove('hidden');
-            form.submit();
-        });
-    </script>
+</style>
+<script>
+    // input image management
+    const showImage = function(event) {
+        let output = document.getElementById('output');
+        let baseImage = document.getElementById('base-image');
+        if (baseImage) {
+            baseImage.classList.add("hidden");
+        }
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function() {
+            URL.revokeObjectURL(output.src) // free memory
+        }
+    };
+    const form = document.getElementById('article-form');
+    const notSending = document.getElementById('not-sending');
+    const isSending = document.getElementById('is-sending');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        notSending.classList.add('hidden');
+        isSending.classList.remove('hidden');
+        form.submit();
+    });
+</script>
 {% endblock content %}

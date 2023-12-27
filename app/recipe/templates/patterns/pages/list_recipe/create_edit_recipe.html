@@ -21,22 +21,22 @@
             <div class="flex items-end  pt-10">
                 <div class="inline text-orange-700">
                     {% if create %}
-                        <h2 class="text-7xl capitalize font-bold underline">Create Recipe</h2>
+                        <h2 class="text-7xl capitalize font-bold underline">create recipe</h2>
                         <h3 class=" -mt-1.5 text-orange-300">creation of a new recipe</h3>
                     {% else %}
-                        <h2 class="text-4xl capitalize font-bold underline">Edit Recipe</h2>
-                        <h3 class=" -mt-1.5 text-orange-300">Make your recipe even better</h3>
+                        <h2 class="text-4xl capitalize font-bold underline">edit recipe</h2>
+                        <h3 class=" -mt-1.5 text-orange-300">make your recipe even better</h3>
                     {% endif %}
                 </div>
             </div>
             <label for={{ form.title.name }} class="flex mt-10">
-                Name<span class="text-red-600">*</span>:
-                {% include "patterns/components/icons/help/help.html" with help_text="Just the way you want to call it?" %}
+                name<span class="text-red-600">*</span>:
+                {% include "patterns/components/icons/help/help.html" with help_text="just the way you want to call it?" %}
             </label>
             <input type="text" name={{ form.title.name }} data-test="title" class="rounded-lg bg-orange-200 focus:ring-0 border-0 w-full" required placeholder="{{ form.title.label }}" {% if recipe.title %}value="{{ recipe.title }}"{% endif %} />
             <label for={{ form.title.category }} class="flex mt-5">
-                Category:
-                {% include "patterns/components/icons/help/help.html" with help_text="What is the category of your recipe?" %}
+                category:
+                {% include "patterns/components/icons/help/help.html" with help_text="what is the category of your recipe?" %}
             </label>
             <select name="category"
                     id="{{ form.category.id_for_label }}"
@@ -47,30 +47,34 @@
                     <option value="{{ value.data.value }}"
                             class="capitalize"
                             {% if value.data.value == form.category.value %}selected{% endif %}>
-                        {{ value.data.value }}
+                    {{ value.data.value }}
                     </option>
                 {% endfor %}
             </select>
             <label for={{ form.description.name }} class="flex mt-5">
-                Description<span class="text-red-600">*</span>:
-                {% include "patterns/components/icons/help/help.html" with help_text="A Description to descibe what is you recipe about" %}
+                description<span class="text-red-600">*</span>:
+                {% include "patterns/components/icons/help/help.html" with help_text="a description to descibe what is you recipe about" %}
             </label>
-            <textarea type="textarea" name={{ form.description.name }} data-test="description" class=" bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5" placeholder="Please enter a desciption" required >{% if recipe.description %}{{ recipe.description }}{% endif%}</textarea>
+            <textarea type="textarea" name={{ form.description.name }} data-test="description" class=" bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5" placeholder="please enter a desciption" required>{% if recipe.description %}{{ recipe.description }}{% endif%}</textarea>
             {% if recipe.image %}
-                <img src="{{ recipe.image.image.url|mino_to_localhost }}"
+                <img src="{{ recipe.image.image.url|minio_to_localhost }}"
                      alt="recipe image"
                      id="base-image"
                      class="w-60 h-60 inline" />
             {% endif %}
-            <img id="output"/>
+            <img id="output" />
             <label for={{ form.image.name }} class="flex mt-5">
-                Image:
+                image:
                 {% include "patterns/components/icons/help/help.html" with help_text="this is going to be the background image of the recipe" %}
             </label>
-            <input type="file" name="image" accept="image/*" data-test="image-desc" onchange="showImage(event)">
+            <input type="file"
+                   name="image"
+                   accept="image/*"
+                   data-test="image-desc"
+                   onchange="showimage(event)">
             <label for={{ form.recipe_origin.name }} class="flex mt-5 ">
-                Origin:
-                {% include "patterns/components/icons/help/help.html" with help_text="Just in case if you know where the recipe come from it's' always nice to have a bit of background but if you don't that's fine just dont add anything" %}
+                origin:
+                {% include "patterns/components/icons/help/help.html" with help_text="just in case if you know where the recipe come from it's' always nice to have a bit of background but if you don't that's fine just dont add anything" %}
             </label>
             <select name="recipe_origin"
                     id="{{ form.recipe_origin.id_for_label }}"
@@ -81,13 +85,13 @@
                     <option value="{{ value.data.value }}"
                             class="capitalize"
                             {% if value.data.value == form.recipe_origin.value %}selected{% endif %}>
-                        {{ value.data.value }}
+                    {{ value.data.value }}
                     </option>
                 {% endfor %}
             </select>
             <label for={{ form.recipe_origin.name }} class="flex mt-5 ">
-                Duration:
-                {% include "patterns/components/icons/help/help.html" with help_text="How much time is it going to take" %}
+                duration:
+                {% include "patterns/components/icons/help/help.html" with help_text="how much time is it going to take" %}
             </label>
             <div class="flex">
                 <input type="number" name={{ form.duration.name }} value={{ form.duration.value }} class=" bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block  p-2.5" min=0 data-test="duration-input" />
@@ -96,34 +100,38 @@
                         <option value="{{ value.data.value }}"
                                 class="capitalize"
                                 {% if value.data.value == form.duration_scale.value %}selected{% endif %}>
-                            {{ value.data.value }}s
+                        {{ value.data.value }}s
                         </option>
                     {% endfor %}
                 </select>
             </div>
-            <input type="checkbox" name="is_draft" id="is_published_top" class="hidden"checked />
+            <input type="checkbox"
+                   name="is_draft"
+                   id="is_published_top"
+                   class="hidden"
+                   checked />
         </form>
-        <!-- Add ingredients to recipe -->
+        <!-- add ingredients to recipe -->
         {% include "patterns/components/ingredient_form/ingredient_form.html" %}
         {% include "patterns/components/ingredient_list/ingredient_list.html" %}
-        <!-- Add Recipe steps -->
+        <!-- add recipe steps -->
         {% include "patterns/components/step_form/step_form.html" %}
-        {% include "patterns/components/step_list/step_list.html" with cant_delete_step=True %}
-        <!-- Add Tags -->
+        {% include "patterns/components/step_list/step_list.html" with cant_delete_step=true %}
+        <!-- add tags -->
         {% include "patterns/components/tag_editor/tag_editor.html" %}
-        <!-- Add links to recipe -->
+        <!-- add links to recipe -->
         {% include "patterns/components/link_form/link_form.html" with content="recipe" %}
         {% include "patterns/components/link_list/link_list.html" %}
         <!-- to publish recipe -->
-        {% include "patterns/components/check_box/check_box.html" with value="is_published" text="Publish recipe" %}
+        {% include "patterns/components/check_box/check_box.html" with value="is_published" text="publish recipe" %}
         <div class="w-full text-right">
             <button id="send-form"
                     class="bg-orange-800 text-white rounded-lg px-10 py-2 cursor-pointer"
                     data-test="submit">
                 {% if create %}
-                    Create Recipe
+                    create recipe
                 {% else %}
-                    Edit Recipe
+                    edit recipe
                 {% endif %}
             </button>
             <button id="is-sending"
@@ -135,16 +143,18 @@
     </section>
     <script>
         // input image management
-        const showImage = function(event) {
-            let output = document.getElementById('output');
-            let baseImage = document.getElementById('base-image');
-            baseImage.classList.add("hidden");
-            output.src = URL.createObjectURL(event.target.files[0]);
+        const showimage = function(event) {
+            let output = document.getelementbyid('output');
+            let baseimage = document.getelementbyid('base-image');
+            if (baseimage) {
+                baseimage.classlist.add("hidden");
+            }
+            output.src = url.createobjecturl(event.target.files[0]);
             output.onload = function() {
-                URL.revokeObjectURL(output.src) // free memory
+                url.revokeobjecturl(output.src) // free memory
             }
         };
-        const indicatorFull = document.getElementById("indicator-form")
+        const indicdocumentatorfull = document.getelementbyid("indicator-form")
         const topForm = document.getElementById("top-form")
         const isPublished = document.getElementById("is_published")
         const isPublished_top = document.getElementById("is_published_top")
@@ -196,9 +206,9 @@
         }
     </script>
     <style>
-        .bg-red{
-            background-image: linear-gradient(-20deg, #fff 0%, #000 100%);
-        }
+.bg-red{
+    background-image: linear-gradient(-20deg, #fff 0%, #000 100%);
+}
         h2 {
             font-family: 'Damion', cursive;
         }

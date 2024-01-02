@@ -9,7 +9,7 @@
     </label>
 {% endfor %}
 <script>
-    rate = {{ rate|default_if_none:"null" }};
+    rate = {{ rate|default_if_none:"null"|lower }};
     if (rate !== null) {
       const star = document.getElementById(`star${rate}`);
       if (star !== null) {

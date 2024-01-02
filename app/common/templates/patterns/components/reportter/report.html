@@ -8,14 +8,14 @@
     hx-confirm="Are you sure you want to report this {{content_type|capfirst}}?"
     {% endcomment %}
     hx-swap="outerHTML"
-    id="report-button"
+    id="report-button-{{id}}-{{content_type}}"
     data-test="report">
     - report abuse -
   </button>
 </div>
 <script>
-  const reportButton = document.getElementById("report-button")
-  reportButton.addEventListener("htmx:confirm", async function(e) {
+  const reportButton{{id}}{{content_type}} = document.getElementById("report-button-{{id}}-{{content_type}}")
+  reportButton{{id}}{{content_type}}.addEventListener("htmx:confirm", async function(e) {
     e.preventDefault()
     Swal.fire({
       icon: "error",

@@ -20,7 +20,7 @@
                 <div class="float-right pr-10">
                     <!-- report -->
                     {% url 'api-report' pk=article.id content_type="article" as url %}
-                    {% include "patterns/components/reportter/report.html" with url=url content_type="article" %}
+                    {% include "patterns/components/reportter/report.html" with url=url content_type="article" id=article.id %}
                 </div>
             {% endif %}
             <div class="px-10 pt-7">
@@ -57,7 +57,7 @@
                     <div class="w-full">
                         <!-- delete -->
                         {% url 'article:api-detail' pk=article.id as url %}
-                        {% include "patterns/components/deletter/delete.html" with content_type="recipe" url=url %}
+                        {% include "patterns/components/deletter/delete.html" with content_type="article" url=url %}
                     </div>
                 {% endif %}
             </div>

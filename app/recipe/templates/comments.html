@@ -13,7 +13,7 @@
         </p>
         <div class="ml-10">
             {% url 'api-report' pk=comment.id content_type="comment" as url %}
-            {% include "patterns/components/reportter/report.html" with url=url content_type="recipe" %}
+            {% include "patterns/components/reportter/report.html" with url=url content_type="recipe" id=comment.id %}
         </div>
         <p class="pl-2" data-test="comment-{{comment.id}}">{{ comment.comment.html |safe }}</p>
         {% if comment.edited %}edited on: {{ comment.edited_at }}{% endif %}

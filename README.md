@@ -19,7 +19,10 @@ run test
 ```
 pytest -s
 ```
-
+run selected test
+pytest playwright_tests/02-recipe_test.py
+Debug mode
+PWDEBUG=1 pytest -s
 
 ## Lint
 ```
@@ -41,10 +44,9 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
 
 
 ## TODO 
+ - [ ] add text in report to be more sepcific
  - [ ] bug ondetail page recipe False is not defined somw stuff need to be lowered
- - [~] indicator for create Recipe Article
  - [ ] Show rules to user to avoid shit on the app
- - [ ] test on comment
  - [ ] test on edit bio
  - [ ] test on search
  - [ ] display error on HTMX
@@ -56,6 +58,8 @@ https://codepen.io/mrcodebox33/pen/OJaGrra
  - [ ] Bio -> Quill
  - [ ] export pdf
  
+ - [x] indicator for create Recipe Article
+ - [x] test on comment
  - [x] install versatile image
  - [x] test on edit article
  - [x] put back image when create recipe

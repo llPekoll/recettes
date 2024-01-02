@@ -1,0 +1,31 @@
+<button id="delete-button" 
+        hx-delete={{ url }} 
+        data-test="delete-article" 
+        {% comment %} hx-confirm="delete" {% endcomment %}
+        class="border-2 border-red-500 px-10 py-2 rounded-lg text-red-600 hover:text-white hover:border-0 hover:bg-red-600"
+        >
+    Delete {{ content_type }}
+</button>
+<script>
+  // delete button
+  const deleteButton = document.getElementById("delete-button")
+  deleteButton.addEventListener("htmx:confirm", async function(e) {
+    e.preventDefault()
+    Swal.fire({
+      icon: "error",
+      confirmButtonText: "Delete",
+      confirmButtonColor: "#d33",
+      showCancelButton: true,
+      title: "Delete {{ content_type|capfirst }}",
+      inputAttributes: {
+        "data-test": "delete-input",
+      },
+      html: `Are you sure that you want to <b>delete</b> that {{ content_type }}?`,
+    }).then(function(result) {
+      e.detail.issueRequest(false)
+      if(result.isConfirmed){
+        Swal.fire(" {{ content_type|capfirst }} Deleted!", "", "success");
+      }
+    })
+  })
+</script>

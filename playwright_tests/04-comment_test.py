@@ -30,6 +30,7 @@ def test_comment_on_recipe():
         register(page, username, generate_random_password(), generate_random_email())
         create_recipe(page, basic=True, create=True, publish=True)
         add_comment(page)
+        page.goto("http://localhost:8000/en/")
         create_article(page)
         add_comment(page)
         delete_account(page)

@@ -18,12 +18,9 @@
             {% include "btn.html" with url=article_edit link_text="🖊️ Edit the article" dataTest="edit-article" %}
             {% if user.is_authenticated %}
                 <div class="float-right pr-10">
-                    <p hx-post="{% url "api-report" pk=article.id content_type="Article" %}"
-                       hx-trigger="click"
-                       hx-confirm="Are you sure you want to report this Article?"
-                       class="text-sm font-semibold text-red-500  duration-100 cursor-pointer scale-90 hover:text-red-800 hover:underline pt-7">
-                        - report abuse -
-                    </p>
+                    <!-- report -->
+                    {% url 'api-report' pk=article.id content_type="article" as url %}
+                    {% include "patterns/components/reportter/report.html" with url=url content_type="article" %}
                 </div>
             {% endif %}
             <div class="px-10 pt-7">
@@ -40,6 +37,7 @@
                         {% endautoescape %}
                     </div>
                 </div>
+                <!-- comment -->
                 {% if comment is not empty %}
                     <div class="py-4 " id="comments">
                         <p class="text-xl first-letter:uppercase font-thin first-letter:italic">Comments:</p>
@@ -57,15 +55,9 @@
                 {% endif %}
                 {% if request.user == article.author %}
                     <div class="w-full">
-                        <button id="delete-button"
-                                hx-delete="{% url 'article:api-detail' pk=article.id %}"
-                                data-test="delete-article"
-                                {% comment %}
-                                hx-confirm="delete"
-                                {% endcomment %}
-                                class="border-2 border-red-500 px-10 py-2 rounded-lg text-red-600 hover:text-white hover:border-0 hover:bg-red-600">
-                            Delete recipe
-                        </button>
+                        <!-- delete -->
+                        {% url 'article:api-detail' pk=article.id as url %}
+                        {% include "patterns/components/deletter/delete.html" with content_type="recipe" url=url %}
                     </div>
                 {% endif %}
             </div>
@@ -80,26 +72,4 @@
             background-position: center;
         }
     </style>
-    <script>
-        const deleteButton = document.getElementById("delete-button")
-        deleteButton.addEventListener("htmx:confirm", async function(e) {
-            e.preventDefault()
-            Swal.fire({
-                icon: "error",
-                confirmButtonText: "Delete",
-                confirmButtonColor: "#d33",
-                showCancelButton: true,
-                title: "Delete Recipe",
-                inputAttributes: {
-                    "data-test": "delete-input",
-                },
-                html: `Are you sure that you want to <b>delete</b> that recipe?`,
-            }).then(function(result) {
-                e.detail.issueRequest(false)
-                if(result.isConfirmed){
-                    Swal.fire(" Recipe Deleted!", "", "success");
-                }
-            })
-        })
-    </script>
 {% endblock content %}

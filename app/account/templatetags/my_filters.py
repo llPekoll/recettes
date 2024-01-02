@@ -42,6 +42,8 @@ def language_name(code):
     return get_language_info(code)["name"]
 
 
+# TODO this can be done via native django template tags
+# https://docs.djangoproject.com/en/5.0/ref/templates/builtins/
 @register.filter
 def format_date(date):
     return date.strftime("%d. %b %Y %I:%M%p")

@@ -19,6 +19,9 @@
                 </div>
             </div>
             <div class="px-10">
+                <div class="w-11/12 text-right">
+                    <button class="bg-orange-500 text-white rounded-lg py-2 px-10">export as pdf</button>
+                </div>
                 {% if user.is_authenticated %}
                     {% if request.user == recipe.author %}
                         <div class="w-full">
@@ -28,20 +31,18 @@
                             </a>
                         </div>
                     {% endif %}
-                {% endif %}
-                {% if user.is_authenticated %}
                     <div class="w-full">
                         <button class="bg-orange-500 text-white py-2 px-10 rounded-lg float-right">Fork recipe</button>
                     </div>
-                {% endif %}
-                <div class="w-11/12 text-right">
-                    <button class="bg-orange-500 text-white rounded-lg py-2 px-10">export as pdf</button>
-                </div>
-                {% if user.is_authenticated %}
                     <div class="cursor-pointer">
                         <button hx-get="{% url "recipe:api-favorite" pk=recipe.id %}"
                                 hx-trigger="click"
                                 hx-target="#is-fav">{% include "is_favorite.html" %}</button>
+                    </div>
+                    <div class="float-right pr-10">
+                        <!-- report -->
+                        {% url 'api-report' pk=recipe.id content_type="recipe" as url %}
+                        {% include "patterns/components/reportter/report.html" with url=url content_type="recipe" %}
                     </div>
                 {% endif %}
                 <div class="flex flex-col md:flex-row md:items-center mb-8">
@@ -87,15 +88,9 @@
                 {% endif %}
                 {% if request.user == recipe.author %}
                     <div class="w-full">
-                        <button id="delete-button"
-                                hx-delete="{% url 'recipe:api-detail' pk=recipe.id %}"
-                                data-test="delete-recipe"
-                                {% comment %}
-                                hx-confirm="delete"
-                                {% endcomment %}
-                                class="border-2 border-red-500 px-10 py-2 rounded-lg text-red-600 hover:text-white hover:border-0 hover:bg-red-600">
-                            Delete recipe
-                        </button>
+                        <!-- delete -->
+                        {% url 'recipe:api-detail' pk=recipe.id as url %}
+                        {% include "components/delete_button.html" with content_type="article" url=url %}
                     </div>
                 {% endif %}
             </div>
@@ -113,25 +108,5 @@
             btnAddComment.addEventListener('htmx:afterRequest', function(evt) {
                 element[0].innerHTML = "";
             });
-            const deleteButton = document.getElementById("delete-button")
-            deleteButton.addEventListener("htmx:confirm", async function(e) {
-                e.preventDefault()
-                Swal.fire({
-                    icon: "error",
-                    confirmButtonText: "Delete",
-                    confirmButtonColor: "#d33",
-                    showCancelButton: true,
-                    title: "Delete Recipe",
-                    inputAttributes: {
-                        "data-test": "delete-input",
-                    },
-                    html: `Are you sure that you want to <b>delete</b> that recipe?`,
-                }).then(function(result) {
-                    e.detail.issueRequest(false)
-                    if(result.isConfirmed){
-                        Swal.fire(" Recipe Deleted!", "", "success");
-                    }
-                })
-            })
     </script>
 {% endblock content %}

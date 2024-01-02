@@ -32,7 +32,7 @@ def test_create_delete():
         username = generate_random_user()
         print(f"register {username}")
         register(page, username, generate_random_password(), generate_random_email())
-        create_recipe(page, True, True, False)
+        create_recipe(page, True, True, True)
         delete_recipe(page)
         context.close()
         browser.close()

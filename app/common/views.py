@@ -58,11 +58,11 @@ def tag(request, pk):
 
 def report(request, pk, content_type):
     """report a comment or an article or a recipe"""
-    if content_type == "Article":
+    if content_type == "article":
         content = get_object_or_404(Article, pk=pk)
-    elif content_type == "Recipe":
+    elif content_type == "recipe":
         content = get_object_or_404(Recipe, pk=pk)
-    elif content_type == "Comment":
+    elif content_type == "comment":
         content = get_object_or_404(Comment, pk=pk)
 
     if request.method == "POST":

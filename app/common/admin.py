@@ -5,7 +5,7 @@ from .models import Comment, Image, Link, Rate, Report
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ("__str__", "created_at")
+    list_display = ("id", "__str__", "created_at")
 
 
 @admin.register(Rate)

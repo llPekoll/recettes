@@ -33,33 +33,36 @@
           {% endif %}
           enctype="multipart/form-data">
         {% csrf_token %}
-
-        {% if article.image %}
+        {% if article.image.image %}
         <img src="{{ article.image.image.url|minio_to_localhost }}"
              alt="article image"
              id="base-image"
              class="w-60 h-60 inline" />
         {% endif %}
         <img id="output" />
-        <label for={{ form.image.name }} class="flex mt-5">
+        <label for={{ article.image.name }} class="flex mt-5">
             Image:
             {% include "patterns/components/icons/help/help.html" with help_text="this is going to be the background image of the article" %}
         </label>
         <input type="file"
                name="image"
                accept="image/*"
-               data-test="image-desc"
+               data-test="image"
                onchange="showImage(event)">
         <label class="block">Title</label>
         <input type="text"
                name="title"
                data-test="title"
                required
-               {% if form.title.value %}value="{{ form.title.value }}"{% endif %} />
+               {% if article.title.value %}value="{{ article.title.value }}"{% endif %} />
         <label class="block">content</label>
-        <div class="bg-white rounded-lg mx-10">{{ form.content }}</div>
+        {% if not form %}
+            <div class="bg-white rounded-lg mx-10">{{ article.content }}</div>
+        {% else %}
+            <div class="bg-white rounded-lg mx-10">{{ form.content}}</div>
+        {% endif %}
         {% include "patterns/components/tag_editor/tag_editor.html" %}
-        {% include "patterns/components/check_box/check_box.html" with value="is_published" text="Publish artice" is_checked=form.is_published.value %}
+        {% include "patterns/components/check_box/check_box.html" with value="is_published" text="Publish article" is_checked=article.is_published %}
         <button type="submit"
                 id="not-sending"
                 data-test="submit"

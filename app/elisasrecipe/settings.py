@@ -22,8 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY", "José Martins")
 
 DEBUG = os.environ.get("DEBUG", False)
-if not DEBUG:
-    ALLOWED_HOSTS = ['localhost','https://recette-3033.onrender.com']
+ALLOWED_HOST = ['*']
 INTERNAL_IPS = ["127.0.0.1"]
 
 INSTALLED_APPS = [
@@ -98,7 +97,7 @@ WSGI_APPLICATION = "elisasrecipe.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
+        "ENGINE": "django.db.backends.postgresql",
         "NAME": os.environ.get("SQL_DATABASE", BASE_DIR / "db.sqlite3"),
         "USER": os.environ.get("SQL_USER", "user"),
         "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),

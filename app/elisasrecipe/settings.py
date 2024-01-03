@@ -23,7 +23,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "José Martins")
 
 DEBUG = os.environ.get("DEBUG", False)
 if DEBUG:
-    ALLOWED_HOSTS = ['localhost']
+    ALLOWED_HOSTS = ['localhost','https://recette-3033.onrender.com']
 
 INTERNAL_IPS = ["127.0.0.1"]
 

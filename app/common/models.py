@@ -76,7 +76,9 @@ class Comment(models.Model):
     report = GenericRelation("common.Report")
 
     def __str__(self):
-        return f"{self.author.username} commented on {self.content_object}"
+        # if self.author:
+            # f"{self.author.username} commented on {self.content_object}"
+        return f"{self.content_object}"
 
 
 class Tag(models.Model):

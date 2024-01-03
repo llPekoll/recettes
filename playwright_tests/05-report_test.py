@@ -30,6 +30,7 @@ def test_report():
         register(page, username, generate_random_password(), generate_random_email())
         create_article(page)
         post_report(page)
+        page.goto("http://localhost:8000/en/")
         create_recipe(page, True, True, True)
         post_report(page)
         add_comment(page)

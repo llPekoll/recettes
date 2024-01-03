@@ -46,12 +46,14 @@ INSTALLED_APPS = [
     "django_quill",
     "common",
     "article",
+    "easyaudit",
 ]
 
 TAILWIND_APP_NAME = "theme"
 
 MIDDLEWARE = [
     # "elisasrecipe.middleware.RemoveDataTestMiddleware",
+    'easyaudit.middleware.easyaudit.EasyAuditMiddleware',
     "django_htmx.middleware.HtmxMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",

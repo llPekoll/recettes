@@ -22,9 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY", "José Martins")
 
 DEBUG = os.environ.get("DEBUG", False)
-if DEBUG:
+if not DEBUG:
     ALLOWED_HOSTS = ['localhost','https://recette-3033.onrender.com']
-
 INTERNAL_IPS = ["127.0.0.1"]
 
 INSTALLED_APPS = [

@@ -16,3 +16,5 @@ RUN pip install django-versatileimagefield
 # RUN python mannage.py compilemessages
 
 COPY . .
+
+CMD ["python","manage.py","migrate","&&","python","manage.py","collectstatic","--noinput","&&","gunicorn","elisasrecipe.wsgi"]

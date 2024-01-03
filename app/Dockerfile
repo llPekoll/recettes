@@ -17,4 +17,4 @@ RUN pip install django-versatileimagefield
 
 COPY . .
 
-CMD ["python","manage.py","migrate","&&","python","manage.py","collectstatic","--noinput","&&","gunicorn","elisasrecipe.wsgi"]
+CMD ["gunicorn","elisasrecipe.wsgi"]

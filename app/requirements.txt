@@ -32,7 +32,6 @@ django-quill-editor==0.1.40
 django-storages==1.13.2
 django-tailwind==3.6.0
 django-versatileimagefield==3.0
-djhtml==3.0.6
 djlint==1.32.1
 EditorConfig==0.12.3
 Faker==19.3.0
@@ -40,6 +39,7 @@ fastapi==0.101.1
 fastapi-socketio==0.0.10
 frozenlist==1.4.0
 greenlet==2.0.2
+gunicorn==21.2.0
 h11==0.14.0
 html-tag-names==0.1.2
 html-void-elements==0.1.0
@@ -57,7 +57,6 @@ json5==0.9.14
 libmagic==1.0
 logfury==1.0.1
 loguru==0.7.0
-lorem==0.1.1
 Markdown==3.5.1
 markdown-it-py==3.0.0
 markdown2==2.4.10

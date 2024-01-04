@@ -17,8 +17,7 @@
   <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
         class=" text-blue-900">
     {% block content %}
-      {# pattern_library_rendered_pattern is where the pattern library will inject the rendered pattern. #}
-      {{ pattern_library_rendered_pattern }}
+      
     {% endblock content %}
   </body>
   <style>

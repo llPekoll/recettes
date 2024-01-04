@@ -14,15 +14,17 @@ import os
 from pathlib import Path
 
 from django.utils.translation import gettext_lazy as _
-
+DEBUG = os.environ.get("DEBUG_MODE", False)
+print("DEBUG")
+print(DEBUG)
+print(os.environ.get("DEBUG_MODE"))
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "José Martins")
 
-DEBUG = os.environ.get("DEBUG", False)
-ALLOWED_HOST = ['*']
+ALLOWED_HOSTS = ['*']
 INTERNAL_IPS = ["127.0.0.1"]
 
 INSTALLED_APPS = [
@@ -35,9 +37,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.postgres",
     "theme",
-    "tailwind",
-    "pattern_library",
-    "django_browser_reload",
     "recipe",
     "account",
     "django_htmx",
@@ -46,7 +45,10 @@ INSTALLED_APPS = [
     "common",
     "article",
     "easyaudit",
+    "tailwind",
+    "django_browser_reload",
 ]
+
 
 TAILWIND_APP_NAME = "theme"
 
@@ -61,8 +63,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "django_browser_reload.middleware.BrowserReloadMiddleware",
     "django.middleware.locale.LocaleMiddleware",
+    "django_browser_reload.middleware.BrowserReloadMiddleware"
 ]
 
 ROOT_URLCONF = "elisasrecipe.urls"
@@ -88,10 +90,31 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
-            "builtins": ["pattern_library.loader_tags"],
         },
     },
 ]
+if DEBUG:
+    TEMPLATES = [
+        {
+            "BACKEND": "django.template.backends.django.DjangoTemplates",
+            "DIRS": [
+                os.path.join(BASE_DIR, "base/templates"),
+                os.path.join(BASE_DIR, "accounts/templates"),
+                os.path.join(BASE_DIR, "elisasrecipe/templates"),
+                os.path.join(BASE_DIR, "common/templates"),
+                os.path.join(BASE_DIR, "articles/templates"),
+            ],
+            "APP_DIRS": True,
+            "OPTIONS": {
+                "context_processors": [
+                    "django.template.context_processors.debug",
+                    "django.template.context_processors.request",
+                    "django.contrib.auth.context_processors.auth",
+                    "django.contrib.messages.context_processors.messages",
+                ],
+            },
+        },
+    ]
 
 WSGI_APPLICATION = "elisasrecipe.wsgi.application"
 
@@ -343,20 +366,4 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
 }
 
 
-PATTERN_LIBRARY = {
-    # Groups of templates for the pattern library navigation. The keys
-    # are the group titles and the values are lists of template name prefixes that will
-    # be searched to populate the groups.
-    "SECTIONS": (
-        ("components", ["patterns/components"]),
-        ("pages", ["patterns/pages"]),
-    ),
-    # Configure which files to detect as templates.
-    "TEMPLATE_SUFFIX": ".html",
-    # Set which template components should be rendered inside of,
-    # so they may use page-level component dependencies like CSS.
-    "PATTERN_BASE_TEMPLATE_NAME": "patterns/base.html",
-    # Any template in BASE_TEMPLATE_NAMES or any template that extends a template in
-    # BASE_TEMPLATE_NAMES is a "page" and will be rendered as-is without being wrapped.
-    "BASE_TEMPLATE_NAMES": ["patterns/base_page.html"],
-}
+

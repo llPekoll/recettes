@@ -18,14 +18,15 @@ from django.apps import apps
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.urls import include, path
-
+from django.conf import settings
 from .views import FeedView, index
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("django_backblaze_b2.urls")),
-    path("__reload__/", include("django_browser_reload.urls")),
+    # path("", include("django_backblaze_b2.urls")),
 ]
+if settings.DEBUG:
+    urlpatterns += [path("__reload__/", include("django_browser_reload.urls"))]
 
 urlpatterns += i18n_patterns(
     path("", index, name="home"),
@@ -36,7 +37,4 @@ urlpatterns += i18n_patterns(
     path("recipe/", include("recipe.urls")),
 )
 
-if apps.is_installed("pattern_library"):
-    urlpatterns += [
-        path("pattern-library/", include("pattern_library.urls")),
-    ]
+

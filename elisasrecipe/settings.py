@@ -14,17 +14,23 @@ import os
 from pathlib import Path
 
 from django.utils.translation import gettext_lazy as _
-DEBUG = os.environ.get("DEBUG_MODE", False)
-print("DEBUG")
-print(DEBUG)
-print(os.environ.get("DEBUG_MODE"))
+
+DEBUG = 'RENDER' not in os.environ
+ALLOWED_HOSTS = []
+
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+# DEBUG = os.environ.get("DEBUG_MODE", False)
+# print("DEBUG")
+# print(DEBUG)
+# print(os.environ.get("DEBUG_MODE"))
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "José Martins")
 
-ALLOWED_HOSTS = ['*']
 INTERNAL_IPS = ["127.0.0.1"]
 
 INSTALLED_APPS = [

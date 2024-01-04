@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_head %}
+    {% include "components/import_quill.html" %}
+    {% include "components/import_tagify.html" %}
+    {% include "components/import_sweetalert.html" %}
+    <script src="{% static 'htmx.min.js' %}" defer></script>
+{% endblock extra_head %}
+{% block content %}
+    <div class="flex ">
+        {% include "components/profile_navbar.html" %}
+        <div class="bg-white pl-10 pt-20 w-full">
+            <div class="flex mt-24">
+                <div class="w-5/6 ">
+                    <div class="flex justify-end py-2 text-slate-700">Votre profile de presentation</div>
+                    <div class="bg-orange-400 rounded-lg ml-10  text-white   shadow ">
+                        <div class="absolute">
+                            {% include "components/editable_image.html" with details="profile" img=user.profile_picture.image.url %}
+                        </div>
+                        <div class="ml-44 py-10 ">
+                            <div class="ml-5 text-white">
+                                <p>
+                                    <span class="font-thin capitalize italic">Username:</span>
+                                    <span class="font-bold capitalize ">{{ user.username }}</span>
+                                </p>
+                                <p>
+                                    <span class="font-thin capitalize italic">email:</span>
+                                    <span class="font-bold  ">{{ user.email }}</span>
+                                </p>
+                                {% include "components/editable_field.html" with label="First Name" value=user.first_name empty_css_class="first_name_empty" input_css_class="first_name_input" %}
+                                {% include "components/editable_field.html" with label="Last Name" value=user.last_name empty_css_class="last_name_empty" input_css_class="last_name_input" %}
+                                {% include "components/editable_field.html" with label="Bio" value=user.bio empty_css_class="bio_empty" input_css_class="bio_input" %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <strong>TODO:</strong>Add links
+            <div class="w-4/5 py-10 ml-10">
+                {% url 'article:new' as article_new %}
+                {% url 'recipe:new' as recipe_new %}
+                <div class="float-left">{% include "btn.html" with url=article_new link_text="Create Article" %}</div>
+                <div class="float-right">{% include "btn.html" with url=recipe_new link_text="Create recipe" %}</div>
+            </div>
+            <div class="w-full  text-right px-10 pt-20">
+                <button id="delete-button"
+                        hx-delete="{% url "user:api-user-detail" pk=user.pk %}"
+                        data-test="delete-account"
+                        {% comment %} hx-confirm="delete" {% endcomment %}
+                        class="border-2 border-red-500 px-10 py-2 rounded-lg text-red-600 hover:text-white hover:border-0 hover:bg-red-600">
+                    Delete account
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const deleteInput = "I want to delete"
+        const deleteButton = document.getElementById("delete-button")
+        deleteButton.addEventListener("htmx:confirm", async function(e) {
+            e.preventDefault()
+            Swal.fire({
+                icon: "error",
+                showCancelButton: true,
+                title: "Input email address",
+                input: "text",
+                inputAttributes: {
+                    "data-test": "delete-input",
+                },
+                html: `to delete your account type: <b>${deleteInput}</b>`,
+                inputPlaceholder: deleteInput
+            }).then(function(result) {
+                e.detail.issueRequest(false)
+                if(result.isConfirmed){
+                    if(result.value == deleteInput){
+                        Swal.fire(" Account Delete!", "", "success");
+                    } else if (result.isDenied) {
+                        Swal.fire("String don't match", "", "info");
+                    }
+                } else if (result.isDenied) {
+                    Swal.fire("Account not Deleted", "", "info");
+                }
+            })
+        })
+    </script>
+{% endblock content %}

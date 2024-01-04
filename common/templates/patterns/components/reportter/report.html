@@ -1,0 +1,38 @@
+<div
+  class="text-sm font-semibold text-red-500  duration-100 cursor-pointer scale-90 hover:text-red-800 hover:underline pt-7"
+  >
+  <button 
+    hx-post={{ url }}
+    hx-trigger="click"
+    {% comment %}
+    hx-confirm="Are you sure you want to report this {{content_type|capfirst}}?"
+    {% endcomment %}
+    hx-swap="outerHTML"
+    id="report-button-{{id}}-{{content_type}}"
+    data-test="report">
+    - report abuse -
+  </button>
+</div>
+<script>
+  const reportButton{{id}}{{content_type}} = document.getElementById("report-button-{{id}}-{{content_type}}")
+  reportButton{{id}}{{content_type}}.addEventListener("htmx:confirm", async function(e) {
+    e.preventDefault()
+    Swal.fire({
+      icon: "error",
+      confirmButtonText: "Report",
+      confirmButtonColor: "#d33",
+      showCancelButton: true,
+      title: "Report {{content_type}}",
+      inputAttributes: {
+        "data-test": "report-input",
+      },
+      html: `Are you sure that you want to <b>report</b> that {{content_type}}?`,
+    }).then(function(result) {
+      e.detail.issueRequest(false)
+      if(result.isConfirmed){
+        Swal.fire(" {{content_type|capfirst}} reported", "", "success");
+      }
+    })
+  })
+
+</script>

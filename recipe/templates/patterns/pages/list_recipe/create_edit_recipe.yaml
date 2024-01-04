@@ -1,0 +1,4 @@
+name: New recipe
+context:
+  recipe:
+    id: 1

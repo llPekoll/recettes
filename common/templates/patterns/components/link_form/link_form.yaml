@@ -1,0 +1,3 @@
+name: "Link form"
+context:
+  content_type: "recipe"

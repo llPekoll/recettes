@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load static %}
+{% load my_filters %}
+{% block extra_head %}
+    {% include "components/import_quill.html" %}
+    {% include "components/import_sweetalert.html" %}
+    <script src="{% static 'htmx.min.js' %}" defer></script>
+{% endblock extra_head %}
+{% block content %}
+    {% include "navbar.html" %}
+    <div class="flex items-center justify-center">
+        <div class="mx-auto my-24 w-2/3  overflow-hidden rounded-lg bg-white shadow-lg pb-4">
+            <div class="max-h-52 overflow-hidden mb-5">
+                <div class="sm:block hidden h-52 overflow-hidden mb-5 bg-cover bg-center w-full"
+                     style="background-image: url('{{ recipe.image.image.crop.600x200.url|minio_to_localhost }}')">
+                </div>
+                <div class="sm:hidden block h-52 overflow-hidden mb-5 bg-cover bg-center w-full"
+                     style="background-image: url('{{ recipe.image.image.crop.400x400.url|minio_to_localhost }}')">
+                </div>
+            </div>
+            <div class="px-10">
+                <div class="w-11/12 text-right">
+                    <button class="bg-orange-500 text-white rounded-lg py-2 px-10">export as pdf</button>
+                </div>
+                {% if user.is_authenticated %}
+                    {% if request.user == recipe.author %}
+                        <div class="w-full">
+                            <a href={% url 'recipe:edit' pk=recipe.pk %}>
+                                <button class="bg-orange-500 text-white py-2 px-10 rounded-lg float-right"
+                                        data-test="edit-recipe">🖊️ edit the recipe</button>
+                            </a>
+                        </div>
+                    {% endif %}
+                    <div class="w-full">
+                        <button class="bg-orange-500 text-white py-2 px-10 rounded-lg float-right">Fork recipe</button>
+                    </div>
+                    <div class="cursor-pointer">
+                        <button hx-get="{% url "recipe:api-favorite" pk=recipe.id %}"
+                                hx-trigger="click"
+                                hx-target="#is-fav">{% include "is_favorite.html" %}</button>
+                    </div>
+                    <div class="float-right pr-10">
+                        <!-- report -->
+                        {% url 'api-report' pk=recipe.id content_type="recipe" as url %}
+                        {% include "patterns/components/reportter/report.html" with url=url content_type="recipe" id=recipe.id %}
+                    </div>
+                {% endif %}
+                <div class="flex flex-col md:flex-row md:items-center mb-8">
+                    <h1 class="text-3xl font-bold mb-2 md:mb-0 first-letter:text-7xl"
+                        data-test="title-recipe">{{ recipe.title }}</h1>
+                    <div class="md:-ml-12 mt-20 text-gray-600">Duration:{{ recipe.duration }} {{ recipe.duration_scale }}.</div>
+                </div>
+                {% if number_of_rate_given is not empty %}
+                    {% include "patterns/components/meter/meter.html" with given_rate=given_rate %}
+                {% endif %}
+                <div class="flex flex-col md:flex-row md:items-center mb-8">
+                    <div class="md:w-2/3 md:ml-4">
+                        <h2 class="text-2xl">Description:</h2>
+                        <p class="text-lg mb-4 pl-10">{{ recipe.description }}</p>
+                        {% include "components/tag_list.html" %}
+                    </div>
+                </div>
+                {% include "patterns/components/ingredient_list/ingredient_list.html" with cant_delete_ingredient=False %}
+                <div class="mb-8">
+                    <div class="quill-content">
+                        {% autoescape off %}
+                            {% include "patterns/components/step_list/step_list.html" with cant_delete_step=False %}
+                        {% endautoescape %}
+                    </div>
+                </div>
+                {% if user.is_authenticated %}
+                    <div class="flex">
+                        <form hx-post="{% url "recipe:api-rating" pk=recipe.id %}"
+                              hx-trigger="change"
+                              hx-target="this"
+                              class="rate">
+                            {% include "patterns/components/rate/rate.html" %}
+                        </form>
+                    </div>
+                {% endif %}
+                {% include "comment_list.html" %}
+                {% if user.is_authenticated %}
+                    {% include "patterns/components/comment_form/comment_form.html" with pk=recipe.id content_type="Recipe" comment_form=comment_form %}
+                {% else %}
+                    <p>
+                        <a href="{% url 'user:login' %}">Log in</a> to add a comment.
+                    </p>
+                {% endif %}
+                {% if request.user == recipe.author %}
+                    <div class="w-full">
+                        <!-- delete -->
+                        {% url 'recipe:api-detail' pk=recipe.id as url %}
+                        {% include "patterns/components/deletter/delete.html" with content_type="recipe" url=url %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <style>
+            .ql-editor{
+                min-height:100px;
+            }
+    </style>
+    <script>
+        let rate;
+            const element = document.getElementsByClassName("ql-editor");
+            const btnAddComment = document.getElementById("add-comment");
+            btnAddComment.addEventListener('htmx:afterRequest', function(evt) {
+                element[0].innerHTML = "";
+            });
+    </script>
+{% endblock content %}

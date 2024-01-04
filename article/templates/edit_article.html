@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load my_filters %}
+{% load i18n %}
+{% load static %}
+{% block extra_head %}
+    {% comment %} j {% endcomment %}
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css"
+          rel="stylesheet"
+          type="text/css" />
+{% endblock %}
+{% block content %}
+    {% include "new_article.html" with article=article edit=True %}
+    <style>
+        .ql-editor{
+            min-height:200px;
+        }
+    </style>
+{% endblock content %}

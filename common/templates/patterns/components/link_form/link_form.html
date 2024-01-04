@@ -1,0 +1,55 @@
+<div>
+    Add link to {{ content_type }}:
+    <form {% if content == "recipe" %}
+              hx-post="{% url 'api-link-list' content_type="recipe" %}"
+          {% elif content == "user" %}
+              hx-post="{% url 'api-link-list' content_type="user" %}"
+          {% elif content == "article" %}
+              hx-post="{% url 'api-link-list' content_type="article" %}"
+          {% endif %}
+          hx-target="#link-list"
+          hx-swap="outerHTML"
+          hx-indicator="#indicator-link"
+          class="mb-4 flex flex-wrap items-center">
+        <input type="hidden" name="recipe" value="{{ recipe.id }}">
+        <select name="type" class="rounded-lg mr-4 my-2">
+            <option value="Youtube">YouTube</option>
+            <option value="Twitter">Twitter</option>
+            <option value="Tiktok">TikTok</option>
+            <option value="Facebook">Facebook</option>
+            <option value="Insta">Insta</option>
+        </select>
+        <input type="url"
+               name="value"
+               id="value"
+               placeholder="link from content"
+               class="px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent mr-2">
+        <label for="embeded" class="mr-2">
+            embeded
+            <input type="checkbox" name="embeded" class="mr-2" id="embeded">
+        </label>
+        <button class="px-3">{% include "patterns/components/icons/add/add.html" %}</button>
+        <span id="indicator-link" class="htmx-indicator">{% include "patterns/components/spinner/spinner.html" %}</span>
+    </form>
+</div>
+<script>
+    const embeded = document.getElementById("embeded");
+    const value = document.getElementById("value");
+    document.addEventListener('htmx:afterRequest', function(evt) {
+        embeded.checked = false;
+        value.value = "";
+
+    });
+</script>
+<style>
+    .htmx-indicator{
+        opacity:0;
+        transition: opacity 500ms ease-in;
+    }
+    .htmx-request .htmx-indicator{
+        opacity:1
+    }
+    .htmx-request.htmx-indicator{
+        opacity:1
+    }
+</style>

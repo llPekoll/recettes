@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% block content %}
+    <div class="flex">
+        {% include "components/profile_navbar.html" %}
+        <section class="px-52 w-full text-center max-w-7xl pt-20">
+            <div class="clear-right text-center ">
+                <h1 class="text-xl font-bold py-6">My blog articles</h1>
+                <div class="flex flex-wrap">
+                    {% for article in articles.all %}
+                        <a href="{% url "article:detail" article.id %}">
+                            <div class="bg-orange-50 h-64 w-44 rounded-lg mx-4 pb-4 hover:scale-105 transition hover:shadow-lg overflow-hidden my-10">
+                                <img src="{{ article.image.image.url }}"
+                                     class="w-full h-32 object-cover"
+                                     alt="cover for {{ article.title }} article" />
+                                <h1 class="text-xl font-bold pt-3">{{ article.title }}</h1>
+                                <h2 class="text-justify px-4">{{ article.content.html | safe }}</h2>
+                            </div>
+                        </a>
+                    {% empty %}
+                        <p>No articles yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock content %}

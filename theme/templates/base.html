@@ -1,0 +1,29 @@
+{% load static tailwind_tags %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="shortcut icon"
+          type="image/svg+xml"
+          href="{% static '/favicon.png' %}" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% block extra_head %}
+    {% endblock extra_head %}
+    {% tailwind_css %}
+    {# remove to to block when it's needed #}
+  </head>
+  <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+        class=" text-blue-900">
+    {% block content %}
+      
+    {% endblock content %}
+  </body>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-image: linear-gradient(-20deg, #fdd6b5 0%, #fffbe7 100%);
+    }
+  </style>
+</html>

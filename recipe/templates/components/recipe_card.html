@@ -1,0 +1,7 @@
+<a href={% url 'recipe:detail' pk=recipe.id %}>
+    <div class="bg-orange-100 h-64 w-44 rounded-lg mx-4 p-4 hover:scale-105 transition hover:shadow-lg">
+        {% if image %}<img src="{{ image.url }}" alt="cover for {{ title }}" />{% endif %}
+        <h1>{{ title }}</h1>
+        {% if description is not empty %}<h2>{{ description }}</h2>{% endif %}
+    </div>
+</a>

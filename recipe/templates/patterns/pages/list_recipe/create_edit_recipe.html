@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load my_filters %}
+{% load static %}
+{% block extra_head %}
+    <link href="https://fonts.googleapis.com/css2?family=Damion&display=swap"
+          rel="stylesheet">
+    {% include "components/import_quill.html" %}
+    {% include "components/import_tagify.html" %}
+    <script src="{% static 'htmx.min.js' %}" defer></script>
+{% endblock extra_head %}
+{% block content %}
+    {% include "navbar.html" %}
+    <section class="w-1/2 mx-auto bg-orange-50 px-10 pb-10 rounded-lg">
+        <form id="top-form"
+              method="post"
+              enctype="multipart/form-data"
+              action="{% url "recipe:api-detail" pk=recipe.id %}">
+            {% csrf_token %}
+            <input type="hidden" name=recipe value={{ recipe.id }} />
+            <div class="flex items-end  pt-10">
+                <div class="inline text-orange-700">
+                    {% if create %}
+                        <h2 class="text-7xl capitalize font-bold underline">create recipe</h2>
+                        <h3 class=" -mt-1.5 text-orange-300">creation of a new recipe</h3>
+                    {% else %}
+                        <h2 class="text-4xl capitalize font-bold underline">edit recipe</h2>
+                        <h3 class=" -mt-1.5 text-orange-300">make your recipe even better</h3>
+                    {% endif %}
+                </div>
+            </div>
+            <label for={{ form.title.name }} class="flex mt-10">
+                name<span class="text-red-600">*</span>:
+                {% include "patterns/components/icons/help/help.html" with help_text="just the way you want to call it?" %}
+            </label>
+            <input type="text" name={{ form.title.name }} data-test="title" class="rounded-lg bg-orange-200 focus:ring-0 border-0 w-full" required placeholder="{{ form.title.label }}" {% if recipe.title %}value="{{ recipe.title }}"{% endif %} />
+            <label for={{ form.title.category }} class="flex mt-5">
+                category:
+                {% include "patterns/components/icons/help/help.html" with help_text="what is the category of your recipe?" %}
+            </label>
+            <select name="category"
+                    id="{{ form.category.id_for_label }}"
+                    class="bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5"
+                    data-test="category"
+                    required>
+                {% for value in form.category %}
+                    <option value="{{ value.data.value }}"
+                            class="capitalize"
+                            {% if value.data.value == form.category.value %}selected{% endif %}>
+                    {{ value.data.value }}
+                    </option>
+                {% endfor %}
+            </select>
+            <label for={{ form.description.name }} class="flex mt-5">
+                description<span class="text-red-600">*</span>:
+                {% include "patterns/components/icons/help/help.html" with help_text="a description to descibe what is you recipe about" %}
+            </label>
+            <textarea type="textarea" name={{ form.description.name }} data-test="description" class=" bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5" placeholder="please enter a desciption" required>{% if recipe.description %}{{ recipe.description }}{% endif%}</textarea>
+            {% if recipe.image %}
+                <img src="{{ recipe.image.image.url|minio_to_localhost }}"
+                     alt="recipe image"
+                     id="base-image"
+                     class="w-60 h-60 inline" />
+            {% endif %}
+            <img id="output" />
+            <label for={{ form.image.name }} class="flex mt-5">
+                image:
+                {% include "patterns/components/icons/help/help.html" with help_text="this is going to be the background image of the recipe" %}
+            </label>
+            <input type="file"
+                   name="image"
+                   accept="image/*"
+                   data-test="image-desc"
+                   onchange="showimage(event)">
+            <label for={{ form.recipe_origin.name }} class="flex mt-5 ">
+                origin:
+                {% include "patterns/components/icons/help/help.html" with help_text="just in case if you know where the recipe come from it's' always nice to have a bit of background but if you don't that's fine just dont add anything" %}
+            </label>
+            <select name="recipe_origin"
+                    id="{{ form.recipe_origin.id_for_label }}"
+                    class="bg-orange-200 capitalize text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5"
+                    data-test="origin">
+                <option value="" {% if not form.recipe_origin.value %}selected{% endif %}></option>
+                {% for value in form.recipe_origin %}
+                    <option value="{{ value.data.value }}"
+                            class="capitalize"
+                            {% if value.data.value == form.recipe_origin.value %}selected{% endif %}>
+                    {{ value.data.value }}
+                    </option>
+                {% endfor %}
+            </select>
+            <label for={{ form.recipe_origin.name }} class="flex mt-5 ">
+                duration:
+                {% include "patterns/components/icons/help/help.html" with help_text="how much time is it going to take" %}
+            </label>
+            <div class="flex">
+                <input type="number" name={{ form.duration.name }} value={{ form.duration.value }} class=" bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block  p-2.5" min=0 data-test="duration-input" />
+                <select name={{ form.duration_scale.name }} id="{{ form.duration_scale.id_for_label }}" class="ml-3 bg-orange-200 capitalize text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block w-full p-2.5" data-test="duration-select">
+                    {% for value in form.duration_scale %}
+                        <option value="{{ value.data.value }}"
+                                class="capitalize"
+                                {% if value.data.value == form.duration_scale.value %}selected{% endif %}>
+                        {{ value.data.value }}s
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <input type="checkbox"
+                   name="is_draft"
+                   id="is_published_top"
+                   class="hidden"
+                   checked />
+        </form>
+        <!-- add ingredients to recipe -->
+        {% include "patterns/components/ingredient_form/ingredient_form.html" %}
+        {% include "patterns/components/ingredient_list/ingredient_list.html" %}
+        <!-- add recipe steps -->
+        {% include "patterns/components/step_form/step_form.html" %}
+        {% include "patterns/components/step_list/step_list.html" with cant_delete_step=true %}
+        <!-- add tags -->
+        {% include "patterns/components/tag_editor/tag_editor.html" %}
+        <!-- add links to recipe -->
+        {% include "patterns/components/link_form/link_form.html" with content="recipe" %}
+        {% include "patterns/components/link_list/link_list.html" %}
+        <!-- to publish recipe -->
+        {% include "patterns/components/check_box/check_box.html" with value="is_published" text="publish recipe" %}
+        <div class="w-full text-right">
+            <button id="send-form"
+                    class="bg-orange-800 text-white rounded-lg px-10 py-2 cursor-pointer"
+                    data-test="submit">
+                {% if create %}
+                    create recipe
+                {% else %}
+                    edit recipe
+                {% endif %}
+            </button>
+            <button id="is-sending"
+                    class="bg-gray-400 text-white rounded-lg px-10 py-2 cursor-not-allowed hidden"
+                    disabled>
+                <span id="indicator-form">{% include "patterns/components/spinner/spinner.html" %}</span>
+            </button>
+        </div>
+    </section>
+    <script>
+        // input image management
+        const showimage = function(event) {
+            let output = document.getelementbyid('output');
+            let baseimage = document.getelementbyid('base-image');
+            if (baseimage) {
+                baseimage.classlist.add("hidden");
+            }
+            output.src = url.createobjecturl(event.target.files[0]);
+            output.onload = function() {
+                url.revokeobjecturl(output.src) // free memory
+            }
+        };
+        const indicdocumentatorfull = document.getElementById("indicator-form")
+        const topForm = document.getElementById("top-form")
+        const isPublished = document.getElementById("is_published")
+        const isPublished_top = document.getElementById("is_published_top")
+        const sendForm = document.getElementById("send-form")
+        const isSending = document.getElementById("is-sending")
+        const reciptCategory = document.getElementById("{{ form.category.id_for_label }}")
+        reciptCategory.addEventListener("change",updateBg)
+        sendForm.addEventListener("click", submitForm);
+        isPublished.addEventListener("change", updateIsPublished)
+        function updateIsPublished(e){
+            isPublished_top.checked = isPublished.checked
+        }
+        const b = {{ form.is_published.value|lower }}
+        const updateIsPublishedFromPrevious = ()=>{
+            if(b){
+                isPublished_top.checked = true;
+                isPublished.checked = true;
+            } else {
+                isPublished_top.checked = false;
+                isPublished.checked = false;
+            }
+        }
+        updateIsPublishedFromPrevious();
+        function submitForm(e){
+            e.preventDefault()
+            sendForm.classList.add("hidden")
+            isSending.classList.remove("hidden")
+            document.getElementById("top-form").submit();
+        }
+        function updateBg(e){
+            console.log(reciptCategory.value)
+            if (reciptCategory.value == "Recipe"){
+                document.body.style.backgroundImage = "linear-gradient(-20deg, #fff 0%, #000 100%)"
+            } else if (reciptCategory.value == "Health"){
+                document.body.style.backgroundImage = "linear-gradient(-20deg, #eee 0%, #111 100%)"
+            } else if (reciptCategory.value == "Cosmetic"){
+                document.body.style.backgroundImage = "linear-gradient(-20deg, #ccc 0%, #222 100%)"
+            } else if (reciptCategory.value == "Garden"){
+                document.body.style.backgroundImage = "linear-gradient(-20deg, #bbb 0%, #333 100%)"
+            } else if (reciptCategory.value == "Home"){
+                document.body.style.backgroundImage = "linear-gradient(-20deg, #aaa 0%, #444 100%)"
+            } else if (reciptCategory.value == "Fermentaion"){
+                document.body.style.backgroundImage = "linear-gradient(-20deg, #999 0%, #555 100%)"
+            } else if (reciptCategory.value == "Animal"){
+                document.body.style.backgroundImage = "linear-gradient(-20deg, #888 0%, #666 100%)"
+            } else if (reciptCategory.value == "Juice"){
+                document.body.style.backgroundImage = "linear-gradient(-20deg, #777 0%, #888 100%)"
+            }
+        }
+    </script>
+    <style>
+.bg-red{
+    background-image: linear-gradient(-20deg, #fff 0%, #000 100%);
+}
+        h2 {
+            font-family: 'Damion', cursive;
+        }
+
+    </style>
+{% endblock content %}

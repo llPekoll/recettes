@@ -21,8 +21,14 @@ from django.urls import include, path
 from django.conf import settings
 from .views import FeedView, index
 
+from django.http import JsonResponse
+
+def health(request):
+    return JsonResponse({'status': 'ok'})
+
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('health/', health, name='health'),
     # path("", include("django_backblaze_b2.urls")),
 ]
 if settings.DEBUG:

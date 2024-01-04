@@ -4,6 +4,7 @@
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 *.mo
 .idea/
+staticfiles/
 minio/*
 postgres_data/*
 # Node artifact files

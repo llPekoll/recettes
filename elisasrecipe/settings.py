@@ -15,12 +15,9 @@ from pathlib import Path
 
 from django.utils.translation import gettext_lazy as _
 
-DEBUG = 'RENDER' not in os.environ
-ALLOWED_HOSTS = []
+DEBUG = 'DEBUG' not in os.environ
+ALLOWED_HOSTS = ['127.0.0.1','localhost', '.vercel.app']
 
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -377,3 +374,4 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
 
 
 
+WSGI_APPLICATION = 'elisasrecipe.wsgi.app'

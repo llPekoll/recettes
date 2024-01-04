@@ -1,0 +1,14 @@
+{
+    "builds": [
+      {
+        "src": "elisasrecipe/wsgi.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "elisasrecipe/wsgi.py"
+      }
+    ]
+  }

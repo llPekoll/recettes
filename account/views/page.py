@@ -15,9 +15,8 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django_htmx.http import HttpResponseClientRedirect, retarget
 from django_htmx.middleware import HtmxDetails
-from recipe.models import Recipe
-
 from elisasrecipe import settings
+from recipe.models import Recipe
 
 
 class HtmxHttpRequest(HttpRequest):

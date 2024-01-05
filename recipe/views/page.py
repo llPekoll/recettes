@@ -3,9 +3,11 @@ from common.models import Tag
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, Q
 from django.shortcuts import get_object_or_404, render
+
+# from easyaudit.models import CRUDEvent
 from recipe.forms import RecipeForm, RecipeStepForm
 from recipe.models import Ingredient, Recipe, RecipeIngredient
-from easyaudit.models import CRUDEvent, RequestEvent
+
 
 @login_required
 def page_recipe_creation(request):
@@ -31,12 +33,12 @@ def page_recipe_creation(request):
 def page_recipe_detail(request, pk):
     user = request.user
     recipe = get_object_or_404(Recipe, pk=pk)
-    crud_events = CRUDEvent.objects.filter(
-            content_type__model="recipe", object_id=recipe.id
-            )
+    # crud_events = CRUDEvent.objects.filter(
+    #     content_type__model="recipe", object_id=recipe.id
+    # )
     # request_events = RequestEvent.objects.filter(
-            # content_type__model="recipe", object_id=recipe.id
-            # )
+    # content_type__model="recipe", object_id=recipe.id
+    # )
     # print("request_events")
     # print(request_events)
     # print("crud_events")

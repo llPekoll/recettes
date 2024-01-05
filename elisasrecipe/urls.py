@@ -14,21 +14,22 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.apps import apps
+from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
-from django.urls import include, path
-from django.conf import settings
-from .views import FeedView, index
-
 from django.http import JsonResponse
+from django.urls import include, path
+
+from .views import FeedView, index, cookie, terms, about, health, policy
+
 
 def health(request):
-    return JsonResponse({'status': 'ok'})
+    return JsonResponse({"status": "ok"})
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('health/', health, name='health'),
+    path("health/", health, name="health"),
     # path("", include("django_backblaze_b2.urls")),
 ]
 if settings.DEBUG:
@@ -36,11 +37,13 @@ if settings.DEBUG:
 
 urlpatterns += i18n_patterns(
     path("", index, name="home"),
+    path("cookie/", cookie, name="cookie"),
+    path("policy/", terms, name="policy"),
+    path("terms/", terms, name="terms"),
+    path("about/", about, name="about"),
     path("feed/", FeedView.as_view(), name="feed"),
     path("", include("account.urls")),
     path("article/", include("article.urls")),
     path("", include("common.urls")),
     path("recipe/", include("recipe.urls")),
 )
-
-

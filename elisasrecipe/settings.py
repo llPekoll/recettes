@@ -15,8 +15,8 @@ from pathlib import Path
 
 from django.utils.translation import gettext_lazy as _
 
-DEBUG = 'DEBUG' not in os.environ
-ALLOWED_HOSTS = ['127.0.0.1','localhost', '.vercel.app']
+DEBUG = "DEBUG" in os.environ
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.postgres",
-    "theme",
     "recipe",
     "account",
     "django_htmx",
@@ -44,6 +43,7 @@ INSTALLED_APPS = [
     "article",
     "easyaudit",
     "tailwind",
+    "theme",
     "django_browser_reload",
 ]
 
@@ -52,7 +52,7 @@ TAILWIND_APP_NAME = "theme"
 
 MIDDLEWARE = [
     # "elisasrecipe.middleware.RemoveDataTestMiddleware",
-    'easyaudit.middleware.easyaudit.EasyAuditMiddleware',
+    "easyaudit.middleware.easyaudit.EasyAuditMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -62,7 +62,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
-    "django_browser_reload.middleware.BrowserReloadMiddleware"
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 ROOT_URLCONF = "elisasrecipe.urls"
@@ -160,7 +160,6 @@ LANGUAGES = (
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -185,19 +184,56 @@ APIKEY_MAILWIND = os.environ.get("APIKEY_MAILWIND")
 
 
 AWS_ACCESS_KEY_ID = os.getenv("MINIO_ROOT_USER") or os.getenv("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("MINIO_ROOT_PASSWORD") or os.getenv("AWS_SECRET_ACCESS_KEY")
-AWS_STORAGE_BUCKET_NAME = os.getenv("MINIO_BUCKET_NAME") or os.getenv("AWS_STORAGE_BUCKET_NAME")
-AWS_S3_ENDPOINT_URL = os.getenv("MINIO_ENDPOINT") or os.getenv("AWS_S3_ENDPOINT_URL")   
+AWS_SECRET_ACCESS_KEY = os.getenv("MINIO_ROOT_PASSWORD") or os.getenv(
+    "AWS_SECRET_ACCESS_KEY"
+)
+AWS_STORAGE_BUCKET_NAME = os.getenv("MINIO_BUCKET_NAME") or os.getenv(
+    "AWS_STORAGE_BUCKET_NAME"
+)
+AWS_S3_ENDPOINT_URL = os.getenv("MINIO_ENDPOINT") or os.getenv("AWS_S3_ENDPOINT_URL")
+AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
+AWS_DEFAULT_ACL = "private-read"
+AWS_LOCATION = "static"
+# STATICFILES_STORAGE = 'elisasrecipe.storage_backends.StaticStorage'
 
+STATIC_URL = f"{AWS_S3_ENDPOINT_URL}static/"
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    },
+    "staticfiles": {
+        # Leave whatever setting you already have here, e.g.:
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    },
+}
+if "MINIO_ROOT_USER" in os.environ:
+    MINIO_ACCESS_KEY = os.getenv("MINIO_ROOT_USER")
+    MINIO_SECRET_KEY = os.getenv("MINIO_ROOT_PASSWORD")
+    MINIO_BUCKET_NAME = os.getenv("MINIO_BUCKET_NAME")
+    MINIO_ENDPOINT = os.getenv("MINIO_ENDPOINT")
+    AWS_ACCESS_KEY_ID = MINIO_ACCESS_KEY
+    AWS_SECRET_ACCESS_KEY = MINIO_SECRET_KEY
+    AWS_STORAGE_BUCKET_NAME = MINIO_BUCKET_NAME
+    AWS_S3_ENDPOINT_URL = MINIO_ENDPOINT
+    STATIC_URL = "static/"
+    MINIO_ACCESS_KEY = os.getenv("MINIO_ROOT_USER")
+    AWS_DEFAULT_ACL = None
+    AWS_QUERYSTRING_AUTH = True
+    # AWS_S3_FILE_OVERWRITE = False
 
-STATIC_URL = AWS_S3_ENDPOINT_URL
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        },
+        "staticfiles": {
+            # Leave whatever setting you already have here, e.g.:
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
 
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = "staticfiles/"
+
 STATICFILES_DIRS = [BASE_DIR / "static"]
-
-AWS_DEFAULT_ACL = None
-AWS_QUERYSTRING_AUTH = True
-
 
 
 # DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
@@ -216,16 +252,6 @@ AWS_QUERYSTRING_AUTH = True
 # AWS_S3_ENDPOINT_URL = MINIO_ENDPOINT
 
 # AWS_S3_FILE_OVERWRITE = False
-
-STORAGES = {
-    "default": {
-        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-    },
-    "staticfiles": {
-        # Leave whatever setting you already have here, e.g.:
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-    },
-}
 
 
 QUILL_CONFIGS = {
@@ -298,9 +324,9 @@ QUILL_CONFIGS = {
             "syntax": True,
             "toolbar": [
                 [
+                    "strike",
                     "bold",
                     "italic",
-                    "strike",
                 ],
             ],
         },
@@ -371,7 +397,3 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
         ("headshot_small", "crop__150x175"),
     ],
 }
-
-
-
-WSGI_APPLICATION = 'elisasrecipe.wsgi.app'

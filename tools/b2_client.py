@@ -1,7 +1,6 @@
 import tempfile
 
 from b2sdk.v2 import B2Api, InMemoryAccountInfo
-
 from elisasrecipe import settings
 
 info = InMemoryAccountInfo()

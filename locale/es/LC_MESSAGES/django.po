@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-01 13:26+0000\n"
+"POT-Creation-Date: 2024-01-05 13:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,59 +37,43 @@ msgstr ""
 msgid "home-page"
 msgstr ""
 
-#: common/models.py:26
+#: common/models.py:27
 msgid "Profile"
 msgstr ""
 
-#: common/models.py:27
+#: common/models.py:28
 msgid "Article"
 msgstr ""
 
-#: common/models.py:28
+#: common/models.py:29
 msgid "Recipe"
 msgstr ""
 
-#: common/models.py:29
+#: common/models.py:30
 msgid "RecipeStep"
 msgstr ""
 
-#: elisasrecipe/settings.py:130
+#: elisasrecipe/settings.py:153
 msgid "English"
 msgstr ""
 
-#: elisasrecipe/settings.py:131
+#: elisasrecipe/settings.py:154
 msgid "Francais"
 msgstr ""
 
-#: elisasrecipe/settings.py:132
+#: elisasrecipe/settings.py:155
 msgid "Espagnol"
 msgstr ""
 
-#: elisasrecipe/templates/index.html:7
+#: elisasrecipe/templates/index.html:20
 msgid "Welcome to Elisa's corner!"
 msgstr "Bienvenido/a al sitio web de Elisa."
 
-#: elisasrecipe/templates/index.html:8
+#: elisasrecipe/templates/index.html:21
 msgid "intro-to-elisa"
 msgstr ""
 "Bienvenido/a a la esquina de Elisa, el lugar donde compartimos todas las "
 "recetas antiguas y deliciosas."
-
-#: elisasrecipe/templates/navbar.html:21
-msgid "recipes"
-msgstr ""
-
-#: elisasrecipe/templates/navbar.html:28
-msgid "author"
-msgstr ""
-
-#: elisasrecipe/templates/navbar.html:34 elisasrecipe/templates/navbar.html:39
-msgid "login"
-msgstr ""
-
-#: elisasrecipe/templates/navbar.html:44 elisasrecipe/templates/navbar.html:49
-msgid "register"
-msgstr ""
 
 #: elisasrecipe/templates/profile_menu.html:17
 msgid "profile"
@@ -99,6 +83,6 @@ msgstr ""
 msgid "logout"
 msgstr ""
 
-#: elisasrecipe/views.py:11
+#: elisasrecipe/views.py:13
 msgid "Mamadou"
 msgstr ""

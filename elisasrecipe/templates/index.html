@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static tailwind_tags %}
 {% load i18n %}
+{% load my_filters %}
 {% block extra_head %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,7 +35,6 @@
             <div class=" w-full clear-both">{% include "feed.html" %}</div>
         </div>
     </div>
-    {% load my_filters %}
     <div>
         <a href="#top-of-the-page"
            class="fixed bottom-3 right-5 mb-4 mr-4 hidden animate-bounce"

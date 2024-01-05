@@ -10,7 +10,7 @@
         </div>
         <div class="sm:block hidden h-52 overflow-hidden mb-5 bg-cover bg-center w-full"
              style="background-image: url('{{ recipe.image.image.crop.600x200.url|minio_to_localhost }}')"></div>
-        <div class="sm:hidden block h-96 overflow-hidden mb-5 bg-cover bg-center w-full"
+    <div class="sm:hidden block h-96 overflow-hidden mb-5 bg-cover bg-center w-full"
              style="background-image: url('{{ recipe.image.image.crop.400x500.url|minio_to_localhost }}')"></div>
         <h2 class="text-justify">{{ recipe.description | safe }}</h2>
         {% if recipe|total_rate_count %}

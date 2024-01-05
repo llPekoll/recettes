@@ -16,6 +16,14 @@ def translate(language):
     return text
 
 
+def cookie(request):
+    print("cookie")
+    i = render(request, "cookie.html")
+    print(dir(i))
+    print(i.content)
+    return render(request, "cookie.html")
+
+
 def index(request):
     trans = translate(language="fr")
     articles = list(Article.objects.filter(is_published=False).order_by("-created_at"))

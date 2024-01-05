@@ -15,9 +15,8 @@ from django.utils.http import urlsafe_base64_encode
 from django.views.decorators.csrf import csrf_exempt
 from django_htmx.http import HttpResponseClientRedirect, retarget
 from django_htmx.middleware import HtmxDetails
-from recipe.models import Recipe
-
 from elisasrecipe import settings
+from recipe.models import Recipe
 
 from .forms import ArticleForm, ImageForm, LoginForm, ProfileForm, UserRegistrationForm
 

@@ -77,7 +77,7 @@ class Comment(models.Model):
 
     def __str__(self):
         # if self.author:
-            # f"{self.author.username} commented on {self.content_object}"
+        # f"{self.author.username} commented on {self.content_object}"
         return f"{self.content_object}"
 
 

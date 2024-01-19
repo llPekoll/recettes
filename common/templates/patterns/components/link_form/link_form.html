@@ -11,7 +11,13 @@
           hx-swap="outerHTML"
           hx-indicator="#indicator-link"
           class="mb-4 flex flex-wrap items-center">
-        <input type="hidden" name="recipe" value="{{ recipe.id }}">
+          {% if content == "recipe" %}
+              <input type="hidden" name="recipe" value="{{ recipe.id }}">
+            {% elif content == "user" %}
+              <input type="hidden" name="user" value="{{ user.id }}">
+            {% elif content == "article" %}
+              <input type="hidden" name="article" value="{{ article.id }}">
+          {% endif %}
         <select name="type" class="rounded-lg mr-4 my-2">
             <option value="Youtube">YouTube</option>
             <option value="Twitter">Twitter</option>

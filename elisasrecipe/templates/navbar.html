@@ -2,7 +2,17 @@
 <nav class="flex justify-end bg-orange-100" id="navbar">
     <ul class="text-slate-100 pt-4 flex align-center ">
         {% if user.is_authenticated %}
-            <li class="flex-none w-28 h-14">{% include "profile_menu.html" %}</li>
+          {% url 'article:new' as article_new %}
+                {% url 'recipe:new' as recipe_new %}
+                <div>
+                    <div class="float-left text-sm mx-3">
+                        {% include "btn.html" with url=article_new link_text="Create Article" dataTest="create-article" %}
+                    </div>
+                    <div class="float-right text-sm mx-3 mr-10">
+                        {% include "btn.html" with url=recipe_new link_text="Create recipe" dataTest="create-recipe" %}
+                    </div>
+                </div>
+            <li class="flex-none h-14">{% include "profile_menu.html" %}</li>
         {% else %}
             <li class="mx-2 ">
                 <button class="hover:cursor-pointer">

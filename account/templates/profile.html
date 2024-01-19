@@ -10,12 +10,12 @@
     <div class="flex ">
         {% include "components/profile_navbar.html" %}
         <div class="bg-white pl-10 pt-20 w-full">
+            <div class="flex justify-center py-2 text-orange-700 title-profile text-5xl">Edit your profile</div>
             <div class="flex mt-24">
                 <div class="w-5/6 ">
-                    <div class="flex justify-end py-2 text-slate-700">Votre profile de presentation</div>
-                    <div class="bg-orange-400 rounded-lg ml-10  text-white   shadow ">
+                    <div class="bg-orange-400 rounded-lg ml-10  text-white shadow">
                         <div class="absolute">
-                            {% include "components/editable_image.html" with details="profile" img=user.profile_picture.image.url %}
+                            {% include "components/editable_image.html" with details="profile" img=user.profile_picture.image.crop.400x400.url %}
                         </div>
                         <div class="ml-44 py-10 ">
                             <div class="ml-5 text-white">
@@ -35,7 +35,8 @@
                     </div>
                 </div>
             </div>
-            <strong>TODO:</strong>Add links
+            {% include "patterns/components/link_form/link_form.html" with content="user" %}
+            {% include "patterns/components/link_list/link_list.html" %}    
             <div class="w-4/5 py-10 ml-10">
                 {% url 'article:new' as article_new %}
                 {% url 'recipe:new' as recipe_new %}
@@ -53,6 +54,11 @@
             </div>
         </div>
     </div>
+    <style>
+        .title-profile{
+            font-family: 'Poppins', serif;
+        }
+    </style>
     <script>
         const deleteInput = "I want to delete"
         const deleteButton = document.getElementById("delete-button")

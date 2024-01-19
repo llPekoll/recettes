@@ -3,8 +3,9 @@ from common.forms import CommentForm, LinkForm
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from recipe.models import Recipe
-
+from account.models import User
 from .models import Comment, Link, Report, Tag
+from django.contrib.contenttypes.models import ContentType
 
 
 def list_comment(request, pk, content_type):
@@ -18,8 +19,6 @@ def list_comment(request, pk, content_type):
         content = get_object_or_404(Comment, pk=pk)
     if request.htmx:
         if request.method == "POST":
-            print("request.POST")
-            print(request.POST)
             form = CommentForm(request.POST)
             print(1)
             if form.is_valid():
@@ -30,13 +29,13 @@ def list_comment(request, pk, content_type):
             else:
                 print(form.errors)
             comments = content.comments.order_by("created_at")
+            print("comments")
             print(comments)
             return render(request, "comment_list.html", {"comments": comments})
 
 
 def detail_comment(request, pk):
     """Delete a coment or report a comment"""
-    # TODO: add patch method
     if request.method == "DELETE":
         # soft delete is better
         get_object_or_404(Comment, pk=pk)
@@ -78,10 +77,13 @@ def report(request, pk, content_type):
 def link_list(request, content_type):
     if content_type == "article":
         content = get_object_or_404(Article, pk=request.POST.get("article"))
+        content_type = ContentType.objects.get(app_label="article", model="article")
     elif content_type == "recipe":
         content = get_object_or_404(Recipe, pk=request.POST.get("recipe"))
+        content_type = ContentType.objects.get(app_label="recipe", model="recipe")
     elif content_type == "user":
-        content = get_object_or_404("account.User", pk=request.POST.get("user"))
+        content = get_object_or_404(User, pk=request.POST.get("user"))
+        content_type = ContentType.objects.get(app_label="account", model="user")
     if request.method == "POST":
         print(request.POST)
         form = LinkForm(request.POST)
@@ -92,24 +94,31 @@ def link_list(request, content_type):
             link.save()
         else:
             print(form.errors)
-        links = content.links.all()
+        links = Link.objects.filter(content_type=content_type, object_id=content.id)
+        print("links")
+        print(links)
         return render(
             request, "patterns/components/link_list/link_list.html", {"links": links}
         )
     return """ link added """
 
 
-def link_detail(request, pk, content_type):
-    if content_type == "Article":
-        content = get_object_or_404(Article, pk=pk)
-    elif content_type == "Recipe":
-        content = get_object_or_404(Recipe, pk=pk)
-    elif content_type == "User":
-        content = get_object_or_404("account.User", pk=pk)
-    Link.objects.get(
-        content_type=content,
-        pk=pk,
-        value=request.POST.get("value"),
-        type=request.POST.get("type"),
-    )
+def link_detail(request, pk):
+    print("detail_comment")
+    if request.method == "DELETE":
+        link = get_object_or_404(Link, pk=pk)
+        link.delete()
+        return """ link deleted """
+    # if content_type == "Article":
+    #     content = get_object_or_404(Article, pk=pk)
+    # elif content_type == "Recipe":
+    #     content = get_object_or_404(Recipe, pk=pk)
+    # elif content_type == "User":
+    #     content = get_object_or_404("account.User", pk=pk)
+    # Link.objects.get(
+    #     content_type=content,
+    #     pk=pk,
+    #     value=request.POST.get("value"),
+    #     type=request.POST.get("type"),
+    # )
     return """ link updated """

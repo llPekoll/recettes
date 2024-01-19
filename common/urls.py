@@ -14,7 +14,7 @@ urlpatterns = [
         name="api-list-comment",
     ),
     path(
-        "api/link/<str:content_type>",
+        "api/links/<str:content_type>",
         link_list,
         name="api-link-list",
     ),

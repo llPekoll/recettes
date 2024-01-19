@@ -184,12 +184,21 @@ def search_authors(request):
 @login_required
 def edit_image(request):
     if request.htmx:
-        form = ImageForm(request.FILES)
+        print("jism")
+        print(request.FILES)
+        print(request.FILES.get('image'))
+        form = ImageForm(request.POST, request.FILES)
+        print(1)
+        print(form.errors)
         if form.is_valid():
+            print(2)
             img = form.save()
             user = request.user
-            user.profile_picture[0] = img
+            print(img)
+            user.profile_picture = img
+            print(3)
             user.save()
+            print(4)
         return """
                 <p>image saved</p>
             """

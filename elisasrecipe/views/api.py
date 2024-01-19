@@ -27,7 +27,6 @@ class FeedView(ListView):
     def get_queryset(self):
         articles = Article.objects.filter(is_published=False).order_by("-created_at")
         recipes = Recipe.objects.filter(is_published=False).order_by("-created_at")
-        
         feed = sorted(list(articles) + list(recipes), key=lambda x: x.created_at, reverse=True)
         return feed
 
@@ -42,26 +41,34 @@ class FeedSearchView(ListView):
 
     def get_queryset(self):
         search_query = self.request.GET.get("search","")
-        vector = SearchVector("title", "description" )
+        query_type = self.request.GET.get("type","")
         query = SearchQuery(search_query)
         search_headline = SearchHeadline("title", query)
-        recipes = (
-            Recipe.objects.annotate(
-                rank=SearchRank(vector, query),
+        
+        recipes = Recipe.objects.none()
+        articles = Article.objects.none()
+        if query_type == "recipes" or query_type =="all":
+            vector = SearchVector("title", "description" )
+            recipes = (
+                Recipe.objects.annotate(
+                    rank=SearchRank(vector, query),
+                )
+                .annotate(headline=search_headline)
+                .filter(rank__gte=0.00001)
+                .order_by("-rank")[:2]
             )
-            .annotate(headline=search_headline)
-            .filter(rank__gte=0.00001)
-            .order_by("-rank")[:2]
-        )
-        vector = SearchVector("title", "content" )
-        articles = (
-            Article.objects.annotate(
-                rank=SearchRank(vector, query),
+        
+        if query_type == "articles" or query_type =="all":
+            vector = SearchVector("title", "content" )
+            articles = (
+                Article.objects.annotate(
+                    rank=SearchRank(vector, query),
+                )
+                .annotate(headline=search_headline)
+                .filter(rank__gte=0.00001)
+                .order_by("-rank")[:2]
             )
-            .annotate(headline=search_headline)
-            .filter(rank__gte=0.00001)
-            .order_by("-rank")[:2]
-        )
+        
         feed = sorted(list(articles) + list(recipes), key=lambda x: x.created_at, reverse=True)
         return feed
 

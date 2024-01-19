@@ -17,6 +17,8 @@ from django_htmx.http import HttpResponseClientRedirect, retarget
 from django_htmx.middleware import HtmxDetails
 from elisasrecipe import settings
 from recipe.models import Recipe
+from django.contrib.contenttypes.models import ContentType
+from common.models import Link
 
 
 class HtmxHttpRequest(HttpRequest):
@@ -136,6 +138,8 @@ def password_change_success(request):
 
 def profile(request):
     user = request.user
+    content_type = ContentType.objects.get(app_label="account", model="user")
+    links = Link.objects.filter(content_type=content_type, object_id=user.id)
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
@@ -145,7 +149,7 @@ def profile(request):
     return render(
         request,
         "profile.html",
-        {"form": form, "user": user},
+        {"form": form, "user": user, "links": links},
     )
 
 

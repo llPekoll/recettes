@@ -1,11 +1,32 @@
-<div class="flex fixed bottom-0  w-full items-center justify-start py-2 text-xs jose">
+<div class="flex fixed bottom-0  w-full items-center justify-start py-2 text-xs footer">
     <a href={% url 'cookie' %} class="px-2">Cookies</a>
     <a href={% url 'policy' %} class="px-2">Privacy Policy</a>
     <a href={% url 'terms' %} class="px-2">Terms and Conditions</a>
     <a href={% url 'about' %} class="px-2">About Us</a>
 </div>
 <style>
-    .jose{
-    background-color: bisque;
+    .footer{
+        background-color: bisque;
     }
+    {% comment %} .navbar-button {
+        transition: padding 0.4s; /* Adds a smooth animation when changing the padding */
+    } {% endcomment %}
 </style>
+{% comment %} 
+<script>
+    var lastScrollTop = 0;
+    var footer = document.querySelector('.footer');
+
+    window.addEventListener('scroll', function() {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollTop > lastScrollTop) {
+            // downscroll
+            footer.style.display = 'none';
+        } else {
+            // upscroll
+            footer.style.display = 'flex';
+        }
+        lastScrollTop = scrollTop;
+    });
+</script>
+{% endcomment %}

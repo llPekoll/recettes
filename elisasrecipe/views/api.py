@@ -66,14 +66,17 @@ class FeedSearchView(ListView):
         return feed
 
 
-def search(request, content_type):
-    print(content_type)
-    print(request.POST.get("search"))
-    if content_type == "home":
-        search_query = request.POST.get("search")
+def search(request):
+    print(request.POST)
+    query_type = request.POST.get("type")
+    search_query = request.POST.get("search")
+    query = SearchQuery(search_query)
+    search_headline = SearchHeadline("title", query)
+    
+    recipes = Recipe.objects.none()
+    articles = Article.objects.none()
+    if query_type == "recipes" or query_type =="all":
         vector = SearchVector("title", "description" )
-        query = SearchQuery(search_query)
-        search_headline = SearchHeadline("title", query)
         recipes = (
             Recipe.objects.annotate(
                 rank=SearchRank(vector, query),
@@ -82,7 +85,8 @@ def search(request, content_type):
             .filter(rank__gte=0.00001)
             .order_by("-rank")[:2]
         )
-        print(recipes)
+    
+    if query_type == "articles" or query_type =="all":
         vector = SearchVector("title", "content" )
         articles = (
             Article.objects.annotate(
@@ -92,9 +96,8 @@ def search(request, content_type):
             .filter(rank__gte=0.00001)
             .order_by("-rank")[:2]
         )
-        print(articles)
+    
     feed = sorted(list(articles) + list(recipes), key=lambda x: x.created_at, reverse=True)
-    print(feed)
     return render(
         request,
         "feed_search.html",

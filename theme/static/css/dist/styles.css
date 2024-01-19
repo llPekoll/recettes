@@ -1135,6 +1135,14 @@ select {
   height: 100vh;
 }
 
+.h-20 {
+  height: 5rem;
+}
+
+.h-16 {
+  height: 4rem;
+}
+
 .max-h-52 {
   max-height: 13rem;
 }
@@ -1857,6 +1865,10 @@ select {
 
 .font-thin {
   font-weight: 100;
+}
+
+.uppercase {
+  text-transform: uppercase;
 }
 
 .lowercase {

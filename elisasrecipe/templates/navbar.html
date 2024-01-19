@@ -1,21 +1,6 @@
 {% load i18n %}
 <nav class="flex justify-end bg-orange-100" id="navbar">
     <ul class="text-slate-100 pt-4 flex align-center ">
-        <li class="text-orange-700 mx-5">
-            <a href={% url 'page-recipes' %}>
-                Recettes
-            </a>
-        </li>
-        <li class="text-orange-700 mx-5">
-            <a href={% url 'page-articles' %}>
-                Articles
-            </a>
-        </li>
-        <li class="text-orange-700 mx-5">
-            <a href={% url 'page-authors' %}>
-                Authors
-            </a>
-        </li>
         {% if user.is_authenticated %}
             <li class="flex-none w-28 h-14">{% include "profile_menu.html" %}</li>
         {% else %}

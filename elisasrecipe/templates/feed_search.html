@@ -4,6 +4,7 @@
         <div 
             hx-get="{% url 'feed-search' %}?page={{ page_obj.number | add:1 }}"
             hx-include="[name=search]"
+            hx-include="[name=type]"
             hx-trigger="revealed"
             hx-swap="afterend">
         </div>

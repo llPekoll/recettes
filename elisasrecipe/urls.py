@@ -36,7 +36,7 @@ urlpatterns += i18n_patterns(
     path("authors/", about, name="page-authors"),
     path("feed/", FeedView.as_view(), name="feed"),
     path("feed/search", FeedSearchView.as_view(), name="feed-search"),
-    path("api/search/<str:content_type>", search, name="api-search"),
+    path("api/search", search, name="api-search"),
     path("", include("account.urls")),
     path("article/", include("article.urls")),
     path("", include("common.urls")),

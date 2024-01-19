@@ -101,7 +101,6 @@ def page_edit_recipe(request, pk):
 
 def page_recipes(request):
     recipes = Recipe.objects.filter(is_draft=False)
-    print(recipes)
     return render(
         request,
         "recipes.html",

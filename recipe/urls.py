@@ -28,7 +28,7 @@ urlpatterns = [
     path("<int:pk>/edit/", page_edit_recipe, name="edit"),
     path("search/", page_search_recipes, name="search"),
     # API
-    path("api/search/", search_recipes, name="api-search"),
+    # path("api/search/", search_recipes, name="api-search"),
     # path("api/list", recipe_creation, name="api-list"),
     path("api/<int:pk>/", recipe_edit, name="api-detail"),
     path("api/<int:pk>/rating/", set_rating, name="api-rating"),

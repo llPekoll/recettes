@@ -17,8 +17,7 @@
     {% tailwind_css %}
     {# remove to to block when it's needed #}
   </head>
-  <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-        class=" text-blue-900">
+  <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {% block content %}
       
     {% endblock content %}

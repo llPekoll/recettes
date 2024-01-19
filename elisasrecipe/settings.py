@@ -16,7 +16,7 @@ from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 
 DEBUG = "DEBUG" in os.environ
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "0.0.0.0"]
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 

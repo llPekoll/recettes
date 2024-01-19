@@ -6,10 +6,19 @@
     <input class="w-full border-2 border-gray-300 bg-white rounded-lg font-bold focus:outline-none text-4xl relative"
            type="search"
            name="search"
-           {% if type == "recipe" %} hx-post="{% url 'recipe:api-search' %}" {% elif type == "author" %} hx-post="{% url 'user:api-search' %}" {% elif type == "home" %} hx-post="{% url 'home' %}" {% endif %}
+           id="search"
+           {% if type == "recipe" %} 
+               hx-post={% url 'api-search' content_type="recipe"%}
+           {% elif type == "article" %} 
+               hx-post={% url 'api-search' content_type="article"%}
+           {% elif type == "author" %} 
+               hx-post={% url 'api-search' content_type="author"%}
+           {% elif type == "home" %} 
+               hx-post={% url 'api-search' content_type="home"%}
+           {% endif %}
            hx-include="[name=search]"
            hx-trigger="keyup changed delay:1s, search"
-           hx-target="#recipe-list"
+           hx-target="#feed"
            hx-indicator=".htmx-indicator"
            placeholder="Search">
     <span class="htmx-indicator">{% include "patterns/components/spinner/spinner.html" %}</span>

@@ -1,9 +1,9 @@
 {% load static tailwind_tags %}
 {% load i18n %}
-<details class="dropdown">
+<details class="dropdown mt-1">
   <summary role="button">
     {% get_current_language as LANGUAGE_CODE %}
-    <div class="bg-white px-2 py-1 rounded-lg border-2 border-orange-200 border-solid -mt-2 select-none">
+    <div class="bg-white w-16 px-2 py-1 rounded-lg  border-orange-700 border-solid -mt-2 select-none">
       {% if LANGUAGE_CODE == 'fr' %}
         🇫🇷 {{ LANGUAGE_CODE }}
       {% elif LANGUAGE_CODE == 'en' %}
@@ -13,11 +13,11 @@
       {% endif %}
     </div>
   </summary>
-  <ul>
+  <ul class="py-2">
     {% get_available_languages as LANGUAGES %}
     {% get_language_info_list for LANGUAGES as languages %}
     {% for language in languages %}
-      <li class="flex select-none">
+      <li class="flex select-none text-center">
         <a href="/{{ language.code }}/"
            class="text-gray-500 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex"
            data-test="fr">
@@ -45,7 +45,7 @@
     --button-color: white;
 
     --dropdown-highlight: dodgerorange;
-    --dropdown-width: 160px;
+    --dropdown-width: 110px;
     --dropdown-background: white;
     --dropdown-color: black;
   }
@@ -106,7 +106,6 @@
   .dropdown ul {
     position: absolute;
     margin: 20px 0 0 0;
-    padding: 20px 0;
     width: var(--dropdown-width);
     left: 50%;
     margin-left: calc((var(--dropdown-width) / 2)  * -1);

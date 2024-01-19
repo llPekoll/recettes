@@ -2,7 +2,7 @@
 {% block content %}
     {% include "navbar.html" %}
     <section class="pt-20">
-        {% include "searchbar.html" %}
+        {% include "searchbar.html" with type="author" %}
         <div class="flex flex-wrap pt-36 items-center justify-center px-10">{% include "components/author_list.html" %}</div>
     </section>
 {% endblock content %}

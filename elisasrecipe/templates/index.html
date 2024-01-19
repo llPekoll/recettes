@@ -3,23 +3,19 @@
 {% load i18n %}
 {% load my_filters %}
 {% block extra_head %}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Damion&display=swap"
-          rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Damion&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-          rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Damion&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 {% endblock extra_head %}
 {% block content %}
-    <div class="m-16" id="top-of-the-page">
+
+    <div class="" id="top-of-the-page">
         {% include "navbar.html" %}
-        <div class=" mx-auto py-6 sm:px-6 lg:px-8 pt-20">
+        <div class="m-16 mx-auto py-6 sm:px-6 lg:px-8 pt-10">
             <h1 class="text-center font-bold text-9xl title -ml-4 text-blue-950"
                 data-test="title">{% translate "Welcome to Elisa's corner!" %}</h1>
-            <h2 class=" text-center text-slate-600 font-light text-lg ml-10">{% translate "intro-to-elisa" %}</h2>
-            {% include "searchbar.html" %}
+            <h2 class="text-center text-slate-600 font-light text-lg tracking-tighter -mt-4">{% translate "intro-to-elisa" %}</h2>
+            {% include "searchbar.html" with type="home"%}
             {% if user.is_authenticated %}
                 {% url 'article:new' as article_new %}
                 {% url 'recipe:new' as recipe_new %}
@@ -32,7 +28,7 @@
                     </div>
                 </div>
             {% endif %}
-            <div class=" w-full clear-both">{% include "feed.html" %}</div>
+            <div id="feed" class=" w-full clear-both">{% include "feed.html" %}</div>
         </div>
     </div>
     <div>
@@ -73,6 +69,5 @@
         .title {
             font-family: 'Damion', cursive;
         }
-
     </style>
 {% endblock content %}

@@ -1,0 +1,19 @@
+ <div class="tab-list w-full text-center text-2xl font-semibold border-b-4 border-orange-700" role="tablist">
+	<button hx-get={% url 'feed-recipe' %} hx-target="#tab-content" hx-include="[name='search']" role="tab" aria-selected="false" aria-controls="tab-content" class="mx-2 selected">Recipes</button>
+	<button hx-get={% url 'feed-article' %} hx-target="#tab-content" hx-include="[name='search']" role="tab" aria-selected="false" aria-controls="tab-content" class="mx-2">Articles</button>
+	<button hx-get={% url 'feed-author' %} hx-target="#tab-content" hx-include="[name='search']" role="tab" aria-selected="false" aria-controls="tab-content" class="mx-2">Authors</button>
+</div>
+
+{% include "components/tab.html" %}
+
+<style>
+	.selected{
+		padding: 0.5rem 1rem;
+		background-color: #fdd6b5;
+		border-top-width: medium;
+		border-left-width: medium;
+		border-right-width: medium;
+		border-color: #c2410d;
+		border-radius: 0.5rem 0.5rem 0rem 0rem;
+	}
+</style>

@@ -6,6 +6,7 @@ from elisasrecipe import settings
 
 
 class User(AbstractUser):
+    is_ban = models.BooleanField(default=False)
     favorite_recipes = models.ManyToManyField(
         "recipe.Recipe", related_name="favorite_recipes"
     )

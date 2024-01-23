@@ -1,11 +1,12 @@
+from account.models import User
 from article.models import Article
 from common.forms import CommentForm, LinkForm
+from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from recipe.models import Recipe
-from account.models import User
+
 from .models import Comment, Link, Report, Tag
-from django.contrib.contenttypes.models import ContentType
 
 
 def list_comment(request, pk, content_type):

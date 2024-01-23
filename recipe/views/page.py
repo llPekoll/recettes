@@ -18,7 +18,7 @@ def page_recipe_creation(request):
     tags = Tag.objects.all()
     return render(
         request,
-        "patterns/pages/list_recipe/create_edit_recipe.html",
+        "patterns/pages/list_recipe/new_recipe.html",
         {
             "form": form,
             "recipeStepForm": RecipeStepForm(),
@@ -87,7 +87,7 @@ def page_edit_recipe(request, pk):
     tags = Tag.objects.all()
     return render(
         request,
-        "patterns/pages/list_recipe/create_edit_recipe.html",
+        "patterns/pages/list_recipe/new_recipe.html",
         {
             "form": form,
             "ings": ings,

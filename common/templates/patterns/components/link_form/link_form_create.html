@@ -1,0 +1,148 @@
+<div>
+    Add link:
+        <select name="type" class="rounded-lg mr-4 my-2" id="link-type">
+            <option value="Youtube">YouTube</option>
+            <option value="Twitter">Twitter</option>
+            <option value="Tiktok">TikTok</option>
+            <option value="Facebook">Facebook</option>
+            <option value="Insta">Insta</option>
+        </select>
+        <input type="url"
+               name="value"
+               id="link-value"
+               placeholder="link from content"
+               class="px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent mr-2">
+               
+        {% if not content == "user" %}
+        <label for="embeded" class="mr-2">
+            embeded
+            <input type="checkbox" name="embeded" class="mr-2" id="embeded">
+        </label>
+        {% endif %}
+        <p class="px-3" id="add-button-link">{% include "patterns/components/icons/add/add.html" %}</p>
+        <span id="indicator-link" class="htmx-indicator">{% include "patterns/components/spinner/spinner.html" %}</span>
+</div>
+
+<script>
+
+    const facebook = `{% include "patterns/components/icons/facebook/facebook.html" %}`
+    const website = `{% include "patterns/components/icons/website/website.html" %}`
+    const youtube = `{% include "patterns/components/icons/youtube/youtube.html" %}`
+    const twitter = `{% include "patterns/components/icons/twitter/twitter.html" %}`
+    const tiktok = `{% include "patterns/components/icons/tiktok/tiktok.html" %}`
+    const insta = `{% include "patterns/components/icons/insta/insta.html" %}`
+    const deleteIcon = `{% include "patterns/components/icons/delete/delete.html" %}`
+    /**
+    * Represents a link.
+    * @typedef {Object} Link
+    * @property {"YouTube"|"Facebook"|"Twitter"|"Instagram"} type - the type of the link
+    * @property {string} value - the value of the link
+    * @property {boolean} embeded - indicates if the link is embbeded or not.
+    */
+      
+    /**
+    * Represensts a list of links
+    * @typedef {Link[]} linkList.
+    */
+    const linkList = [];
+    
+    const addButton = document.getElementById("add-button-link");
+    const hidenInput = document.createElement('div')
+    const linkDisplay = document.createElement('div')
+    hidenInput.setAttribute('id','input-hidden')
+    linkDisplay.setAttribute('id','link-display')
+    function initLink(){
+        form.appendChild(hidenInput)
+        form.appendChild(linkDisplay)
+    };
+    
+    initLink();
+    
+    addButton.addEventListener('click', function(){
+        const embeded = document.getElementById("embeded");
+        const linkValue = document.getElementById("link-value");
+        const linkType = document.getElementById("link-type");
+        linkList.push({
+            embeded: embeded.checked,
+            linkValue: linkValue.value,
+            linkType: linkType.value,
+        });
+        // reset form
+        embeded.checked = false;
+        linkValue.value = "";
+        linkType.value = "Youtube";
+        while (hidenInput.hasChildNodes()) {
+            hidenInput.removeChild(hidenInput.lastChild);
+        }
+        while (linkDisplay.hasChildNodes()) {
+            linkDisplay.removeChild(linkDisplay.lastChild);
+        }
+        const input = document.createElement('input');
+        input.setAttribute('name','links')
+        input.setAttribute('type','hidden')
+        input.setAttribute('value',JSON.stringify(linkList))
+        hidenInput.appendChild(input)
+        for (let link of linkList) {
+            const row = document.createElement('div');
+            row.setAttribute('class','flex')
+            const icon = document.createElement('div');
+            if (link.linkType.toLowerCase()  =="facebook"){
+                icon.innerHTML = facebook
+            } else if(link.linkType.toLowerCase()  =="website"){
+                icon.innerHTML = website
+            } else if(link.linkType.toLowerCase()  =="youtube"){
+                icon.innerHTML = youtube
+            } else if(link.linkType.toLowerCase()  =="twitter"){
+                icon.innerHTML = twitter
+            } else if(link.linkType.toLowerCase()  =="tiktok"){
+                icon.innerHTML = tiktok
+            } else if(link.linkType.toLowerCase()  =="insta"){
+                icon.innerHTML = insta
+            } 
+            const linkRow = document.createElement('a');
+            linkRow.setAttribute('href',link.linkValue)
+            linkRow.innerHTML = link.linkValue
+            linkRow.setAttribute('target','_blank')
+            linkRow.setAttribute('class','ml-2 cursor-pointer hover:underline hover:text-blue-700 text-blue-500')
+            const deleteBtn = document.createElement('span');
+            deleteBtn.innerHTML = deleteIcon
+            deleteBtn.addEventListener('click', function() {
+                // Remove the row from the linkDisplay
+                linkDisplay.removeChild(row);
+            
+                // Remove the link from the list of links
+                const index = linkList.indexOf(link);
+                if (index > -1) {
+                    linkList.splice(index, 1);
+                }
+            });
+            
+            row.appendChild(icon)
+            row.appendChild(linkRow)
+            row.appendChild(deleteBtn)
+            linkDisplay.appendChild(row)
+        }
+    });
+
+    // clearn input
+    const embeded = document.getElementById("embeded");
+    const value = document.getElementById("value");
+    document.addEventListener('htmx:afterRequest', function(evt) {
+    });
+
+
+</script>
+
+
+<style>
+    .htmx-indicator{
+        opacity:0;
+        transition: opacity 500ms ease-in;
+    }
+    .htmx-request .htmx-indicator{
+        opacity:1
+    }
+    .htmx-request.htmx-indicator{
+        opacity:1
+    }
+</style>

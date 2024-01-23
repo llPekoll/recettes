@@ -1,9 +1,4 @@
-from django.views.generic import ListView
-from django.http import JsonResponse
-from django.shortcuts import render
 from article.models import Article
-from recipe.models import Recipe
-
 from django.contrib.postgres.search import (
     SearchHeadline,
     SearchQuery,
@@ -11,9 +6,15 @@ from django.contrib.postgres.search import (
     SearchVector,
     TrigramSimilarity,
 )
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.views.generic import ListView
+from recipe.models import Recipe
+
 
 def health(request):
-    return JsonResponse({'status': 'ok'})
+    return JsonResponse({"status": "ok"})
+
 
 class FeedView(ListView):
     template_name = "feed.html"
@@ -27,8 +28,11 @@ class FeedView(ListView):
     def get_queryset(self):
         articles = Article.objects.filter(is_published=False).order_by("-created_at")
         recipes = Recipe.objects.filter(is_published=False).order_by("-created_at")
-        feed = sorted(list(articles) + list(recipes), key=lambda x: x.created_at, reverse=True)
+        feed = sorted(
+            list(articles) + list(recipes), key=lambda x: x.created_at, reverse=True
+        )
         return feed
+
 
 class FeedSearchView(ListView):
     template_name = "feed_search.html"
@@ -40,15 +44,15 @@ class FeedSearchView(ListView):
         return "index.html"
 
     def get_queryset(self):
-        search_query = self.request.GET.get("search","")
-        query_type = self.request.GET.get("type","")
+        search_query = self.request.GET.get("search", "")
+        query_type = self.request.GET.get("type", "")
         query = SearchQuery(search_query)
         search_headline = SearchHeadline("title", query)
-        
+
         recipes = Recipe.objects.none()
         articles = Article.objects.none()
-        if query_type == "recipes" or query_type =="all":
-            vector = SearchVector("title", "description" )
+        if query_type == "recipes" or query_type == "all":
+            vector = SearchVector("title", "description")
             recipes = (
                 Recipe.objects.annotate(
                     rank=SearchRank(vector, query),
@@ -57,9 +61,9 @@ class FeedSearchView(ListView):
                 .filter(rank__gte=0.00001)
                 .order_by("-rank")[:2]
             )
-        
-        if query_type == "articles" or query_type =="all":
-            vector = SearchVector("title", "content" )
+
+        if query_type == "articles" or query_type == "all":
+            vector = SearchVector("title", "content")
             articles = (
                 Article.objects.annotate(
                     rank=SearchRank(vector, query),
@@ -68,8 +72,10 @@ class FeedSearchView(ListView):
                 .filter(rank__gte=0.00001)
                 .order_by("-rank")[:2]
             )
-        
-        feed = sorted(list(articles) + list(recipes), key=lambda x: x.created_at, reverse=True)
+
+        feed = sorted(
+            list(articles) + list(recipes), key=lambda x: x.created_at, reverse=True
+        )
         return feed
 
 
@@ -79,11 +85,11 @@ def search(request):
     search_query = request.POST.get("search")
     query = SearchQuery(search_query)
     search_headline = SearchHeadline("title", query)
-    
+
     recipes = Recipe.objects.none()
     articles = Article.objects.none()
-    if query_type == "recipes" or query_type =="all":
-        vector = SearchVector("title", "description" )
+    if query_type == "recipes" or query_type == "all":
+        vector = SearchVector("title", "description")
         recipes = (
             Recipe.objects.annotate(
                 rank=SearchRank(vector, query),
@@ -92,9 +98,9 @@ def search(request):
             .filter(rank__gte=0.00001)
             .order_by("-rank")[:2]
         )
-    
-    if query_type == "articles" or query_type =="all":
-        vector = SearchVector("title", "content" )
+
+    if query_type == "articles" or query_type == "all":
+        vector = SearchVector("title", "content")
         articles = (
             Article.objects.annotate(
                 rank=SearchRank(vector, query),
@@ -103,11 +109,12 @@ def search(request):
             .filter(rank__gte=0.00001)
             .order_by("-rank")[:2]
         )
-    
-    feed = sorted(list(articles) + list(recipes), key=lambda x: x.created_at, reverse=True)
+
+    feed = sorted(
+        list(articles) + list(recipes), key=lambda x: x.created_at, reverse=True
+    )
     return render(
         request,
         "feed_search.html",
         {"page_obj": feed},
     )
-

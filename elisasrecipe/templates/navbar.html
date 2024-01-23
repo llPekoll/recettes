@@ -2,7 +2,8 @@
 <nav class="flex justify-end bg-orange-100" id="navbar">
     <ul class="text-slate-100 pt-4 flex align-center ">
         {% if user.is_authenticated %}
-          {% url 'article:new' as article_new %}
+            {% if only_profile_n_lang == False %}
+                {% url 'article:new' as article_new %}
                 {% url 'recipe:new' as recipe_new %}
                 <div>
                     <div class="float-left text-sm mx-3">
@@ -12,6 +13,7 @@
                         {% include "btn.html" with url=recipe_new link_text="Create recipe" dataTest="create-recipe" %}
                     </div>
                 </div>
+            {% endif %}
             <li class="flex-none h-14">{% include "profile_menu.html" %}</li>
         {% else %}
             <li class="mx-2 ">
@@ -33,14 +35,14 @@
     </ul>
 </nav>
 <style>
-#navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 70px;
-    transition: 0.4s; /* Adds a smooth animation when changing the size */
-    z-index: 9999;
-}
+    #navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        height: 70px;
+        transition: 0.4s; /* Adds a smooth animation when changing the size */
+        z-index: 9999;
+    }
     .navbar-button {
         transition: padding 0.4s; /* Adds a smooth animation when changing the padding */
     }

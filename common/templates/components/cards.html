@@ -1,7 +1,7 @@
-<div class=" py-4 flex justify-center">
-    <div class="border-b-2 border-red-500 py-4 w-[40rem]">
+<div class=" my-4 flex justify-center">
+    <div class="border-b-2 border-orange-700 my-4 w-[40rem] bg-orange-600 shadow bg-opacity-10">
         {% if type == "article" %}
-            {% include "components/block_article_card.html" with article=content  title=obj.title %}
+            {% include "components/block_article_card.html" with article=content title=obj.title %}
         {% elif type == "recipe" %}
             {% include "components/block_recipe_card.html" with recipe=content title=obj.title %}
         {% endif %}

@@ -2,7 +2,7 @@ import json
 
 from article.forms import ArticleForm
 from article.models import Article
-from common.models import Image, Tag
+from common.models import Image, Link, Tag
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -33,13 +33,23 @@ def write_article(form, request):
     if form.is_valid():
         article = form.save(commit=False)
         article.author = request.user
-
         article.save()
         if request.POST.get("tags"):
             tags = json.loads(request.POST.get("tags"))
             for tag in tags:
                 tag, _ = Tag.objects.get_or_create(name=tag.get("value"))
                 article.tags.add(tag)
+        # Links
+        links = request.POST.get("links")
+        links = json.loads(links)
+        for link in links:
+            Link.objects.create(
+                content_object=article,
+                value=link["linkValue"],
+                type=link["linkType"],
+                embedded=True if link["embeded"] == "on" else False,
+            )
+        # image default
         image = Image.objects.get(pk=15)
         if "image" in request.FILES:
             print(request.FILES["image"])

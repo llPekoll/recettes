@@ -10,7 +10,7 @@
 <script src="{% static 'htmx.min.js' %}" defer></script>
 {% endblock extra_head %}
 {% block content %}
-{% include "navbar.html" %}
+{% include "navbar.html" with only_profile_n_lang=True %}
 <section class="bg-orange-50 pt-20 h-screen mx-80">
     <div class="flex items-end ml-20">
         <div class=" inline text-orange-700 ">
@@ -25,7 +25,7 @@
     </div>
     <form method="post"
           class="w-full"
-          id="article-form"
+          id="new-form"
           {% if edit %} 
           action="{% url "article:api-detail" pk=article.initial.id %}" 
           {% else %} 
@@ -33,6 +33,9 @@
           {% endif %}
           enctype="multipart/form-data">
         {% csrf_token %}
+        <script>
+            const form = document.getElementById('new-form');
+        </script>
         {% if article.image.image %}
         <img src="{{ article.image.image.url|minio_to_localhost }}"
              alt="article image"
@@ -63,6 +66,7 @@
         {% endif %}
         {% include "patterns/components/tag_editor/tag_editor.html" %}
         {% include "patterns/components/check_box/check_box.html" with value="is_published" text="Publish article" is_checked=article.is_published %}
+        {% include "patterns/components/link_form/link_form_create.html" with content="article" %}
         <button type="submit"
                 id="not-sending"
                 data-test="submit"
@@ -102,7 +106,7 @@
             URL.revokeObjectURL(output.src) // free memory
         }
     };
-    const form = document.getElementById('article-form');
+    
     const notSending = document.getElementById('not-sending');
     const isSending = document.getElementById('is-sending');
     form.addEventListener('submit', function(e) {

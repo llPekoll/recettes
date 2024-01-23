@@ -2,10 +2,12 @@ import requests
 from account.forms import LoginForm, ProfileForm, UserRegistrationForm
 from account.models import PasswordResetToken, User
 from article.models import Article
+from common.models import Link
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordResetConfirmView
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render
@@ -17,8 +19,6 @@ from django_htmx.http import HttpResponseClientRedirect, retarget
 from django_htmx.middleware import HtmxDetails
 from elisasrecipe import settings
 from recipe.models import Recipe
-from django.contrib.contenttypes.models import ContentType
-from common.models import Link
 
 
 class HtmxHttpRequest(HttpRequest):

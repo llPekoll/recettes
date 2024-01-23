@@ -4,12 +4,7 @@ from django.contrib import admin
 from django.http import JsonResponse
 from django.urls import include, path
 
-from .views.api import (
-    FeedSearchView,
-    FeedView,
-    health,
-    search,
-)
+from .views.api import FeedSearchView, FeedView, health, search
 from .views.page import about, cookie, index, policy, terms
 
 

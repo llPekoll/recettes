@@ -1,5 +1,5 @@
 <div>
-    Add link to {{ content_type }}:
+    Add link:
     <form {% if content == "recipe" %}
               hx-post="{% url 'api-link-list' content_type="recipe" %}"
           {% elif content == "user" %}
@@ -30,10 +30,13 @@
                id="value"
                placeholder="link from content"
                class="px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent mr-2">
+               
+        {% if not content == "user" %}
         <label for="embeded" class="mr-2">
             embeded
             <input type="checkbox" name="embeded" class="mr-2" id="embeded">
         </label>
+        {% endif %}
         <button class="px-3">{% include "patterns/components/icons/add/add.html" %}</button>
         <span id="indicator-link" class="htmx-indicator">{% include "patterns/components/spinner/spinner.html" %}</span>
     </form>

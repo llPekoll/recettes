@@ -186,7 +186,7 @@ def edit_image(request):
     if request.htmx:
         print("jism")
         print(request.FILES)
-        print(request.FILES.get('image'))
+        print(request.FILES.get("image"))
         form = ImageForm(request.POST, request.FILES)
         print(1)
         print(form.errors)

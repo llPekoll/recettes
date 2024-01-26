@@ -14,8 +14,17 @@
                  style="background-image: url('{{ article.image.image.crop.600x200.url|minio_to_localhost }}')"></div>
             <div class="sm:hidden block h-52 overflow-hidden mb-5 bg-cover bg-center w-full"
                  style="background-image: url('{{ article.image.image.crop.400x400.url|minio_to_localhost }}')"></div>
+                 <div class="flex">
+                    {% for link in links %}
+                        {% include 'components/link.html' %}
+                    {% endfor %}
+                </div>
             {% url 'article:edit-page' pk=article.id as article_edit %}
-            {% include "btn.html" with url=article_edit link_text="🖊️ Edit the article" dataTest="edit-article" %}
+            {% if user.is_authenticated %}
+                {% if request.user == recipe.author %}
+                    {% include "btn.html" with url=article_edit link_text="🖊️ Edit the article" dataTest="edit-article" %}
+                {% endif %}
+            {% endif %}
             {% if user.is_authenticated %}
                 <div class="float-right pr-10">
                     <!-- report -->
@@ -24,7 +33,7 @@
                 </div>
             {% endif %}
             <div class="px-10 pt-7">
-                <div class="cursor-pointer">
+                <div class="cursor-pointer pb-3">
                     <button hx-get="{% url "article:api-set-favorite" pk=article.id %}"
                             hx-trigger="click"
                             hx-target="#is-fav">{% include "is_favorite.html" %}</button>
@@ -37,6 +46,7 @@
                         {% endautoescape %}
                     </div>
                 </div>
+
                 <!-- comment -->
                 {% if comment is not empty %}
                     <div class="py-4 " id="comments">

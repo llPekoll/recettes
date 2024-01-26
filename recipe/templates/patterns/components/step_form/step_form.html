@@ -1,56 +1,72 @@
-{% load static %}
 <div>
     Enter Recipe Step's:
-    <form hx-post="{% url 'recipe:api-step-list' %}"
-          hx-target="#step-list"
-          hx-swap="outerHTML"
-          class="mb-4"
-          enctype="multipart/form-data">
-        <input type="hidden" name="recipe" value="{{ recipe.id }}">
         <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
         <input type="text"
                name="title"
                id="step-title"
                data-test="title-step"
                placeholder="Give a title for your Recipe step"
-               hx-indicator="#indicator-step"
                required
                class="px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent">
         <label for="instruction" class="block text-sm font-medium text-gray-700">Instruction</label>
         <div class="bg-slate-100 rounded-lg"
              data-test="instruction-step"
-             id="instruction-step">{{ recipeStepForm.instruction }}</div>
+             id="step-instruction">{{ recipeStepForm.instruction }}</div>
         <label for="image" class="block text-sm font-medium text-gray-700">Image</label>
         <input type="file"
                name="image"
                id="step-image"
                accept="image/*"
                data-test="image-step">
-        <button data-test="add-step">{% include "patterns/components/icons/add/add.html" %}</button>
+        <p id="step-add-button-link" data-test="add-step">{% include "patterns/components/icons/add/add.html" %}</p>
         <span id="indicator-step" class="htmx-indicator">{% include "patterns/components/spinner/spinner.html" %}</span>
-    </form>
 </div>
 <script>
-    const stepTitle = document.getElementById("step-title");
-    const element = document.getElementsByClassName("ql-editor");
-    const stepImage = document.getElementById("step-image")
-    document.addEventListener('htmx:afterRequest', function(evt) {
-        stepTitle.value = "";
-        element[0].innerHTML = "";
-        stepImage.value = "";
 
+    const steps = [];
+    
+    const stepAddButton = document.getElementById("step-add-button-link");
+    const stepHidenInput = document.createElement('input')
+    stepHidenInput.setAttribute('name','steps')
+    stepHidenInput.setAttribute('type','hidden')
+    const stepDisplay = document.createElement('div')
+    stepHidenInput.setAttribute('id','step-input-hidden')
+    stepDisplay.setAttribute('id','step-display')
+    form.appendChild(stepHidenInput)
+    form.appendChild(stepDisplay)
+    
+    stepAddButton.addEventListener('click', function(){
+        console.log('click')
+        const stepTitle = document.getElementById("step-title").value;
+        const stepInstruction = document.getElementById("step-instruction").value;
+        const stepImage = document.getElementById("step-image").value;
+        
+        console.log(stepImage)
+        const stepImageInput = document.createElement('input');
+        stepImageInput.setAttribute('type', 'file');
+        stepImageInput.setAttribute('id', 'step-image');
+        stepImageInput.setAttribute('name', `step-image-${steps.length}`);
+        stepImageInput.setAttribute('accept', 'image/*');
+
+        form.appendChild(stepImageInput);
+        
+        steps.push({
+            title: stepTitle,
+            instruction: stepInstruction,
+            image: steps.length
+        })
+
+        stepHidenInput.setAttribute('value',JSON.stringify(steps))
+        stepDisplay.innerHTML = steps.map(step => {
+            return `<div class="flex flex-col">
+                        <div class="flex flex">
+                            ${step.stepTitle}
+                            ${step.instruction}
+                            ${step.image}
+                        </div>
+                    </div>`
+        });
     });
-</script>
-<style>
-    .htmx-indicator{
-        opacity:0;
-        transition: opacity 500ms ease-in;
-    }
-    .htmx-request .htmx-indicator{
-        opacity:1
-    }
-    .htmx-request.htmx-indicator{
-        opacity:1
-    }
 
-</style>
+
+</script>

@@ -3,6 +3,7 @@
 {% load my_filters %}
 {% load static %}
 {% block extra_head %}
+    <script src="http://SortableJS.github.io/Sortable/Sortable.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Damion&display=swap"
           rel="stylesheet">
     {% include "components/import_quill.html" %}
@@ -15,12 +16,23 @@
         <form id="top-form"
               method="post"
               enctype="multipart/form-data"
-              action="{% url "recipe:api-detail" pk=recipe.id %}">
+              {% if recipe %}
+                action="{% url "recipe:api-detail" pk=recipe.id %}"
+              {% else %}
+                action="{% url "recipe:api-list" %}"
+              {% endif %}
+              >
             {% csrf_token %}
-            <input type="hidden" name=recipe value={{ recipe.id }} />
+            <script>
+                const form = document.getElementById("top-form")
+            </script>
+            {% if recipe %}
+                <input type="hidden" name=recipe value={{ recipe.id }} />
+            {% endif %}
+
             <div class="flex items-end  pt-10">
                 <div class="inline text-orange-700">
-                    {% if create %}
+                    {% if recipe %}
                         <h2 class="text-7xl capitalize font-bold underline">create recipe</h2>
                         <h3 class=" -mt-1.5 text-orange-300">creation of a new recipe</h3>
                     {% else %}
@@ -33,9 +45,18 @@
                 name<span class="text-red-600">*</span>:
                 {% include "patterns/components/icons/help/help.html" with help_text="just the way you want to call it?" %}
             </label>
-            <input type="text" name={{ form.title.name }} data-test="title" class="rounded-lg bg-orange-200 focus:ring-0 border-0 w-full" required placeholder="{{ form.title.label }}" {% if recipe.title %}value="{{ recipe.title }}"{% endif %} />
+            <input type="text" 
+                name={{ form.title.name }} 
+                data-test="title" 
+                class="rounded-lg bg-orange-200 focus:ring-0 border-0 w-full" 
+                placeholder="{{ form.title.label }}" 
+                required 
+                {% if recipe %}
+                    value={{ recipe.title }}
+                {% endif %} 
+            />
             <label for={{ form.title.category }} class="flex mt-5">
-                category:
+                Category:
                 {% include "patterns/components/icons/help/help.html" with help_text="what is the category of your recipe?" %}
             </label>
             <select name="category"
@@ -110,25 +131,22 @@
                    id="is_published_top"
                    class="hidden"
                    checked />
+                   <!-- add ingredients to recipe -->
+                   {% include "patterns/components/ingredient_form/ingredient_form.html" %}
+                   {% include "patterns/components/step_form/step_form.html" %}
+                   <!-- add tags -->
+                   {% include "patterns/components/tag_editor/tag_editor.html" %}
+                   <!-- add links to recipe -->
+                   {% include "patterns/components/link_form/link_form_create.html" with content="recipe" %}
+                   <!-- to publish recipe -->
+                   {% include "patterns/components/check_box/check_box.html" with value="is_published" text="publish recipe" %}
         </form>
-        <!-- add ingredients to recipe -->
-        {% include "patterns/components/ingredient_form/ingredient_form.html" %}
-        {% include "patterns/components/ingredient_list/ingredient_list.html" %}
-        <!-- add recipe steps -->
-        {% include "patterns/components/step_form/step_form.html" %}
-        {% include "patterns/components/step_list/step_list.html" with cant_delete_step=true %}
-        <!-- add tags -->
-        {% include "patterns/components/tag_editor/tag_editor.html" %}
-        <!-- add links to recipe -->
-        {% include "patterns/components/link_form/link_form.html" with content="recipe" %}
-        {% include "patterns/components/link_list/link_list.html" %}
-        <!-- to publish recipe -->
-        {% include "patterns/components/check_box/check_box.html" with value="is_published" text="publish recipe" %}
+        
         <div class="w-full text-right">
             <button id="send-form"
                     class="bg-orange-800 text-white rounded-lg px-10 py-2 cursor-pointer"
                     data-test="submit">
-                {% if create %}
+                {% if recipe %}
                     create recipe
                 {% else %}
                     edit recipe
@@ -143,6 +161,7 @@
     </section>
     <script>
         // input image management
+        
         const showimage = function(event) {
             let output = document.getelementbyid('output');
             let baseimage = document.getelementbyid('base-image');
@@ -155,63 +174,24 @@
             }
         };
         const indicdocumentatorfull = document.getElementById("indicator-form")
-        const topForm = document.getElementById("top-form")
-        const isPublished = document.getElementById("is_published")
-        const isPublished_top = document.getElementById("is_published_top")
+        
         const sendForm = document.getElementById("send-form")
         const isSending = document.getElementById("is-sending")
-        const reciptCategory = document.getElementById("{{ form.category.id_for_label }}")
-        reciptCategory.addEventListener("change",updateBg)
         sendForm.addEventListener("click", submitForm);
-        isPublished.addEventListener("change", updateIsPublished)
-        function updateIsPublished(e){
-            isPublished_top.checked = isPublished.checked
-        }
-        const b = {{ form.is_published.value|lower }}
-        const updateIsPublishedFromPrevious = ()=>{
-            if(b){
-                isPublished_top.checked = true;
-                isPublished.checked = true;
-            } else {
-                isPublished_top.checked = false;
-                isPublished.checked = false;
-            }
-        }
-        updateIsPublishedFromPrevious();
         function submitForm(e){
             e.preventDefault()
             sendForm.classList.add("hidden")
             isSending.classList.remove("hidden")
             document.getElementById("top-form").submit();
         }
-        function updateBg(e){
-            console.log(reciptCategory.value)
-            if (reciptCategory.value == "Recipe"){
-                document.body.style.backgroundImage = "linear-gradient(-20deg, #fff 0%, #000 100%)"
-            } else if (reciptCategory.value == "Health"){
-                document.body.style.backgroundImage = "linear-gradient(-20deg, #eee 0%, #111 100%)"
-            } else if (reciptCategory.value == "Cosmetic"){
-                document.body.style.backgroundImage = "linear-gradient(-20deg, #ccc 0%, #222 100%)"
-            } else if (reciptCategory.value == "Garden"){
-                document.body.style.backgroundImage = "linear-gradient(-20deg, #bbb 0%, #333 100%)"
-            } else if (reciptCategory.value == "Home"){
-                document.body.style.backgroundImage = "linear-gradient(-20deg, #aaa 0%, #444 100%)"
-            } else if (reciptCategory.value == "Fermentaion"){
-                document.body.style.backgroundImage = "linear-gradient(-20deg, #999 0%, #555 100%)"
-            } else if (reciptCategory.value == "Animal"){
-                document.body.style.backgroundImage = "linear-gradient(-20deg, #888 0%, #666 100%)"
-            } else if (reciptCategory.value == "Juice"){
-                document.body.style.backgroundImage = "linear-gradient(-20deg, #777 0%, #888 100%)"
-            }
-        }
     </script>
     <style>
-.bg-red{
-    background-image: linear-gradient(-20deg, #fff 0%, #000 100%);
-}
+        .bg-red{
+            background-image: linear-gradient(-20deg, #fff 0%, #000 100%);
+        }
         h2 {
             font-family: 'Damion', cursive;
         }
-
     </style>
+    
 {% endblock content %}

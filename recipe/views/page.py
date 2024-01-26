@@ -13,8 +13,6 @@ from recipe.models import Ingredient, Recipe, RecipeIngredient
 def page_recipe_creation(request):
     form = RecipeForm()
     ingredient_names = [ingredient.name for ingredient in Ingredient.objects.all()]
-    nb = Recipe.objects.count()
-    recipe = Recipe.objects.create(author=request.user, title=f"New Recipe {nb + 1}")
     tags = Tag.objects.all()
     return render(
         request,
@@ -22,8 +20,7 @@ def page_recipe_creation(request):
         {
             "form": form,
             "recipeStepForm": RecipeStepForm(),
-            "create": True,
-            "recipe": recipe,
+            "recipe": None,
             "ingredient_names": ingredient_names,
             "tag_list": [tag.name for tag in tags],
         },

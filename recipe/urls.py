@@ -1,6 +1,7 @@
 from django.urls import path
 from recipe.views.api import ingredient_detail  # recipe_creation,
 from recipe.views.api import (
+    recipe_creation,
     ingredient_list,
     recipe_edit,
     search_recipes,
@@ -29,7 +30,7 @@ urlpatterns = [
     # path("search/", page_search_recipes, name="search"),
     # API
     # path("api/search/", search_recipes, name="api-search"),
-    # path("api/list", recipe_creation, name="api-list"),
+    path("api/list", recipe_creation, name="api-list"),
     path("api/<int:pk>/", recipe_edit, name="api-detail"),
     path("api/<int:pk>/rating/", set_rating, name="api-rating"),
     path("api/<int:pk>/favorite/", set_favorite, name="api-favorite"),

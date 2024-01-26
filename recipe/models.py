@@ -4,6 +4,8 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.utils.text import slugify
 from django_quill.fields import QuillField
+from django.contrib.contenttypes.models import ContentType
+from common.models import Link
 
 
 class Category(Enum):
@@ -106,6 +108,11 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title if self.title else f"{self.pk}_untitled"
+    
+    def get_links(self):
+        content_type = ContentType.objects.get_for_model(self)
+        links = Link.objects.filter(content_type=content_type, object_id=self.id)
+        return links
 
     def save(self, *args, **kwargs):
         if not self.slug:

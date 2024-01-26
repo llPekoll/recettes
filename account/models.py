@@ -3,6 +3,9 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.utils.text import slugify
 from elisasrecipe import settings
+from django.contrib.contenttypes.models import ContentType
+from common.models import Link
+
 
 
 class User(AbstractUser):
@@ -44,6 +47,11 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+    
+    def get_links(self):
+        content_type = ContentType.objects.get_for_model(self)
+        links = Link.objects.filter(content_type=content_type, object_id=self.id)
+        return links
 
     def save(self, *args, **kwargs):
         if not self.slug:

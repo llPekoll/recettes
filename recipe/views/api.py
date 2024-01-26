@@ -15,6 +15,12 @@ from recipe.forms import RecipeForm, RecipeIngredientForm, RecipeStepForm
 from recipe.models import Recipe, RecipeIngredient, RecipeStep
 
 
+def recipe_creation(request):
+    if request.method == "POST":
+        return "pas que des arnimols"
+    return HttpResponse("Method not allowed", status=405)
+
+
 def recipe_edit(request, pk):
     print(request.POST)
     if request.method == "POST":

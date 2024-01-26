@@ -26,8 +26,8 @@ class FeedView(ListView):
         return "index.html"
 
     def get_queryset(self):
-        articles = Article.objects.filter(is_published=False).order_by("-created_at")
-        recipes = Recipe.objects.filter(is_published=False).order_by("-created_at")
+        articles = Article.objects.filter(is_published=True).order_by("-created_at")
+        recipes = Recipe.objects.filter(is_published=True).order_by("-created_at")
         feed = sorted(
             list(articles) + list(recipes), key=lambda x: x.created_at, reverse=True
         )

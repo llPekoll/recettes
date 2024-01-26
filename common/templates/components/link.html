@@ -1,0 +1,17 @@
+<a href="{{ link.value }}"
+    target="_blank"
+    class="ml-2 cursor-pointer hover:underline hover:text-slate-900 text-slate-700">
+    {% if link.type == "Facebook" %}
+        {% include "patterns/components/icons/facebook/facebook.html" %}
+    {% elif link.type == "Twitter" %}
+        {% include "patterns/components/icons/twitter/twitter.html" %}
+    {% elif link.type == "Youtube" %}
+        {% include "patterns/components/icons/youtube/youtube.html" %}
+    {% elif link.type == "Tiktok" %}
+        {% include "patterns/components/icons/tiktok/tiktok.html" %}
+    {% elif link.type == "Instagram" %}
+        {% include "patterns/components/icons/insta/insta.html" %}
+    {% elif link.type == "Website" %}
+        {% include "patterns/components/icons/website/website.html" %}
+    {% endif %}
+</a>

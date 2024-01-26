@@ -1,8 +1,10 @@
 from article.forms import ArticleForm
 from article.models import Article
 from common.forms import CommentForm
-from common.models import Tag
+from common.models import Tag, Link
 from django.shortcuts import get_object_or_404, render
+from django.contrib.contenttypes.models import ContentType
+
 
 
 def page_article_creation(request):
@@ -24,6 +26,7 @@ def page_article_detail(request, pk):
     article = get_object_or_404(Article, pk=pk)
     is_favorite = article in user.favorite_articles.all()
     is_author = article.author == user
+    
     comments = article.comments.all().order_by("created_at")
     return render(
         request,
@@ -34,6 +37,7 @@ def page_article_detail(request, pk):
             "is_favorite": is_favorite,
             "comment_form": CommentForm(),
             "comments": comments,
+            "links": article.get_links(),
         },
     )
 
@@ -43,7 +47,6 @@ def page_article_edit(request, pk):
     form = ArticleForm(instance=article)
     tags = article.tags.all()
     image = article.image.image.url
-    # print(form.is_publishd)
     return render(
         request,
         "new_article.html",

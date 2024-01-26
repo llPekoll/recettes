@@ -1,9 +1,5 @@
 <h2 class="text-2xl py-2">Add an ingredient:</h2>
-<form hx-post="{% url 'recipe:api-ingredient-list' %}"
-      hx-target="#ingredient-list"
-      hx-swap="outerHTML"
-      hx-indicator="#indicator-ingredient"
-      class="grid grid-cols-4 gap-6">
+  <div class="grid grid-cols-4 gap-6">
   <div>
     <input type="hidden" name="recipe" value="{{ recipe.id }}" />
     <input type="number"
@@ -18,6 +14,7 @@
   </div>
   <div>
     <select name="unit"
+            id="unit"
             value="{{ form.unit.name }}"
             data-test="unit"
             class="bg-orange-200 capitalize  text-gray-900 text-sm rounded-lg focus:ring-0 border-0 block">
@@ -48,11 +45,133 @@
       </div>
       <div class="autocom-box absolute bg-red-50 w-40 mt-2"></div>
     </div>
-    <button data-test="add-ingredient">{% include "patterns/components/icons/add/add.html" %}</button>
+    <div id="ingredient-add-button-link" data-test="add-ingredient">{% include "patterns/components/icons/add/add.html" %}</div>
     <span id="indicator-ingredient" class="htmx-indicator">{% include "patterns/components/spinner/spinner.html" %}</span>
   </div>
-</form>
+  </div>
 <script>
+
+  const ingredients = [];
+    
+  const ingredientAddButton = document.getElementById("ingredient-add-button-link");
+  const ingredientHidenInput = document.createElement('div')
+  const ingredientDisplay = document.createElement('div')
+  ingredientHidenInput.setAttribute('id','ingredient-input-hidden')
+  ingredientDisplay.setAttribute('id','ingredient-display')
+  form.appendChild(ingredientHidenInput)
+  form.appendChild(ingredientDisplay)
+
+
+    ingredientAddButton.addEventListener('click', function(){
+        const quantity = document.getElementById("quantity");
+        const unit = document.getElementById("unit");
+        const name = document.getElementById("input-search");
+        ingredients.push({
+            quantity: quantity.value,
+            unit: unit.value,
+            name: name.value,
+        });
+        // reset form
+        quantity.value = ""
+        name.value = ""
+
+        // Clean up
+        while (ingredientHidenInput.hasChildNodes()) {
+            ingredientHidenInput.removeChild(ingredientHidenInput.lastChild);
+        }
+        while (ingredientDisplay.hasChildNodes()) {
+            ingredientDisplay.removeChild(ingredientDisplay.lastChild);
+        }
+        // add hidden input to form
+        const input = document.createElement('input');
+        input.setAttribute('name','links')
+        input.setAttribute('type','hidden')
+       
+        ingredientHidenInput.appendChild(input)
+
+        // generate visual feedback
+
+        const table = document.createElement('table');
+        table.setAttribute('id', 'ingredientsTable');
+
+        // Create table header
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        const nameHeader = document.createElement('th');
+        nameHeader.textContent = 'Name';
+        const quantityHeader = document.createElement('th');
+        quantityHeader.textContent = 'Quant.';
+        const unitHeader = document.createElement('th');
+        unitHeader.textContent = 'Unit';
+        const deleteHeader = document.createElement('th'); // New delete header
+        deleteHeader.textContent = 'Delete';
+        headerRow.appendChild(quantityHeader);
+        headerRow.appendChild(unitHeader);
+        headerRow.appendChild(nameHeader);
+        headerRow.appendChild(deleteHeader);
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+// Create table body
+        const tbody = document.createElement('tbody');
+        tbody.setAttribute('id', 'ingredientsBody');
+        for (let ingredient of ingredients) {
+            const row = document.createElement('tr');
+            const nameCell = document.createElement('td');
+            nameCell.textContent = ingredient.name;
+            const unitCell = document.createElement('td');
+            unitCell.textContent = ingredient.unit;
+            const quantityCell = document.createElement('td');
+            quantityCell.textContent = ingredient.quantity;
+            const deleteCell = document.createElement('td'); // New delete cell
+            const deleteIcon = document.createElement('span'); // Create delete icon
+            deleteIcon.innerHTML = `{% include "patterns/components/icons/delete/delete.html" %}`; // Use trash bin emoji as icon
+            deleteIcon.style.cursor = 'pointer';
+            deleteIcon.addEventListener('click', function() {
+                tbody.removeChild(row);
+                const index = ingredients.indexOf(ingredient);
+                if (index > -1) {
+                    ingredients.splice(index, 1);
+                }
+                input.setAttribute('value',JSON.stringify(ingredients))
+                if (ingredients.length === 0) {
+                    ingredientDisplay.removeChild(table);
+                }
+            });
+        deleteCell.appendChild(deleteIcon);
+        const handleCell = document.createElement('td');
+handleCell.textContent = '☰'; // Use hamburger icon as handle
+handleCell.classList.add('handle');
+row.appendChild(handleCell);
+        row.appendChild(quantityCell);
+        row.appendChild(unitCell);
+        row.appendChild(nameCell);
+        row.appendChild(deleteCell); // Append delete cell to row
+        tbody.appendChild(row);
+    }   
+    table.appendChild(tbody);
+    // Append the table to the ingredientDisplay
+    ingredientDisplay.appendChild(table);
+    input.setAttribute('value',JSON.stringify(ingredients))
+    
+    const ingredientsBody = document.getElementById('ingredientsBody');
+    new Sortable(ingredientsBody, {
+        animation: 150,
+        handle: '.handle', // Class name of the handle element
+        swapThreshold: 0.65,
+        onEnd: function(evt) {
+            const item = ingredients.splice(evt.oldIndex, 1)[0];
+            ingredients.splice(evt.newIndex, 0, item);
+            input.setAttribute('value',JSON.stringify(ingredients))
+        }
+    });
+  });
+
+/*
+  document.addEventListener('DOMContentLoaded', function() {
+    const tbody = document.getElementById('ingredientsBody');
+});
+*/
 
 // suggestion
   let suggestions = {% if ingredient_names %} {{ ingredient_names|safe }}; {% else %} [];{% endif %}
@@ -108,6 +227,7 @@
   });
 
 </script>
+
 <style>
   ::selection{
     color: #fff;
@@ -155,18 +275,4 @@
   .autocom-box li:hover{
     background: #efefef;
   }
-
-
-{% comment %} htmx {% endcomment %}
-  .htmx-indicator{
-    opacity:0;
-    transition: opacity 500ms ease-in;
-  }
-  .htmx-request .htmx-indicator{
-    opacity:1
-  }
-  .htmx-request.htmx-indicator{
-    opacity:1
-  }
-
 </style>

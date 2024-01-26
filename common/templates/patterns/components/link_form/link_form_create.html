@@ -71,17 +71,21 @@
         embeded.checked = false;
         linkValue.value = "";
         linkType.value = "Youtube";
+        // Clean up
         while (hidenInput.hasChildNodes()) {
             hidenInput.removeChild(hidenInput.lastChild);
         }
         while (linkDisplay.hasChildNodes()) {
             linkDisplay.removeChild(linkDisplay.lastChild);
         }
+        // add hidden input to form
         const input = document.createElement('input');
         input.setAttribute('name','links')
         input.setAttribute('type','hidden')
         input.setAttribute('value',JSON.stringify(linkList))
         hidenInput.appendChild(input)
+        
+        // generate visual feedback
         for (let link of linkList) {
             const row = document.createElement('div');
             row.setAttribute('class','flex')

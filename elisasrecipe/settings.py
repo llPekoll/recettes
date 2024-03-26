@@ -254,84 +254,6 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 # AWS_S3_FILE_OVERWRITE = False
 
 
-QUILL_CONFIGS = {
-    "default": {
-        "theme": "bubble",
-        "modules": {
-            "syntax": True,
-            "toolbar": [
-                [
-                    {"font": []},
-                    {"size": []},
-                    # {"header": []},
-                    # {"align": []},
-                    "bold",
-                    "italic",
-                    "underline",
-                    "strike",
-                    # "blockquote",
-                    # {"color": []},
-                    # {"background": []},
-                ],
-                [
-                    {"list": "ordered"},
-                    {"list": "bullet"},
-                    # "code-block",
-                    # "link",
-                    # "image",
-                ],
-            ],
-        },
-    },
-    "article": {
-        "theme": "bubble",
-        "modules": {
-            "syntax": True,
-            "toolbar": [
-                [
-                    {"header": []},
-                    "bold",
-                    "italic",
-                    "underline",
-                    "strike",
-                    "blockquote",
-                ],
-                [
-                    {"list": "ordered"},
-                    {"list": "bullet"},
-                    "link",
-                    "image",
-                ],
-            ],
-        },
-    },
-    "comment": {
-        "theme": "bubble",
-        "modules": {
-            "syntax": True,
-            "toolbar": [
-                [
-                    "bold",
-                    "italic",
-                    "strike",
-                ],
-            ],
-        },
-    },
-    "recipe": {
-        "theme": "bubble",
-        "modules": {
-            "syntax": True,
-            "toolbar": [
-                [
-                    "strike",
-                    "bold",
-                    "italic",
-                ],
-            ],
-        },
-    },
-}
 
 
 # Minimum similarity threshold for trigram similarity search
@@ -396,4 +318,25 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
     "headshot": [
         ("headshot_small", "crop__150x175"),
     ],
+}
+
+QUILL_CONFIGS = {
+    'default':{
+        'theme': 'snow',
+        'modules': {
+            'syntax': True,
+            'toolbar': [
+                [
+                    {'font': []},
+                    {'header': []},
+                    {'align': []},
+                    'bold', 'italic', 'underline', 'strike', 'blockquote',
+                    {'color': []},
+                    {'background': []},
+                ],
+                ['code-block', 'link'],
+                ['clean'],
+            ]
+        }
+    }
 }

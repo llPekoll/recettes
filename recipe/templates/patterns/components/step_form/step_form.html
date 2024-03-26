@@ -39,33 +39,27 @@
         console.log('click')
         const stepTitle = document.getElementById("step-title").value;
         const stepInstruction = document.getElementById("step-instruction").value;
-        const stepImage = document.getElementById("step-image").value;
+        const existingStepImageInput = document.getElementById("step-image");
         
-        console.log(stepImage)
-        const stepImageInput = document.createElement('input');
-        stepImageInput.setAttribute('type', 'file');
-        stepImageInput.setAttribute('id', 'step-image');
-        stepImageInput.setAttribute('name', `step-image-${steps.length}`);
-        stepImageInput.setAttribute('accept', 'image/*');
 
-        form.appendChild(stepImageInput);
-        
-        steps.push({
+        const newStepImageInput = document.createElement('input');
+        newStepImageInput.setAttribute('type', 'file');
+        newStepImageInput.setAttribute('id', `step-image-${steps.length}`);
+        newStepImageInput.setAttribute('name', `step-image-${steps.length}`);
+        newStepImageInput.setAttribute('accept', 'image/*');
+        newStepImageInput.setAttribute('class', 'hidden');
+        newStepImageInput.files = existingStepImageInput.files;
+
+        stepDisplay.appendChild(newStepImageInput);
+        const step = {
             title: stepTitle,
             instruction: stepInstruction,
-            image: steps.length
-        })
+            image: `step-image-${steps.length}`
+        }
+        steps.push(step)
 
         stepHidenInput.setAttribute('value',JSON.stringify(steps))
-        stepDisplay.innerHTML = steps.map(step => {
-            return `<div class="flex flex-col">
-                        <div class="flex flex">
-                            ${step.stepTitle}
-                            ${step.instruction}
-                            ${step.image}
-                        </div>
-                    </div>`
-        });
+        
     });
 
 
